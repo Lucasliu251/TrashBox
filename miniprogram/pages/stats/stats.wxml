@@ -1,0 +1,73 @@
+<view class="container">
+  <block wx:if="{{ !isLogged }}">
+    <view class="empty-state">
+      <image class="empty-icon" src="/assets/icons/cs-logo-grey.avif" mode="widthFix"></image>
+      <text class="empty-text">绑定 Steam 账号开启数据分析</text>
+      <text class="empty-subtext">查看您的 Rating、ADR 及比赛走势</text>
+      <button class="btn-primary" bindtap="goToOnboarding">连接 Steam 账户</button>
+    </view>
+  </block>
+  <block wx:else>
+    <scroll-view scroll-y class="dashboard">
+      <view class="profile-card">
+        <view class="profile-info">
+          <image class="avatar" src="{{ userData.avatar }}"></image>
+          <view class="text-group">
+            <text class="nickname">{{ userData.nickname }}</text>
+            <view class="level-badge">
+              <text>FACEIT Level {{ userData.faceitLevel }}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="stats-grid">
+        <view class="stat-box">
+          <text class="stat-label">Rating 2.0</text>
+          <text class="stat-value {{ userData.rating > 1.2 ? 'gold' : '' }}">
+            {{ userData.rating }}
+          </text>
+        </view>
+        <view class="stat-box">
+          <text class="stat-label">K/D Ratio</text>
+          <text class="stat-value">{{ userData.kd }}</text>
+        </view>
+        <view class="stat-box">
+          <text class="stat-label">ADR</text>
+          <text class="stat-value">{{ userData.adr }}</text>
+        </view>
+        <view class="stat-box">
+          <text class="stat-label">Win Rate</text>
+          <text class="stat-value">{{ userData.winRate }}</text>
+        </view>
+      </view>
+      <view class="section-title">综合能力</view>
+      <view class="chart-container">
+        <canvas type="2d" id="radarCanvas" class="canvas-placeholder"></canvas>
+        <text class="placeholder-text">雷达图 / 能力六边形</text>
+      </view>
+      <view class="section-title">近期战绩</view>
+      <view class="match-list">
+        <block wx:for="{{ matchHistory }}" wx:key="index">
+          <view class="match-item">
+            <view class="match-left">
+              <view class="map-tag">{{ item.map }}</view>
+              <text class="match-result {{ item.result === 'WIN' ? 'win' : 'lose' }}">
+                {{ item.result }}
+              </text>
+            </view>
+            <view class="match-center">
+              <text class="score">{{ item.score }}</text>
+              <text class="date">{{ item.date }}</text>
+            </view>
+            <view class="match-right">
+              <text class="mini-label">Rating</text>
+              <text class="mini-rating {{ item.rating > 1.2 ? 'gold' : '' }}">
+                {{ item.rating }}
+              </text>
+            </view>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
+  </block>
+</view>

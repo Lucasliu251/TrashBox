@@ -1,0 +1,102 @@
+/* index.wxss */
+.container {
+  padding: 40rpx;
+  background-color: #f8f9fa; /* 浅灰背景 */
+  min-height: 100vh;
+}
+
+/* 头部样式 */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 60rpx;
+}
+
+.avatar {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 50%; /* 圆形头像 */
+  margin-bottom: 20rpx;
+  border: 4rpx solid #ffffff;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
+}
+
+.nickname {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 输入框样式 */
+.input-name {
+  border: 1px solid #ddd;
+  padding: 10rpx;
+  border-radius: 8rpx;
+  text-align: center;
+  font-size: 32rpx;
+}
+
+/* 统计数据行 (Flex布局) */
+.stats-row {
+  display: flex;
+  justify-content: space-around; /* 平均分布 */
+  background: #fff;
+  padding: 30rpx 0;
+  border-radius: 16rpx;
+  margin-bottom: 40rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-num {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #07c160; /* 微信绿 */
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #888;
+  margin-top: 6rpx;
+}
+
+/* 简介区域 */
+.bio-section {
+  background: #fff;
+  padding: 30rpx;
+  border-radius: 16rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.bio-content {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+.input-bio {
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 10rpx;
+  border-radius: 8rpx;
+}
+
+/* 按钮样式 */
+.btn-action {
+  margin-top: 60rpx;
+  background-color: #07c160;
+  color: white;
+  border-radius: 50rpx;
+}

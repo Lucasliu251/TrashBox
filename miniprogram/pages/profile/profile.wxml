@@ -1,0 +1,45 @@
+<view class="container">
+  
+  <view class="header">
+    <image class="avatar" src="https://picsum.photos/200" mode="aspectFill"></image>
+    
+    <block wx:if="{{ isEditing }}">
+      <input class="input-name" value="{{ nickName }}" bindinput="onNameChange" placeholder="输入新昵称"/>
+    </block>
+    <block wx:else>
+      <text class="nickname">{{ nickName }}</text>
+    </block>
+  </view>
+
+  <view class="stats-row">
+    <view class="stat-item">
+      <text class="stat-num">128</text>
+      <text class="stat-label">文章</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-num">3.5k</text>
+      <text class="stat-label">粉丝</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-num">206</text>
+      <text class="stat-label">关注</text>
+    </view>
+  </view>
+
+  <view class="bio-section">
+    <text class="section-title">个人简介</text>
+    <view class="bio-content">
+      <block wx:if="{{ isEditing }}">
+        <textarea class="input-bio" value="{{ bio }}" bindinput="onBioChange" auto-height />
+      </block>
+      <block wx:else>
+        <text>{{ bio }}</text>
+      </block>
+    </view>
+  </view>
+
+  <button class="btn-action" bindtap="toggleEdit">
+    {{ isEditing ? '保存资料' : '编辑资料' }}
+  </button>
+
+</view>

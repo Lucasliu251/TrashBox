@@ -1,0 +1,49 @@
+<view class="container">
+    <view class="header-search">
+        <view class="search-box">
+            <view class="search-icon"></view>
+            <input class="search-input" placeholder="搜索 Steam ID / 玩家昵称" placeholder-class="ph-style" bindconfirm="doSearch" bindinput="onSearchInput" />
+        </view>
+    </view>
+    <view class="swiper-container">
+        <swiper class="my-swiper" indicator-dots="true" autoplay="true" interval="5000" circular="true">
+            <block wx:for="{{ banners }}" wx:key="id">
+                <swiper-item class="my-swiper-item">
+                    <image class="my-banner-image" src="{{ item.image }}" mode="aspectFill"></image>
+                    <view class="banner-title">{{ item.title }}</view>
+                </swiper-item>
+            </block>
+        </swiper>
+    </view>
+    <view class="section">
+        <view class="section-header">
+            <text class="section-title">本周 Rating 之星</text>
+            <text class="section-more">查看全部 ></text>
+        </view>
+        <view class="leaderboard-list">
+            <block wx:for="{{ topPlayers }}" wx:key="rank">
+                <view class="player-row">
+                    <view class="row-left">
+                        <text class="rank-num rank-{{ item.rank }}">{{ item.rank }}</text>
+                        <image class="player-avatar" src="{{ item.avatar }}"></image>
+                        <text class="player-name">{{ item.name }}</text>
+                    </view>
+                    <view class="row-right">
+                        <text class="player-rating">{{ item.rating }}</text>
+                        <text class="player-change {{ item.change[0] == '+' ? 'up' : 'down' }}">
+                            {{ item.change }}
+                        </text>
+                    </view>
+                </view>
+            </block>
+        </view>
+    </view>
+    <view class="section">
+        <view class="section-header">
+            <text class="section-title">社区动态</text>
+        </view>
+        <view class="news-placeholder">
+            <text>暂无更多赛事资讯...</text>
+        </view>
+    </view>
+</view>

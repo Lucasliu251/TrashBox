@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/profile/profile",
+    "pages/stats/stats",
+    "pages/onboarding/onboarding",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1e1e1e",
+    "navigationBarTitleText": "TrashBox",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#1e1e1e"
+  },
+  "tabBar": {
+    "color": "#8b8b8b",
+    "selectedColor": "#de9b35",
+    "backgroundColor": "#2b2d31",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "社区",
+        "iconPath": "assets/icons/home.png", 
+        "selectedIconPath": "assets/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "数据",
+        "iconPath": "assets/icons/chart.png",
+        "selectedIconPath": "assets/icons/chart-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "rendererOptions": {
+    "skyline": {
+      "defaultDisplayBlock": true,
+      "disableABTest": true,
+      "sdkVersionBegin": "3.0.0",
+      "sdkVersionEnd": "15.255.255"
+    }
+  },
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

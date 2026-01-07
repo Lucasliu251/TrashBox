@@ -1,0 +1,236 @@
+/* pages/index/index.wxss */
+
+/* 全局与容器 */
+page {
+    background-color: #1e1e1e;
+    color: #fff;
+}
+
+.container {
+    padding-bottom: 40rpx;
+}
+
+/* 1. 搜索栏 */
+.header-search {
+    padding: 20rpx 30rpx;
+    background-color: transparent;
+    position: sticky;
+    /* 吸顶效果 */
+    top: 0;
+    z-index: 100;
+}
+
+.search-box {
+    background-color: #2b2d31;
+    height: 80rpx;
+    border-radius: 40rpx;
+    /* 胶囊形状 */
+    display: flex;
+    align-items: center;
+    padding: 0 30rpx;
+    border: 1rpx solid #333;
+}
+
+.search-icon {
+    width: 30rpx;
+    height: 30rpx;
+    border: 2rpx solid #666;
+    /* 模拟放大镜圈 */
+    border-radius: 50%;
+    margin-right: 20rpx;
+    position: relative;
+}
+
+/* 模拟放大镜的手柄 */
+.search-icon::after {
+    content: '';
+    position: absolute;
+    width: 10rpx;
+    height: 2rpx;
+    background: #666;
+    bottom: -4rpx;
+    right: -6rpx;
+    transform: rotate(45deg);
+}
+
+.search-input {
+    flex: 1;
+    font-size: 28rpx;
+    color: #fff;
+}
+
+.ph-style {
+    color: #666;
+}
+
+/* 2. 轮播图 */
+/* 外层容器 */
+.swiper-container {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20rpx 30rpx;
+}
+
+/* Swiper 本体 */
+.my-swiper {
+    width: 100%;
+    height: 360rpx;
+    border-radius: 16rpx;
+    overflow: hidden;
+
+
+    /* 调试用：给 Swiper 加个红色边框，看到这个红框说明 Swiper 存在 */
+    border: 2rpx solid rgb(255, 115, 0);
+}
+
+/* 图片样式 */
+.my-banner-image {
+    /* 必须设置为 100% 撑满父容器 */
+    width: 100%;
+    height: 100%;
+
+    /* 调试用：灰色背景，图片加载不出来时显示这个 */
+    background-color: #888888;
+    display: block;
+}
+
+/* 标题样式 */
+.banner-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20rpx;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 28rpx;
+}
+
+/* 3. 通用板块样式 */
+.section {
+    padding: 30rpx;
+    margin-top: 20rpx;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30rpx;
+}
+
+.section-title {
+    font-size: 36rpx;
+    font-weight: 800;
+    border-left: 8rpx solid #de9b35;
+    /* 橙色左竖线 */
+    padding-left: 20rpx;
+}
+
+.section-more {
+    font-size: 24rpx;
+    color: #888;
+}
+
+/* 4. 排行榜列表 */
+.leaderboard-list {
+    background-color: #2b2d31;
+    border-radius: 16rpx;
+    padding: 10rpx 0;
+}
+
+.player-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24rpx 30rpx;
+    border-bottom: 1rpx solid #383a40;
+}
+
+.player-row:last-child {
+    border-bottom: none;
+}
+
+.row-left {
+    display: flex;
+    align-items: center;
+}
+
+/* 排名数字样式 */
+.rank-num {
+    width: 40rpx;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 32rpx;
+    margin-right: 20rpx;
+    text-align: center;
+    color: #888;
+    /* 默认 4,5名颜色 */
+}
+
+/* 前三名特殊颜色 */
+.rank-1 {
+    color: #ffd700;
+    text-shadow: 0 0 10rpx rgba(255, 215, 0, 0.4);
+}
+
+/* 金 */
+.rank-2 {
+    color: #c0c0c0;
+}
+
+/* 银 */
+.rank-3 {
+    color: #cd7f32;
+}
+
+/* 铜 */
+
+.player-avatar {
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 50%;
+    margin-right: 24rpx;
+    background: #444;
+}
+
+.player-name {
+    font-size: 30rpx;
+    font-weight: bold;
+}
+
+.row-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.player-rating {
+    font-size: 32rpx;
+    font-weight: 800;
+    color: #fff;
+}
+
+.player-change {
+    font-size: 22rpx;
+}
+
+.up {
+    color: #de9b35;
+}
+
+/* 涨 (橙色) */
+.down {
+    color: #eb4b4b;
+}
+
+/* 跌 (红色) */
+
+/* 5. 占位符 */
+.news-placeholder {
+    text-align: center;
+    color: #555;
+    padding: 40rpx;
+    border: 1rpx dashed #444;
+    border-radius: 12rpx;
+}

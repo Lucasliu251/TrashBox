@@ -1,0 +1,32 @@
+<view class="container">
+    <view class="header">
+        <text class="title">加入 TrashBox</text>
+        <text class="subtitle">连接您的 Steam 账户以同步游戏数据、生成能力图谱并参与社区排行。</text>
+    </view>
+    <view class="form-container">
+        <view class="input-group">
+            <view class="label-row">
+                <text class="label">Steam ID 64</text>
+                <text class="helper-link">如何获取?</text>
+            </view>
+            <input class="input-field" placeholder="例如: 76561198000000000" placeholder-class="placeholder-style" type="number" bindinput="onInputSteamId" />
+        </view>
+        <view class="input-group">
+            <view class="label-row">
+                <text class="label">账户验证码 (Authentication Code)</text>
+                <text class="helper-link">这是什么?</text>
+            </view>
+            <input class="input-field" placeholder="例如: A1B2-C3D4-E5F6" placeholder-class="placeholder-style" bindinput="onInputAuthCode" />
+        </view>
+        <view class="input-group">
+            <text class="label">比赛令牌（Match Code）</text>
+            <textarea class="textarea-field" placeholder="CSGO-*****-*****-*****-*****" placeholder-class="placeholder-style" auto-height bindinput="onInputMatchCode" />
+            <text class="tip-text">用于获取您的比赛记录</text>
+        </view>
+    </view>
+    <view class="footer">
+        <button class="btn-submit {{ canSubmit ? 'active' : '' }}" bindtap="submitForm">
+            连接账户
+        </button>
+    </view>
+</view>
