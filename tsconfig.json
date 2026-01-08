@@ -16,14 +16,18 @@
     "noUnusedParameters": true,
     "strict": true,
     "strictPropertyInitialization": true,
-    "lib": ["ES2020"],
+    "lib": [
+      "ES2020"
+    ],
     "typeRoots": [
       "./typings"
     ]
   },
   "include": [
-    "./**/*.ts"
-, "miniprogram/pages/stats/stats.js"  ],
+    "./**/*.ts",
+    "miniprogram/pages/stats/stats.js",
+    "miniprogram/app.js"
+  ],
   "exclude": [
     "node_modules"
   ]

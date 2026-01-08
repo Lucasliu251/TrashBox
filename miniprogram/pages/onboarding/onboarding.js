@@ -45,7 +45,7 @@ Page({
 
   postToBackend(loginCode) {
     wx.request({
-      url: 'https://trashbox.tech/api/v1/users/onboarding',
+      url: 'https://47.115.75.168/api/v1/users/onboarding',
       method: 'POST',
       data: {
         loginCode: loginCode, // 临时身份证传给后端
