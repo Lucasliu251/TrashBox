@@ -1,130 +1,120 @@
 /* pages/index/index.wxss */
 
-/* 全局与容器 */
-page {
+/* 全局容器 */
+.container {
+    min-height: 100vh;
     background-color: #1e1e1e;
     color: #fff;
-}
-
-.container {
     padding-bottom: 40rpx;
+    box-sizing: border-box;
 }
 
-/* 1. 搜索栏 */
-.header-search {
-    padding: 20rpx 30rpx;
-    background-color: transparent;
+/* --- 吸顶头部容器 --- */
+.sticky-header {
     position: sticky;
-    /* 吸顶效果 */
     top: 0;
-    z-index: 100;
+    /* 物理贴顶 */
+    z-index: 999;
+    width: 70%;
+    background-color: transparent;
+    /* box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.5); 加一点阴影区分层次 */
 }
 
-.search-box {
-    background-color: #2b2d31;
-    height: 80rpx;
-    border-radius: 40rpx;
-    /* 胶囊形状 */
+/* 搜索区域 */
+.search-section {
+    /* 关键修改：上边距设为 0，彻底消除顶部空隙 */
+    /* 顺序：上 右 下 左 */
+    padding: 0 30rpx 20rpx 30rpx;
+}
+
+/* 胶囊搜索框 */
+.search-capsule {
+    background: #2b2b2b;
+    height: 72rpx;
+    border-radius: 100rpx;
     display: flex;
     align-items: center;
     padding: 0 30rpx;
     border: 1rpx solid #333;
 }
 
-.search-icon {
-    width: 30rpx;
-    height: 30rpx;
-    border: 2rpx solid #666;
-    /* 模拟放大镜圈 */
-    border-radius: 50%;
-    margin-right: 20rpx;
-    position: relative;
-}
-
-/* 模拟放大镜的手柄 */
-.search-icon::after {
-    content: '';
-    position: absolute;
-    width: 10rpx;
-    height: 2rpx;
-    background: #666;
-    bottom: -4rpx;
-    right: -6rpx;
-    transform: rotate(45deg);
-}
-
 .search-input {
     flex: 1;
     font-size: 28rpx;
     color: #fff;
+    margin-left: 15rpx;
 }
 
 .ph-style {
-    color: #666;
+    color: #777;
 }
 
-/* 2. 轮播图 */
-/* 外层容器 */
+/* --- 下方内容区域 --- */
+.content-body {
+    /* 稍微给点间距，不要让轮播图顶到搜索框阴影 */
+    padding-top: 20rpx;
+}
+
+/* 轮播图 */
 .swiper-container {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 20rpx 30rpx;
+    padding: 0 30rpx;
+    margin-bottom: 40rpx;
 }
 
-/* Swiper 本体 */
 .my-swiper {
-    width: 100%;
-    height: 360rpx;
-    border-radius: 16rpx;
+    height: 340rpx;
+    border-radius: 24rpx;
     overflow: hidden;
-
-
-    /* 调试用：给 Swiper 加个红色边框，看到这个红框说明 Swiper 存在 */
-    border: 2rpx solid rgb(255, 115, 0);
+    transform: translateY(0);
 }
 
-/* 图片样式 */
+.my-swiper-item {
+    position: relative;
+    border-radius: 24rpx;
+}
+
 .my-banner-image {
-    /* 必须设置为 100% 撑满父容器 */
     width: 100%;
     height: 100%;
-
-    /* 调试用：灰色背景，图片加载不出来时显示这个 */
-    background-color: #888888;
-    display: block;
+    border-radius: 24rpx;
 }
 
-/* 标题样式 */
-.banner-title {
+.banner-shadow {
     position: absolute;
     bottom: 0;
-    left: 0;
     width: 100%;
-    padding: 20rpx;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    font-size: 28rpx;
+    height: 60%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
 }
 
-/* 3. 通用板块样式 */
+.banner-title {
+    position: absolute;
+    bottom: 30rpx;
+    left: 30rpx;
+    color: #fff;
+    font-size: 32rpx;
+    font-weight: bold;
+}
+
+/* --- 通用板块 (卡片) --- */
 .section {
+    background: #252525;
+    margin: 0 30rpx 30rpx;
     padding: 30rpx;
-    margin-top: 20rpx;
+    border-radius: 24rpx;
 }
 
 .section-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     margin-bottom: 30rpx;
 }
 
 .section-title {
-    font-size: 36rpx;
-    font-weight: 800;
-    border-left: 8rpx solid #de9b35;
-    /* 橙色左竖线 */
-    padding-left: 20rpx;
+    font-size: 34rpx;
+    font-weight: bold;
+    color: #fff;
 }
 
 .section-more {
@@ -132,19 +122,13 @@ page {
     color: #888;
 }
 
-/* 4. 排行榜列表 */
-.leaderboard-list {
-    background-color: #2b2d31;
-    border-radius: 16rpx;
-    padding: 10rpx 0;
-}
-
+/* --- 榜单样式 --- */
 .player-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24rpx 30rpx;
-    border-bottom: 1rpx solid #383a40;
+    padding: 24rpx 0;
+    border-bottom: 1px solid #333;
 }
 
 .player-row:last-child {
@@ -156,58 +140,51 @@ page {
     align-items: center;
 }
 
-/* 排名数字样式 */
 .rank-num {
     width: 40rpx;
     font-weight: bold;
     font-style: italic;
-    font-size: 32rpx;
-    margin-right: 20rpx;
-    text-align: center;
-    color: #888;
-    /* 默认 4,5名颜色 */
+    color: #666;
+    margin-right: 24rpx;
 }
 
-/* 前三名特殊颜色 */
 .rank-1 {
     color: #ffd700;
-    text-shadow: 0 0 10rpx rgba(255, 215, 0, 0.4);
+    font-size: 36rpx;
 }
 
-/* 金 */
 .rank-2 {
     color: #c0c0c0;
+    font-size: 34rpx;
 }
 
-/* 银 */
 .rank-3 {
     color: #cd7f32;
+    font-size: 32rpx;
 }
 
-/* 铜 */
-
 .player-avatar {
-    width: 80rpx;
-    height: 80rpx;
-    border-radius: 50%;
+    width: 70rpx;
+    height: 70rpx;
+    border-radius: 12rpx;
     margin-right: 24rpx;
-    background: #444;
+    background: #333;
 }
 
 .player-name {
     font-size: 30rpx;
-    font-weight: bold;
+    font-weight: 500;
+    color: #eee;
 }
 
 .row-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    text-align: right;
 }
 
 .player-rating {
+    display: block;
+    font-weight: bold;
     font-size: 32rpx;
-    font-weight: 800;
     color: #fff;
 }
 
@@ -216,21 +193,70 @@ page {
 }
 
 .up {
-    color: #de9b35;
+    color: #4caf50;
 }
 
-/* 涨 (橙色) */
 .down {
-    color: #eb4b4b;
+    color: #ff5252;
 }
 
-/* 跌 (红色) */
+/* --- 社区新闻 --- */
+.news-item {
+    padding: 24rpx 0;
+    border-bottom: 1px solid #333;
+}
 
-/* 5. 占位符 */
-.news-placeholder {
-    text-align: center;
-    color: #555;
-    padding: 40rpx;
-    border: 1rpx dashed #444;
-    border-radius: 12rpx;
+.news-item:last-child {
+    border-bottom: none;
+}
+
+.news-row-top {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12rpx;
+}
+
+.news-tag {
+    font-size: 20rpx;
+    background: #3a3a3a;
+    color: #bbb;
+    padding: 4rpx 12rpx;
+    border-radius: 8rpx;
+    margin-right: 16rpx;
+    flex-shrink: 0;
+}
+
+.news-title {
+    font-size: 28rpx;
+    color: #eee;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.news-row-bottom {
+    font-size: 22rpx;
+    color: #888;
+}
+
+/* 悬浮按钮样式 */
+.fab-btn {
+    position: fixed;
+    bottom: 60rpx;
+    right: 40rpx;
+    width: 100rpx;
+    height: 100rpx;
+    background: #007aff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10rpx 20rpx rgba(0, 122, 255, 0.4);
+    z-index: 1000;
+}
+
+.plus-icon {
+    color: #fff;
+    font-size: 60rpx;
+    margin-top: -10rpx;
 }

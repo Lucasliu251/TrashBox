@@ -12,3 +12,20 @@ $RECYCLE.BIN/
 
 # Node.js
 node_modules/
+
+
+# --- Media & Large Files ---
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.flv
+*.wmv
+*.webm
+*.mp3
+*.wav
+
+# High-res design files (optional)
+*.psd
+*.ai
+*.sketch

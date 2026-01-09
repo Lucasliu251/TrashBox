@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/profile/profile",
+    "pages/post/create",
     "pages/stats/stats",
     "pages/onboarding/onboarding",
     "pages/logs/logs"
@@ -22,7 +23,7 @@
       {
         "pagePath": "pages/index/index",
         "text": "社区",
-        "iconPath": "assets/icons/home.png", 
+        "iconPath": "assets/icons/home.png",
         "selectedIconPath": "assets/icons/home-active.png"
       },
       {
