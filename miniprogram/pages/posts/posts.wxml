@@ -1,0 +1,25 @@
+<view class="container">
+    <view class="news-list">
+        <block wx:for="{{postList}}" wx:key="id">
+            <navigator url="/pages/post-detail/post-detail?id={{item.id}}" class="news-item">
+                <view class="news-content-left">
+                    <view class="news-row-top">
+                        <view class="news-tag">{{item.tag}}</view>
+                        <view class="news-title">{{item.title}}</view>
+                    </view>
+                    <view class="news-desc" wx:if="{{item.summary}}">{{item.summary}}</view>
+                    <view class="news-row-bottom">
+                        <text class="news-info-item">{{item.author}}</text>
+                        <text class="news-info-item">{{item.date}}</text>
+                        <text class="news-info-item">{{item.views}}阅</text>
+                    </view>
+                </view>
+                <image wx:if="{{item.cover}}" class="news-thumb" src="{{item.cover}}" mode="aspectFill"></image>
+            </navigator>
+        </block>
+    </view>
+    <view class="loading-status">
+        <view wx:if="{{isLoading}}">正在加载更多...</view>
+        <view wx:elif="{{isEnd}}" class="no-more">—— 我是有底线的 ——</view>
+    </view>
+</view>

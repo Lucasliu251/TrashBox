@@ -5,6 +5,7 @@ Page({
     data: {
         isLogin: false,
         userInfo: null, // 存头像、昵称等
+        recentPosts: [], // 用于存储最新的4篇文章
         // 轮播图数据 (模拟 CS2 新闻)
         banners: [
             { id: 1, image: '/assets/banners/budapest.png', title: 'Major: 布达佩斯激战开启' },
@@ -34,6 +35,7 @@ Page({
 
     onShow() {
         this.checkLogin();
+        this.getRecentPosts();
     },
     checkLogin() {
         // 1. 也是先问全局 App.js 有没有数据
@@ -59,6 +61,34 @@ Page({
                 nickname: user.steam_id || 'CSer',
                 // 如果后端没存头像，暂时随机生成一个，保证界面不崩
                 avatar: user.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.steam_id}`
+            }
+        });
+    },
+    getRecentPosts: function () {
+        wx.request({
+            // 假设你的后端支持 limit 参数，如果不支持，我们在 success 里截取
+            url: `${app.globalData.apiBase}/api/v1/posts?limit=4`,
+            method: 'GET',
+            success: (res) => {
+                if (res.statusCode === 200) {
+                    // 假设后端返回的数据格式是 { data: [List...] }
+                    let posts = res.data.data || res.data;
+
+                    // 如果后端没做排序，前端由于是 demo 可以简单的反转一下(最新的在最后的情况)
+                    // 但最好是后端 SQL 用 ORDER BY created_at DESC
+
+                    // 简单格式化一下时间 (可选，只取日期部分 YYYY-MM-DD)
+                    // 假设 created_at 是 "2026-01-10 12:00:00"
+                    // posts.forEach(post => {
+                    //     if (post.created_at) {
+                    //         post.created_at = post.created_at.substring(0, 10);
+                    //     }
+                    // });
+
+                    this.setData({
+                        recentPosts: posts
+                    });
+                }
             }
         });
     },

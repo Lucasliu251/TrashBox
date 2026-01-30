@@ -202,12 +202,24 @@
 
 /* --- 社区新闻 --- */
 .news-item {
+    display: flex;
+    align-items: flex-start;
+    /* 顶部对齐 */
+    justify-content: space-between;
+    /* 左右两端撑开 */
     padding: 24rpx 0;
     border-bottom: 1px solid #333;
 }
 
 .news-item:last-child {
     border-bottom: none;
+}
+
+.news-content-left {
+    flex: 1;
+    /* 占据剩余空间 */
+    margin-right: 20rpx;
+    /* 给右边图片留点空隙 */
 }
 
 .news-row-top {
@@ -218,8 +230,8 @@
 
 .news-tag {
     font-size: 20rpx;
-    background: #3a3a3a;
-    color: #bbb;
+    background: #1163cf;
+    color: #ffffff;
     padding: 4rpx 12rpx;
     border-radius: 8rpx;
     margin-right: 16rpx;
@@ -227,16 +239,60 @@
 }
 
 .news-title {
-    font-size: 28rpx;
+    font-size: 30rpx;
     color: #eee;
+    font-weight: 500;
+    /* 限制标题显示两行，因为有图的时候一行太短了 */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    flex: 1;
+    /* 占满剩余宽度 */
 }
 
 .news-row-bottom {
+    display: flex;
+    align-items: center;
     font-size: 22rpx;
+    color: #666;
+    margin-top: 8rpx;
+}
+
+.news-info-item {
+    margin-right: 20rpx;
+}
+
+/* --- 右侧：图片区域 --- */
+.news-thumb {
+    width: 160rpx;
+    height: 120rpx;
+    border-radius: 8rpx;
+    background-color: #333;
+    /* 图片加载失败时的底色 */
+    flex-shrink: 0;
+    /* 禁止图片被压缩 */
+    object-fit: cover;
+    /* 保证图片不变形裁切 */
+}
+
+/* 摘要样式 */
+.news-desc {
+    font-size: 24rpx;
+    /* 字号比标题小 */
     color: #888;
+    /* 灰色，低对比度 */
+    margin: 8rpx 0 12rpx 0;
+    /* 上下留白 */
+    line-height: 1.4;
+    /* 增加行高，阅读舒适 */
+
+    /* 限制最多显示 2 行 */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
 }
 
 /* 悬浮按钮样式 */

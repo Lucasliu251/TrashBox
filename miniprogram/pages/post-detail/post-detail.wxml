@@ -1,0 +1,44 @@
+<view class="container">
+    <view class="header">
+        <text class="title">{{post.title}}</text>
+        <view class="author-info">
+            <image class="avatar" src="{{post.author.avatar || '/assets/icons/default-avatar.webp'}}"></image>
+            <view class="meta">
+                <text class="nickname">{{post.author.nickname}}</text>
+                <text class="date">{{post.date}} · {{post.views}} 阅读</text>
+            </view>
+        </view>
+    </view>
+    <view class="content-body">
+        <rich-text nodes="{{post.content}}"></rich-text>
+    </view>
+    <view class="comment-section">
+        <view class="section-title">全部评论 ({{comments.length}})</view>
+        <block wx:for="{{comments}}" wx:key="index">
+            <view class="comment-item">
+                <image class="c-avatar" src="{{item.avatar || '/assets/icons/default-avatar.webp'}}"></image>
+                <view class="c-right">
+                    <view class="c-top">
+                        <text class="c-nick">{{item.nickname}}</text>
+                        <text class="c-time">{{item.date}}</text>
+                    </view>
+                    <text class="c-content">{{item.content}}</text>
+                </view>
+            </view>
+        </block>
+        <view wx:if="{{post.comments.length === 0}}" class="empty-comment">暂无评论，快来抢沙发~</view>
+    </view>
+    <view style="height: 120rpx;"></view>
+</view>
+<view class="footer-bar">
+    <view class="input-box">
+        <input class="comment-input" placeholder="说点什么..." confirm-type="send" value="{{commentVal}}" bindinput="onInput" bindconfirm="sendComment" />
+    </view>
+    <view class="action-btn" bindtap="handleLike">
+        <text class="iconfont icon-heart"></text>
+        <text class="count">{{post.likes || 0}}</text>
+    </view>
+    <view class="action-btn">
+        <text class="iconfont icon-share"></text>
+    </view>
+</view>

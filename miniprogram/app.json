@@ -2,10 +2,12 @@
   "pages": [
     "pages/index/index",
     "pages/profile/profile",
-    "pages/post/create",
     "pages/stats/stats",
     "pages/onboarding/onboarding",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/posts/posts",
+    "pages/post-detail/post-detail",
+    "pages/post/create"
   ],
   "window": {
     "backgroundTextStyle": "light",

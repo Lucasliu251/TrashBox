@@ -17,6 +17,11 @@
                 <text class="iconfont icon-quote">“</text>
             </view>
         </view>
+        <picker mode="selector" range="{{tags}}" value="{{tagIndex}}" bindchange="onTagChange">
+            <view class="tag-selector">
+                <text class="iconfont icon-tag"># {{tags[tagIndex]}}</text>
+            </view>
+        </picker>
         <view class="publish-btn" bindtap="submitPost">发布</view>
     </view>
 </view>

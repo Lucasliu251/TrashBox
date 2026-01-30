@@ -1,9 +1,14 @@
+const app = getApp();
+
 Page({
     data: {
         title: '',
         formats: {},
         keyboardHeight: 0,
-        isIOS: false
+        isIOS: false,
+
+        tags: ['讨论', '更新', '赛事', '吐槽'],
+        tagIndex: 0,
     },
 
     onLoad() {
@@ -32,6 +37,13 @@ Page({
         this.setData({ formats: e.detail })
     },
 
+    // Tag选择
+    onTagChange: function (e) {
+        this.setData({
+            tagIndex: e.detail.value
+        });
+    },
+
     // --- 核心：插入图片 ---
     insertImage() {
         const that = this;
@@ -46,7 +58,7 @@ Page({
 
                 // 上传到你的 Python FastAPI
                 wx.uploadFile({
-                    url: '${this.globalData.apiBase}/api/upload/image',
+                    url: `${app.globalData.apiBase}/api/v1/posts/upload`,
                     filePath: tempFilePath,
                     name: 'file',
                     success(uploadRes) {
@@ -93,16 +105,36 @@ Page({
             success: (res) => {
                 const htmlContent = res.html;
                 const textContent = res.text; // 用于提取摘要
+                const selectedTag = this.data.tags[this.data.tagIndex];
 
                 if (textContent.trim().length < 5) {
                     return wx.showToast({ title: '多写点内容吧', icon: 'none' });
                 }
 
                 // TODO: 调用发布接口，把 title, htmlContent 传给后端
-                console.log('提交数据:', {
-                    title: this.data.title,
-                    content: htmlContent,
-                    author_id: 'current_user_id'
+
+                console.log(wx.getStorageSync('openid'));
+                wx.request({
+                    url: `${app.globalData.apiBase}/api/v1/posts`, // 对应 @router.post("/")
+                    method: 'POST',
+                    data: {
+                        openid: wx.getStorageSync('user_uuid'), // 必须传! 从本地缓存拿登录时的 openid
+                        title: this.data.title,
+                        content: htmlContent, // 编辑器生成的 HTML
+                        tag: selectedTag // 可选
+                    },
+                    success: (response) => {
+                        if (response.data.code === 200) {
+                            wx.showToast({ title: '发布成功' });
+                            setTimeout(() => wx.navigateBack(), 1000);
+                        } else {
+                            wx.showToast({ title: '发布失败', icon: 'none' });
+                        }
+                    },
+                    fail: (err) => {
+                        console.error(err);
+                        wx.showToast({ title: '网络异常', icon: 'none' });
+                    }
                 });
 
                 wx.showToast({ title: '发布成功' });

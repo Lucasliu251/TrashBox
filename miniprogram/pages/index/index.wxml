@@ -45,18 +45,25 @@
         <view class="section">
             <view class="section-header">
                 <text class="section-title">社区动态</text>
+                <navigator url="/pages/posts/posts" class=".section-more">全部 ></navigator>
             </view>
             <view class="news-list">
-                <block wx:for="{{ newsList }}" wx:key="id">
-                    <view class="news-item">
-                        <view class="news-row-top">
-                            <text class="news-tag">{{ item.tag }}</text>
-                            <text class="news-title">{{ item.title }}</text>
+                <block wx:for="{{recentPosts}}" wx:key="id">
+                    <navigator url="/pages/post-detail/post-detail?id={{item.id}}" class="news-item">
+                        <view class="news-content-left">
+                            <view class="news-row-top">
+                                <view class="news-tag">{{item.tag}}</view>
+                                <view class="news-title">{{item.title}}</view>
+                            </view>
+                            <view class="news-desc" wx:if="{{item.summary}}">{{item.summary}}</view>
+                            <view class="news-row-bottom">
+                                <text class="news-info-item">{{item.author}}</text>
+                                <text class="news-info-item">{{item.date}}</text>
+                                <text class="news-info-item">{{item.views}}阅读</text>
+                            </view>
                         </view>
-                        <view class="news-row-bottom">
-                            <text>{{ item.date }} · {{ item.views }} 阅读</text>
-                        </view>
-                    </view>
+                        <image wx:if="{{item.cover}}" class="news-thumb" src="{{item.cover}}" mode="aspectFill"></image>
+                    </navigator>
                 </block>
             </view>
         </view>

@@ -1,0 +1,14 @@
+/* 引入 index 的样式 */
+@import "/pages/index/index.wxss";
+
+/* 底部提示条 */
+.loading-status {
+    text-align: center;
+    padding: 30rpx 0;
+    color: #888;
+    font-size: 24rpx;
+}
+
+.no-more {
+    color: #555;
+}

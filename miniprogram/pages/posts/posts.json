@@ -1,0 +1,6 @@
+{
+    "navigationBarTitleText": "全部动态",
+    "enablePullDownRefresh": true,
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#1e1e1e"
+}
