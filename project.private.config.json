@@ -24,7 +24,7 @@
       "list": [
         {
           "name": "profile个人中心调试",
-          "pathName": "pages/rank/rank",
+          "pathName": "pages/onboarding/onboarding",
           "query": "",
           "scene": null,
           "launchMode": "default"

@@ -6,15 +6,15 @@
     <view class="form-container">
         <view class="input-group">
             <view class="label-row">
-                <text class="label">Steam ID 64</text>
-                <text class="helper-link">如何获取?</text>
+                <text class="label">Steam ID 64 / 主页链接</text>
+                <text class="helper-link" bindtap="showHelp">如何获取?</text>
             </view>
-            <input class="input-field" placeholder="例如: 76561198000000000" placeholder-class="placeholder-style" type="number" bindinput="onInputSteamId" />
+            <input class="input-field" placeholder="例: 7656... 或 粘贴个人主页链接" placeholder-class="placeholder-style" bindinput="onInputSteamId" value="{{steamId}}" />
         </view>
         <view class="input-group">
             <view class="label-row">
                 <text class="label">账户验证码 (Authentication Code)</text>
-                <text class="helper-link">这是什么?</text>
+                <text class="helper-link" bindtap="showAuthHelp">这是什么?</text>
             </view>
             <input class="input-field" placeholder="例如: A1B2-C3D4-E5F6" placeholder-class="placeholder-style" bindinput="onInputAuthCode" />
         </view>
@@ -29,4 +29,34 @@
             连接账户
         </button>
     </view>
+    <page-container show="{{showModal}}" round bind:clickoverlay="hideModal" position="bottom" custom-style="background-color: #252525;">
+        <view class="help-box" wx:if="{{modalType === 'steam'}}">
+            <view class="help-header">
+                <text class="help-title">如何获取 Steam ID?</text>
+                <icon type="cancel" size="24" color="#888" bindtap="hideModal" />
+            </view>
+            <view class="step">1. 打开 Steam 手机 App 或 网页版</view>
+            <view class="step">2. 点击头像进入【个人主页】</view>
+            <view class="step">3. 点击右上角【...】->【复制网页 URL】</view>
+            <view class="step">4. 回到这里粘贴即可</view>
+            <image src="/assets/banners/2026.png" mode="widthFix" class="guide-img"></image>
+            <button class="btn-close-help" bindtap="hideModal">我已了解</button>
+        </view>
+        <view class="help-box" wx:if="{{modalType === 'auth'}}">
+            <view class="help-header">
+                <text class="help-title">如何获取 账户验证码?</text>
+                <icon type="cancel" size="24" color="#888" bindtap="hideModal" />
+            </view>
+            <view class="step">
+                1. 登录Steam并访问 客服-CS2-管理我的验证码 页面：
+                <text bindtap="copySteamHelpLink">👉点击跳转</text>
+            </view>
+            <view class="step">2. 生成验证码（如果你之前没有使用过）</view>
+            <view class="step">3. 找到 Authentication Code 一栏</view>
+            <view class="step">4. 复制形如 A1B2-C3D4 的代码</view>
+            <view class="step">下方的 比赛令牌(MATCH CODE)同理 一起获取</view>
+            <image src="/assets/icons/SteamCodeHelper.jpg" mode="widthFix" class="guide-img" bindtap="onPreviewImage" data-src="https://trashbox.tech/assets/static/SteamCodeHelper.jpg"></image>
+            <button class="btn-close-help" bindtap="hideModal">我已了解</button>
+        </view>
+    </page-container>
 </view>

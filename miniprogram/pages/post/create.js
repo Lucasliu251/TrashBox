@@ -111,14 +111,23 @@ Page({
                     return wx.showToast({ title: '多写点内容吧', icon: 'none' });
                 }
 
-                // TODO: 调用发布接口，把 title, htmlContent 传给后端
+                // 从全局变量获取当前用户 UUID
+                const userInfo = app.globalData.userInfo;
+                const openid = userInfo ? userInfo.uuid : '';
+                // 如果没有登录信息，拦截请求
+                if (!openid) {
+                    wx.showToast({ title: '登录状态失效，请重新登录', icon: 'none' });
+                    // 可选：跳转去登录页
+                    setTimeout(() => wx.navigateTo({ url: '/pages/onboarding/onboarding' }), 1000);
+                    return;
+                }
+                console.log("准备发布，当前用户UUID:", openid);
 
-                console.log(wx.getStorageSync('openid'));
                 wx.request({
                     url: `${app.globalData.apiBase}/api/v1/posts`, // 对应 @router.post("/")
                     method: 'POST',
                     data: {
-                        openid: wx.getStorageSync('user_uuid'), // 必须传! 从本地缓存拿登录时的 openid
+                        openid: openid, // 必须传! 从本地缓存拿登录时的 openid
                         title: this.data.title,
                         content: htmlContent, // 编辑器生成的 HTML
                         tag: selectedTag // 可选
@@ -136,9 +145,6 @@ Page({
                         wx.showToast({ title: '网络异常', icon: 'none' });
                     }
                 });
-
-                wx.showToast({ title: '发布成功' });
-                setTimeout(() => wx.navigateBack(), 1000);
             }
         })
     }

@@ -136,3 +136,66 @@ page {
     color: #fff;
     box-shadow: 0 4rpx 20rpx rgba(222, 155, 53, 0.3);
 }
+
+.help-box {
+    padding: 40rpx;
+    background-color: #252525;
+    color: #fff;
+    border-top-left-radius: 24rpx;
+    border-top-right-radius: 24rpx;
+}
+
+.help-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30rpx;
+}
+
+.help-title {
+    font-size: 34rpx;
+    font-weight: bold;
+}
+
+.step {
+    font-size: 28rpx;
+    color: #ccc;
+    margin-bottom: 16rpx;
+    line-height: 1.6;
+}
+
+.btn-close-help {
+    margin-top: 40rpx;
+    background: #333;
+    color: #fff;
+    border: 1px solid #444;
+}
+
+/* 链接样式 */
+.link-text {
+    color: #4da6ff;
+    /* 亮蓝色 */
+    text-decoration: underline;
+    /* 下划线 */
+    margin: 0 8rpx;
+    /* 左右留点空隙 */
+    font-weight: bold;
+}
+
+/* 让图片宽度撑满容器 */
+.guide-img {
+    width: 100%;
+    /* 占满父容器宽度 */
+    display: block;
+    /* 消除图片底部的微小空隙 */
+    border-radius: 12rpx;
+    /*以此保持美观，可选*/
+}
+
+/* 如果父容器有 padding，图片会被挤小。
+   如果希望图片更大，可以尝试让图片容器“抵消”父级的 padding (负边距技巧)，
+   或者单独把这个 view 拿出来不放 padding */
+.image-container {
+    width: 100%;
+    margin-top: 20rpx;
+}
