@@ -7,6 +7,23 @@ Page({
     canSubmit: false // 控制按钮是否亮起
   },
 
+  onLoad() {
+    // 如果已经登录了，就没必要再注册一遍了
+    if (app.globalData.hasLogin) {
+      wx.showModal({
+        title: '提示',
+        content: `您已绑定 Steam ID: ${app.globalData.userInfo.steam_id}，是否重新绑定？`,
+        success: (res) => {
+          if (res.confirm) {
+            // 用户坚持要重新绑定，允许继续
+          } else {
+            wx.navigateBack(); // 返回上一页
+          }
+        }
+      })
+    }
+  },
+
   // 输入绑定
   onInputSteamId(e) { this.setData({ steamId: e.detail.value }); this.checkForm(); },
   onInputAuthCode(e) { this.setData({ authCode: e.detail.value }); this.checkForm(); },

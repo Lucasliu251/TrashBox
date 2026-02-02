@@ -13,22 +13,8 @@ Page({
             { id: 3, image: '/assets/banners/XANTARES.jpg', title: 'Top #14 XANTARES' }
         ],
 
-        // 热门榜单数据 (模拟 Top 5)
-        topPlayers: [
-            { rank: 1, name: 'ZywOo', rating: 1.45, change: '+0.02', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=ZywOo' },
-            { rank: 2, name: 'm0NESY', rating: 1.38, change: '+0.05', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=m0NESY' },
-            { rank: 3, name: 'donk', rating: 1.35, change: '-0.01', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=donk' },
-            { rank: 4, name: 'NiKo', rating: 1.29, change: '+0.00', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=NiKo' },
-            { rank: 5, name: 'ropz', rating: 1.25, change: '+0.01', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=ropz' }
-        ],
-        // 社区动态/新闻数据
-        newsList: [
-            { id: 1, tag: '更新', title: 'Release Notes for 1/8/2026', date: '2小时前', views: 2304 },
-            { id: 2, tag: '赛事', title: 'FaZe Clan 成功晋级 Major 传奇组', date: '5小时前', views: 5102 },
-            { id: 3, tag: '讨论', title: '现在的经济局到底该怎么打？', date: '昨天', views: 899 },
-            { id: 4, tag: '八卦', title: 's1mple 锐评新版本 AWP 改动', date: '昨天', views: 12055 }
-        ],
-
+        // 榜单数据
+        topPlayers: [],
         // 搜索内容
         searchValue: ''
     },
@@ -36,6 +22,7 @@ Page({
     onShow() {
         this.checkLogin();
         this.getRecentPosts();
+        this.fetchLeaderboard();
     },
     checkLogin() {
         // 1. 也是先问全局 App.js 有没有数据
@@ -92,6 +79,47 @@ Page({
             }
         });
     },
+
+    fetchLeaderboard() {
+        // 1. 计算昨天日期 (格式 YYYY-MM-DD)
+        // 因为数据是每晚 23:30 更新，所以默认拉取昨天的榜单最稳妥
+        const date = new Date();
+        date.setDate(date.getDate() - 1);
+
+        const y = date.getFullYear();
+        const m = (date.getMonth() + 1).toString().padStart(2, '0');
+        const d = date.getDate().toString().padStart(2, '0');
+        const dateStr = `${y}-${m}-${d}`;
+
+        wx.request({
+            url: `${app.globalData.apiBase}/api/v1/rankings/daily`,
+            data: { date: dateStr },
+            success: (res) => {
+                if (res.statusCode === 200 && res.data.rankings) {
+                    // 取前 5 名
+                    const list = res.data.rankings.slice(0, 5).map(item => ({
+                        rank: item.rank,
+                        name: item.nickname || 'Unknown',
+                        steam_id: item.steam_id,
+                        // 如果 API 没给头像，用 DiceBear 生成兜底
+                        avatar: item.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${item.steam_id}`,
+
+                        // 丰富的数据展示
+                        rating: Number(item.daily_kd).toFixed(2), // 主数据 KD
+                        adr: Number(item.daily_adr).toFixed(1),   // 副数据 ADR
+                        mvp: item.daily_mvp,                      // 荣誉数据
+                        kills: item.daily_kills                   // 击杀数
+                    }));
+
+                    this.setData({ topPlayers: list });
+                }
+            },
+            fail: (err) => {
+                console.error("榜单获取失败", err);
+            }
+        });
+    },
+
 
     // 跳转到发布页
     goToCreatePost() {

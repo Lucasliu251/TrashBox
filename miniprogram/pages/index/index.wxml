@@ -22,24 +22,38 @@
         <view class="section">
             <view class="section-header">
                 <text class="section-title">Rating 榜单</text>
-                <text class="section-more">全部 ></text>
+                <navigator url="/pages/rank/rank" class="section-more">全部 ></navigator>
             </view>
             <view class="leaderboard-list">
                 <block wx:for="{{ topPlayers }}" wx:key="rank">
-                    <view class="player-row">
+                    <navigator url="/pages/statsVis/statsVis?steamid={{item.steam_id}}" class="player-row">
                         <view class="row-left">
                             <text class="rank-num rank-{{ item.rank }}">{{ item.rank }}</text>
                             <image class="player-avatar" src="{{ item.avatar }}"></image>
-                            <text class="player-name">{{ item.name }}</text>
+                            <view class="player-info-col">
+                                <text class="player-name">{{ item.name }}</text>
+                                <view class="player-tags">
+                                    <text class="tag-mvp">★ {{ item.mvp }} MVPs</text>
+                                </view>
+                            </view>
                         </view>
                         <view class="row-right">
-                            <text class="player-rating">{{ item.rating }}</text>
-                            <text class="player-change {{ item.change[0] == '+' ? 'up' : 'down' }}">
-                                {{ item.change }}
-                            </text>
+                            <view class="stat-main">
+                                <text class="val {{ item.rating >= 1.2 ? 'gold' : '' }}">
+                                    {{ item.rating }}
+                                </text>
+                                <text class="label">KD</text>
+                            </view>
+                            <view class="stat-sub">
+                                <text class="val">{{ item.adr }}</text>
+                                <text class="label">ADR</text>
+                            </view>
                         </view>
-                    </view>
+                    </navigator>
                 </block>
+                <view wx:if="{{topPlayers.length === 0}}" style="text-align:center; color:#666; padding:30rpx; font-size:24rpx;">
+                    昨日战报正在生成中...
+                </view>
             </view>
         </view>
         <view class="section">

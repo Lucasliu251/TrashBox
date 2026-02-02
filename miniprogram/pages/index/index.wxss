@@ -131,6 +131,27 @@
     border-bottom: 1px solid #333;
 }
 
+/* 左侧信息列 */
+.player-info-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.player-tags {
+    margin-top: 6rpx;
+}
+
+.tag-mvp {
+    font-size: 20rpx;
+    color: #ff9500;
+    /* 金色/橙色 */
+    background: rgba(255, 149, 0, 0.1);
+    padding: 2rpx 8rpx;
+    border-radius: 6rpx;
+    font-weight: bold;
+}
+
 .player-row:last-child {
     border-bottom: none;
 }
@@ -178,6 +199,8 @@
 }
 
 .row-right {
+    display: flex;
+    align-items: center;
     text-align: right;
 }
 
@@ -198,6 +221,52 @@
 
 .down {
     color: #ff5252;
+}
+
+/* 主数据 (KD) */
+.stat-main {
+    margin-right: 24rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.stat-main .val {
+    font-size: 32rpx;
+    font-weight: bold;
+    color: #fff;
+    line-height: 1;
+}
+
+.stat-main .val.gold {
+    color: #ffd700;
+}
+
+.stat-main .label {
+    font-size: 20rpx;
+    color: #666;
+    margin-top: 4rpx;
+}
+
+/* 副数据 (ADR) */
+.stat-sub {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    min-width: 60rpx;
+}
+
+.stat-sub .val {
+    font-size: 28rpx;
+    color: #ccc;
+    font-weight: 500;
+    line-height: 1;
+}
+
+.stat-sub .label {
+    font-size: 20rpx;
+    color: #666;
+    margin-top: 4rpx;
 }
 
 /* --- 社区新闻 --- */

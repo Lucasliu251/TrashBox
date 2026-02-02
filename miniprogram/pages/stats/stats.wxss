@@ -1,13 +1,15 @@
 /* 1. 基础变量与容器 */
 page {
-  background-color: #1e1e1e; /* 全局深色背景 */
+  background-color: #1e1e1e;
+  /* 全局深色背景 */
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 .container {
   min-height: 100vh;
-  padding-bottom: 40rpx; /* 底部留白 */
+  padding-bottom: 40rpx;
+  /* 底部留白 */
 }
 
 /* 2. 未登录空状态 */
@@ -39,7 +41,8 @@ page {
 }
 
 .btn-primary {
-  background-color: #de9b35; /* CS 橙色 */
+  background-color: #de9b35;
+  /* CS 橙色 */
   color: #fff;
   font-weight: bold;
   border-radius: 8rpx;
@@ -53,11 +56,12 @@ page {
 }
 
 .profile-card {
+  position: relative;
   background: linear-gradient(135deg, #2b2d31 0%, #232529 100%);
   padding: 40rpx;
   border-radius: 20rpx;
   margin-bottom: 30rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.3);
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.3);
 }
 
 .profile-info {
@@ -68,7 +72,8 @@ page {
 .avatar {
   width: 120rpx;
   height: 120rpx;
-  border-radius: 12rpx; /* 方形圆角更像游戏风格 */
+  border-radius: 12rpx;
+  /* 方形圆角更像游戏风格 */
   margin-right: 30rpx;
   border: 2rpx solid #de9b35;
 }
@@ -90,6 +95,31 @@ page {
   border: 1rpx solid #de9b35;
 }
 
+.playtime-tag {
+  position: absolute;
+  top: 24rpx;
+  right: 24rpx;
+  text-align: right;
+  opacity: 0.6;
+  /* 降低整体透明度，使其不抢眼 */
+}
+
+.playtime-tag .label {
+  display: block;
+  font-size: 20rpx;
+  color: #888;
+  margin-bottom: 4rpx;
+}
+
+.playtime-tag .value {
+  display: block;
+  font-size: 28rpx;
+  color: #ccc;
+  font-weight: bold;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  /* 选用数字更好看的字体 */
+}
+
 /* 4. 核心数据网格 */
 .stats-grid {
   display: flex;
@@ -99,10 +129,12 @@ page {
 }
 
 .stat-box {
-  width: 48%; /* 两列布局 */
+  width: 48%;
+  /* 两列布局 */
   background-color: #2b2d31;
   padding: 30rpx;
-  box-sizing: border-box; /* 防止padding撑大盒子 */
+  box-sizing: border-box;
+  /* 防止padding撑大盒子 */
   border-radius: 12rpx;
   margin-bottom: 20rpx;
   display: flex;
@@ -119,7 +151,8 @@ page {
 
 .stat-value {
   font-size: 44rpx;
-  font-weight: 800; /* 特粗字体 */
+  font-weight: 800;
+  /* 特粗字体 */
 }
 
 /* 金色高亮样式 */
@@ -183,8 +216,16 @@ page {
   margin-top: 6rpx;
 }
 
-.win { color: #5d79ae; } /* CT Blue */
-.lose { color: #eb4b4b; } /* T Red/Pink */
+.win {
+  color: #5d79ae;
+}
+
+/* CT Blue */
+.lose {
+  color: #eb4b4b;
+}
+
+/* T Red/Pink */
 
 .match-center {
   text-align: center;
@@ -216,4 +257,163 @@ page {
 .mini-rating {
   font-size: 32rpx;
   font-weight: bold;
+}
+
+
+/* 列表项重新布局 */
+.match-item {
+  display: flex;
+  align-items: center;
+  /* 垂直居中 */
+  justify-content: space-between;
+  padding: 24rpx;
+  /* 增加一点内边距 */
+}
+
+/* 左侧日期 */
+.match-left {
+  width: 15%;
+  text-align: center;
+  border-right: 1rpx solid rgba(255, 255, 255, 0.1);
+  /* 右侧加个分割线 */
+  margin-right: 20rpx;
+}
+
+.sub-label {
+  font-size: 20rpx;
+  color: #666;
+  display: block;
+  margin-top: 4rpx;
+}
+
+/* 中间主数据 */
+.match-center-main {
+  width: 35%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.score {
+  font-size: 32rpx;
+  /* 稍微调小一点，之前可能太大 */
+  margin-bottom: 8rpx;
+}
+
+.kd-tag {
+  font-size: 20rpx;
+  padding: 2rpx 8rpx;
+  border-radius: 6rpx;
+  font-weight: bold;
+}
+
+.kd-tag.pos {
+  background: rgba(93, 121, 174, 0.2);
+  color: #5d79ae;
+}
+
+.kd-tag.neg {
+  background: rgba(235, 75, 75, 0.2);
+  color: #eb4b4b;
+}
+
+/* 右侧网格数据 */
+.match-right-grid {
+  flex: 1;
+  /* 占据剩余空间 */
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  /* 行间距 */
+}
+
+.grid-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.stat-mini {
+  font-size: 20rpx;
+  color: #888;
+  width: 48%;
+  /* 每一项占一半宽度 */
+}
+
+.stat-mini .val {
+  color: #ccc;
+  font-weight: bold;
+  margin-left: 4rpx;
+}
+
+.stat-mini .val.gold {
+  color: #de9b35;
+}
+
+/* [新增] 头像按钮重置样式 */
+.avatar-wrapper {
+  padding: 0;
+  width: 120rpx !important;
+  /* 强制覆盖原生宽度 */
+  height: 120rpx !important;
+  background: transparent;
+  border-radius: 12rpx;
+  margin: 0;
+  margin-right: 30rpx;
+  position: relative;
+  /* 为了定位 edit-hint */
+}
+
+/* 去掉按钮边框 */
+.avatar-wrapper::after {
+  border: none;
+}
+
+/* 里面的图片保持原有样式，但需占满按钮 */
+.avatar-wrapper .avatar {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  /* 去掉原有 margin，由 wrapper 控制 */
+  border: 2rpx solid #de9b35;
+  /* 保持原有的金色边框 */
+  box-sizing: border-box;
+}
+
+/* [新增] 昵称输入框样式 */
+.nickname-input {
+  font-size: 40rpx;
+  /* 保持和原 nickname 一致 */
+  font-weight: bold;
+  color: #fff;
+  height: 1.4em;
+}
+
+/* [新增] 昵称编辑行的布局 */
+.nickname-edit-row {
+  display: flex;
+  align-items: center;
+  /* 垂直居中 */
+}
+
+/* [修改] 稍微调整输入框，确保对齐 */
+.nickname-input {
+  /* 保持原有样式基础 */
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #fff;
+  height: 1.4em;
+  min-width: 200rpx;
+  /* 稍微减小最小宽度，防止挤压 */
+}
+
+/* [新增] 编辑笔图标样式 */
+.edit-icon {
+  font-size: 28rpx;
+  /* 字号稍小 (原标题是40rpx) */
+  color: #888;
+  /* 灰色，低调提示 */
+  margin-left: 12rpx;
+  padding-bottom: 8rpx;
+  /* 微调位置，使其在视觉上居中 */
 }

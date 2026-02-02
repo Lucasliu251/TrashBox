@@ -1,0 +1,2 @@
+/* pages/stats_vis/stats_vis.wxss */
+@import "../stats/stats.wxss";

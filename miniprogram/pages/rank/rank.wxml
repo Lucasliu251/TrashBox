@@ -1,0 +1,51 @@
+<navigation-bar title="每日排行榜" back="{{true}}" color="white" background="#1e1e1e"></navigation-bar>
+<view class="container">
+    <view class="toolbar">
+        <picker mode="date" value="{{currentDate}}" end="{{maxDate}}" bindchange="bindDateChange">
+            <view class="date-picker-btn">
+                <text>📅 {{currentDate}}</text>
+                <text class="arrow">▼</text>
+            </view>
+        </picker>
+        <text class="tips">每日 23:30 更新</text>
+    </view>
+    <view class="list-header">
+        <text class="th-rank">排名</text>
+        <text class="th-player">玩家</text>
+        <text class="th-data">数据 (KD/ADR)</text>
+    </view>
+    <scroll-view scroll-y class="rank-list">
+        <block wx:for="{{ rankings }}" wx:key="steam_id">
+            <navigator url="/pages/statsVis/statsVis?steamid={{item.steam_id}}" class="rank-item">
+                <view class="item-left">
+                    <view class="rank-num rank-{{item.rank <= 3 ? item.rank : 'common'}}">
+                        {{item.rank}}
+                    </view>
+                    <image class="avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+                    <view class="info">
+                        <text class="nickname">{{item.nickname || 'Unknown'}}</text>
+                        <view class="tags" wx:if="{{item.daily_mvp > 0}}">
+                            <text class="tag-mvp">★ {{item.daily_mvp}} MVPs</text>
+                        </view>
+                    </view>
+                </view>
+                <view class="item-right">
+                    <view class="stat-main">
+                        <text class="val {{ item.rating >= 1.2 ? 'gold' : '' }}">
+                            {{ item.rating }}
+                        </text>
+                        <text class="label">KD</text>
+                    </view>
+                    <view class="stat-sub">
+                        <text class="val">{{ item.adr }}</text>
+                        <text class="label">ADR</text>
+                    </view>
+                </view>
+            </navigator>
+        </block>
+        <view wx:if="{{rankings.length === 0}}" class="empty-state">
+            <image src="/assets/icons/cs-logo-grey.avif" mode="widthFix" style="width:100rpx; opacity:0.3;"></image>
+            <text>该日期暂无比赛数据</text>
+        </view>
+    </scroll-view>
+</view>

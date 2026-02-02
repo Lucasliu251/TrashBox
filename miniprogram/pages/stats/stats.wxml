@@ -10,26 +10,37 @@
   <block wx:else>
     <scroll-view scroll-y class="dashboard">
       <view class="profile-card">
+        <view class="playtime-tag">
+          <text class="label">游戏内时长</text>
+          <text class="value">{{ userData.timePlayed }}h</text>
+        </view>
         <view class="profile-info">
-          <image class="avatar" src="{{ userData.avatar }}"></image>
+          <block wx:if="{{ canEdit }}">
+            <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+              <image class="avatar" src="{{ userData.avatar }}" mode="aspectFill"></image>
+              <view class="edit-hint">📷</view>
+            </button>
+          </block>
+          <image wx:else class="avatar" src="{{ userData.avatar }}" mode="aspectFill"></image>
           <view class="text-group">
-            <text class="nickname">{{ userData.nickname }}</text>
+            <block wx:if="{{ canEdit }}">
+              <input type="nickname" class="nickname-input" placeholder="点击设置昵称" value="{{ userData.nickname }}" bind:change="onNicknameChange" bindblur="onNicknameChange" />
+            </block>
+            <text wx:else class="nickname">{{ userData.nickname }}</text>
             <view class="level-badge">
-              <text>FACEIT Level {{ userData.faceitLevel }}</text>
+              <text>ID: {{ userInfo.steam_id || '---' }}</text>
             </view>
           </view>
         </view>
       </view>
       <view class="stats-grid">
         <view class="stat-box">
-          <text class="stat-label">Rating 2.0</text>
-          <text class="stat-value {{ userData.rating > 1.2 ? 'gold' : '' }}">
-            {{ userData.rating }}
-          </text>
+          <text class="stat-label">Avg K/D (30d)</text>
+          <text class="stat-value {{ userData.kd >= 1.2 ? 'gold' : '' }}">{{ userData.kd }}</text>
         </view>
         <view class="stat-box">
-          <text class="stat-label">K/D Ratio</text>
-          <text class="stat-value">{{ userData.kd }}</text>
+          <text class="stat-label">★StarTrack™️</text>
+          <text class="stat-value">{{ userData.totalKills }}</text>
         </view>
         <view class="stat-box">
           <text class="stat-label">ADR</text>
@@ -37,36 +48,57 @@
         </view>
         <view class="stat-box">
           <text class="stat-label">Win Rate</text>
-          <text class="stat-value">{{ userData.winRate }}</text>
+          <text class="stat-value">{{ userData.winRate }}%</text>
         </view>
       </view>
-      <view class="section-title">综合能力</view>
+      <view class="section-title">近期状态 (KD Trend)</view>
       <view class="chart-container">
-        <canvas type="2d" id="radarCanvas" class="canvas-placeholder"></canvas>
-        <text class="placeholder-text">雷达图 / 能力六边形</text>
+        <canvas type="2d" id="trendCanvas" style="width: 100%; height: 100%;" bindtouchstart="onTouchChartStart" bindtouchmove="onTouchChartMove" bindtouchend="onTouchChartEnd"></canvas>
       </view>
-      <view class="section-title">近期战绩</view>
+      <view style="text-align: center; color: #666; font-size: 20rpx; margin-top: -20rpx; margin-bottom: 30rpx;">
+        ← 左右滑动查看历史 · 点击查看详情 →
+      </view>
+      <view class="section-title">每日战报 (Daily Log)</view>
       <view class="match-list">
-        <block wx:for="{{ matchHistory }}" wx:key="index">
+        <block wx:for="{{ matchHistory }}" wx:key="date">
           <view class="match-item">
             <view class="match-left">
-              <view class="map-tag">{{ item.map }}</view>
-              <text class="match-result {{ item.result === 'WIN' ? 'win' : 'lose' }}">
-                {{ item.result }}
-              </text>
+              <view class="map-tag">{{ item.date }}</view>
+              <text class="sub-label">{{ item.rounds }} Rnds</text>
             </view>
-            <view class="match-center">
+            <view class="match-center-main">
               <text class="score">{{ item.score }}</text>
-              <text class="date">{{ item.date }}</text>
+              <view class="tag-row">
+                <text class="kd-tag {{ item.kd >= 1.0 ? 'pos' : 'neg' }}">{{ item.kd }} KD</text>
+              </view>
             </view>
-            <view class="match-right">
-              <text class="mini-label">Rating</text>
-              <text class="mini-rating {{ item.rating > 1.2 ? 'gold' : '' }}">
-                {{ item.rating }}
-              </text>
+            <view class="match-right-grid">
+              <view class="grid-row">
+                <text class="stat-mini">
+                  ADR:
+                  <text class="val">{{ item.adr }}</text>
+                </text>
+                <text class="stat-mini">
+                  MVP:
+                  <text class="val gold">{{ item.mvp }}</text>
+                </text>
+              </view>
+              <view class="grid-row">
+                <text class="stat-mini">
+                  HS%:
+                  <text class="val">{{ item.hsr }}%</text>
+                </text>
+                <text class="stat-mini">
+                  DMG:
+                  <text class="val">{{ item.dmg }}</text>
+                </text>
+              </view>
             </view>
           </view>
         </block>
+        <view wx:if="{{matchHistory.length === 0}}" style="text-align:center; color:#666; padding:20rpx;">
+          暂无比赛记录
+        </view>
       </view>
     </scroll-view>
   </block>

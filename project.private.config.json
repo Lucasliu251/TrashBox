@@ -2,7 +2,7 @@
   "libVersion": "2.32.3",
   "projectname": "TrashBox",
   "setting": {
-    "urlCheck": false,
+    "urlCheck": true,
     "coverView": false,
     "lazyloadPlaceholderEnable": false,
     "skylineRenderEnable": true,
@@ -24,7 +24,7 @@
       "list": [
         {
           "name": "profile个人中心调试",
-          "pathName": "pages/profile/profile",
+          "pathName": "pages/rank/rank",
           "query": "",
           "scene": null,
           "launchMode": "default"
