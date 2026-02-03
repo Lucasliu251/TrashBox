@@ -82,7 +82,7 @@
             </view>
         </view>
     </view>
-    <view class="fab-btn" bindtap="goToCreatePost">
+    <view class="fab-btn" bindtap="goToCreatePost" wx:if="{{canEdit}}">
         <text class="plus-icon">+</text>
     </view>
 </view>

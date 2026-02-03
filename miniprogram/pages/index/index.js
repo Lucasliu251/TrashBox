@@ -4,6 +4,7 @@ const app = getApp();
 Page({
     data: {
         isLogin: false,
+        canEdit: false,
         userInfo: null, // 存头像、昵称等
         recentPosts: [], // 用于存储最新的4篇文章
         // 轮播图数据 (模拟 CS2 新闻)
@@ -42,8 +43,10 @@ Page({
     },
 
     setUserInfo(user) {
+        const hasEditPermission = user.canEdit === 1 || user.canEdit === true;
         this.setData({
             isLogin: true,
+            canEdit: hasEditPermission,
             userInfo: {
                 nickname: user.steam_id || 'CSer',
                 // 如果后端没存头像，暂时随机生成一个，保证界面不崩

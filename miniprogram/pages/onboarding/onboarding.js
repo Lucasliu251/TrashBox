@@ -49,17 +49,29 @@ Page({
 
     // A. 显示加载动画
     wx.showLoading({ title: '验证身份中...' });
-    // B. 发送请求到后端
-    this.postToBackend();
+
+    wx.login({
+      success: (loginRes) => {
+        if (loginRes.code) {
+          // 拿到 code 了，现在发起请求
+          this.postToBackend(loginRes.code);
+        } else {
+          wx.showToast({ title: '微信登录失败', icon: 'none' });
+        }
+      },
+      fail: (err) => {
+        console.error(err);
+        wx.showToast({ title: '无法获取微信授权', icon: 'none' });
+      }
+    });
   },
 
-  postToBackend() {
-    console.log("准备发送，UserInfo:", app.globalData.userInfo);
+  postToBackend(loginCode) {
     wx.request({
       url: `${app.globalData.apiBase}/api/v1/users/onboarding`,
       method: 'POST',
       data: {
-        loginCode: app.globalData.userInfo.uuid, // 临时身份证传给后端
+        loginCode: loginCode, // 临时身份证传给后端
         steamId: this.data.steamId,
         authCode: this.data.authCode,
         matchCode: this.data.matchCode
