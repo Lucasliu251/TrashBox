@@ -1,4 +1,6 @@
 // pages/onboarding/onboarding.js
+const app = getApp();
+
 Page({
   data: {
     steamId: '',
@@ -11,22 +13,22 @@ Page({
     steamIdInput: ''
   },
 
-  onLoad() {
-    // 如果已经登录了，就没必要再注册一遍了
-    if (app.globalData.hasLogin) {
-      wx.showModal({
-        title: '提示',
-        content: `您已绑定 Steam ID: ${app.globalData.userInfo.steam_id}，是否重新绑定？`,
-        success: (res) => {
-          if (res.confirm) {
-            // 用户坚持要重新绑定，允许继续
-          } else {
-            wx.navigateBack(); // 返回上一页
-          }
-        }
-      })
-    }
-  },
+  // onLoad() {
+  //   // 如果已经登录了，就没必要再注册一遍了
+  //   if (app.globalData.hasLogin) {
+  //     wx.showModal({
+  //       title: '提示',
+  //       content: `您已绑定 Steam ID: ${app.globalData.userInfo.steam_id}，是否重新绑定？`,
+  //       success: (res) => {
+  //         if (res.confirm) {
+  //           // 用户坚持要重新绑定，允许继续
+  //         } else {
+  //           wx.navigateBack(); // 返回上一页
+  //         }
+  //       }
+  //     })
+  //   }
+  // },
 
   // 输入绑定
   onInputSteamId(e) { this.setData({ steamId: e.detail.value }); this.checkForm(); },
@@ -47,29 +49,17 @@ Page({
 
     // A. 显示加载动画
     wx.showLoading({ title: '验证身份中...' });
-
-    wx.login({
-      success: (loginRes) => {
-        if (loginRes.code) {
-          // 拿到 code 了，现在发起请求
-          this.postToBackend(loginRes.code);
-        } else {
-          wx.showToast({ title: '微信登录失败', icon: 'none' });
-        }
-      },
-      fail: (err) => {
-        console.error(err);
-        wx.showToast({ title: '无法获取微信授权', icon: 'none' });
-      }
-    });
+    // B. 发送请求到后端
+    this.postToBackend();
   },
 
-  postToBackend(loginCode) {
+  postToBackend() {
+    console.log("准备发送，UserInfo:", app.globalData.userInfo);
     wx.request({
       url: `${app.globalData.apiBase}/api/v1/users/onboarding`,
       method: 'POST',
       data: {
-        loginCode: loginCode, // 临时身份证传给后端
+        loginCode: app.globalData.userInfo.uuid, // 临时身份证传给后端
         steamId: this.data.steamId,
         authCode: this.data.authCode,
         matchCode: this.data.matchCode

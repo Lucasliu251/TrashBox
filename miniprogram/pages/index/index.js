@@ -8,9 +8,9 @@ Page({
         recentPosts: [], // 用于存储最新的4篇文章
         // 轮播图数据 (模拟 CS2 新闻)
         banners: [
-            { id: 1, image: '/assets/banners/budapest.png', title: 'Major: 布达佩斯激战开启' },
-            { id: 2, image: '/assets/banners/2026.png', title: '更新日志: 2026年服役勋章' },
-            { id: 3, image: '/assets/banners/XANTARES.jpg', title: 'Top #14 XANTARES' }
+            { id: 1, image: 'https://trashbox.tech/assets/static/budapest.png', title: 'Major: 布达佩斯激战开启' },
+            { id: 2, image: 'https://trashbox.tech/assets/static/2026.png', title: '更新日志: 2026年服役勋章' },
+            { id: 3, image: 'https://trashbox.tech/assets/static/XANTARES.jpg', title: 'Top #14 XANTARES' }
         ],
 
         // 榜单数据

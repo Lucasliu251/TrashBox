@@ -18,9 +18,9 @@
         <view class="stats-grid">
             <view class="stat-box">
                 <text class="stat-label">Avg K/D (30d)</text>
-                <text class="stat-value {{ userData.kd >= 1.2 ? 'gold' : '' }}">
+                <view class="stat-value {{ userData.kd >= 1.2 ? 'gold' : '' }}">
                     {{ userData.kd }}
-                </text>
+                </view>
             </view>
             <view class="stat-box">
                 <text class="stat-label">Total Kills</text>

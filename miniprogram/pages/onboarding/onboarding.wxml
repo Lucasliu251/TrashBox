@@ -39,7 +39,8 @@
             <view class="step">2. 点击头像进入【个人主页】</view>
             <view class="step">3. 点击右上角【...】->【复制网页 URL】</view>
             <view class="step">4. 回到这里粘贴即可</view>
-            <image src="/assets/banners/2026.png" mode="widthFix" class="guide-img"></image>
+            <image src="https://trashbox.tech/assets/static/SteamIdHelper.jpg" mode="widthFix" class="guide-img"></image>
+            <image src="https://trashbox.tech/assets/static/SteamIdHelperMobile.jpg" mode="widthFix" class="guide-img"></image>
             <button class="btn-close-help" bindtap="hideModal">我已了解</button>
         </view>
         <view class="help-box" wx:if="{{modalType === 'auth'}}">
@@ -55,7 +56,7 @@
             <view class="step">3. 找到 Authentication Code 一栏</view>
             <view class="step">4. 复制形如 A1B2-C3D4 的代码</view>
             <view class="step">下方的 比赛令牌(MATCH CODE)同理 一起获取</view>
-            <image src="/assets/icons/SteamCodeHelper.jpg" mode="widthFix" class="guide-img" bindtap="onPreviewImage" data-src="https://trashbox.tech/assets/static/SteamCodeHelper.jpg"></image>
+            <image src="https://trashbox.tech/assets/static/SteamCodeHelper.jpg" mode="widthFix" class="guide-img" bindtap="onPreviewImage" data-src="https://trashbox.tech/assets/static/SteamCodeHelper.jpg"></image>
             <button class="btn-close-help" bindtap="hideModal">我已了解</button>
         </view>
     </page-container>
