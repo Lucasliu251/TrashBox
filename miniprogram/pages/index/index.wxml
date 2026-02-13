@@ -42,7 +42,7 @@
                                 <text class="val {{ item.rating >= 1.2 ? 'gold' : '' }}">
                                     {{ item.rating }}
                                 </text>
-                                <text class="label">KD</text>
+                                <text class="label">Rating</text>
                             </view>
                             <view class="stat-sub">
                                 <text class="val">{{ item.adr }}</text>
@@ -81,8 +81,5 @@
                 </block>
             </view>
         </view>
-    </view>
-    <view class="fab-btn" bindtap="goToCreatePost" wx:if="{{canEdit}}">
-        <text class="plus-icon">+</text>
     </view>
 </view>

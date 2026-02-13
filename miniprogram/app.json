@@ -7,7 +7,6 @@
     "pages/logs/logs",
     "pages/posts/posts",
     "pages/post-detail/post-detail",
-    "pages/post/create",
     "pages/rank/rank",
     "pages/statsVis/statsVis"
   ],

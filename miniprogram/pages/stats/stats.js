@@ -9,6 +9,7 @@ Page({
     userData: {
       avatar: '/assets/icons/cs-logo-grey.avif',
       nickname: '点击编辑昵称',
+      style_tag: '無',
       faceitLevel: '?',
       rating: '-',
       kd: '-',
@@ -32,7 +33,10 @@ Page({
     itemWidth: 0,
     touchStartX: 0,
     startOffset: 0,
-    tooltipIndex: -1
+    tooltipIndex: -1,
+
+    radarData: {},
+    serverAvg: {}
   },
 
   onLoad(options) {
@@ -92,17 +96,20 @@ Page({
     const hoursPlayed = ((summary.time_played || 0) / 3600).toFixed(1);
     const rawKD = Number(summary.avg_kd || 0);
     const rawADR = Number(summary.avg_ADR || 0);
+    const rawRating = Number(summary.avg_Rating || 0);
+    const style_tag = data.style_tag || '無';
 
     // 1. 更新UI数据
     this.setData({
       'userData.nickname': data.nickname || data.steam_id,
       'userData.avatar': (this.data.canEdit && app.globalData.userInfo.avatar) ? app.globalData.userInfo.avatar : (data.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${data.steam_id}`),
       'userData.kd': rawKD.toFixed(2),
-      'userData.rating': '-',
+      'userData.Rating': rawRating.toFixed(2),
       'userData.totalKills': summary.period_kills,
       'userData.adr': rawADR.toFixed(2),
       'userData.winRate': summary.avg_WR,
-      'userData.timePlayed': hoursPlayed
+      'userData.timePlayed': hoursPlayed,
+      "userData.style_tag": style_tag
     });
 
     // 2. 初始化图表状态
@@ -110,8 +117,23 @@ Page({
     this.chartState.startIndex = Math.max(0, history.length - this.chartState.visibleCount);
     this.chartState.tooltipIndex = -1;
 
-    // [关键修复] 调用 initChart 而不是 drawTrendChart，确保 Context 存在
-    setTimeout(() => this.initChart(), 200);
+    const radarData = {
+      kpr: summary.avg_KPR,
+      adr: rawADR,
+      spr: summary.avg_SPR,
+      wr: summary.avg_WR / 100,
+      mpr: summary.avg_MPR,
+      hsr: summary.avg_HSR / 100
+    }
+    const serverAvg = summary.server_avg
+
+    this.chartState.radarData = radarData;
+    this.chartState.serverAvg = serverAvg;
+
+    setTimeout(() => {
+      this.initChart();       // 折线图
+      this.initRadarChart();  // 雷达图
+    }, 200);
 
     // 3. 列表映射
     const matchList = history.slice().reverse().map(item => {
@@ -121,14 +143,14 @@ Page({
         result: item.kd >= 1.0 ? 'POS' : 'NEG',
         score: `${item.kills} / ${item.deaths}`,
         date: item.date.substring(5),
-        rating: item.kd,
+        Rating: item.Rating,
         kd: item.kd,
         mvp: item.mvp,
         dmg: item.dmg,
         adr: item.adr,
         hsr: item.hsr,
         winRate: item.win_rate,
-        rounds: item.rounds_played
+        rounds: rounds
       };
     });
     this.setData({ matchHistory: matchList });
@@ -204,6 +226,39 @@ Page({
       this.chartState.height = res[0].height;
 
       this.drawTrendChart();
+    });
+  },
+
+  initRadarChart() {
+    const query = wx.createSelectorQuery();
+    query.select('#radarCanvas').fields({ node: true, size: true }).exec((res) => {
+      if (!res[0]) return;
+      const canvas = res[0].node;
+      const ctx = canvas.getContext('2d');
+      const dpr = wx.getSystemInfoSync().pixelRatio;
+
+      canvas.width = res[0].width * dpr;
+      canvas.height = res[0].height * dpr;
+      ctx.scale(dpr, dpr);
+
+      // 绘制配置
+      const config = {
+        width: res[0].width,
+        height: res[0].height,
+        radius: Math.min(res[0].width, res[0].height) / 2 * 0.65, // 半径占画布的 65%
+        center: { x: res[0].width / 2, y: res[0].height / 2 },
+        // 定义 6 个轴的配置：label=名称, key=数据字段名, max=该项数据的理论上限(用于归一化)
+        axes: [
+          { label: 'KPR', key: 'kpr', min: 0, max: 2.3 },   // 击杀
+          { label: 'ADR', key: 'adr', min: 0, max: 150 },   // 伤害
+          { label: 'SPR', key: 'spr', min: -3, max: 1 },   // 生存 (注意SPR通常小于1)
+          { label: 'WR',  key: 'wr',  min: 0, max: 0.8 },   // 胜率
+          { label: 'MPR', key: 'mpr', min: 0, max: 0.8 },   // MVP
+          { label: 'HSR', key: 'hsr', min: 0, max: 1.0 }    // 爆头
+        ]
+      };
+
+      this.drawRadar(ctx, config);
     });
   },
 
@@ -302,6 +357,120 @@ Page({
       ctx.font = 'bold 12px sans-serif';
       ctx.fillText(text, p.x, bubbleY + 16);
     }
+  },
+
+  drawRadar(ctx, config) {
+    const { width, height, radius, center, axes } = config;
+    const { radarData, serverAvg } = this.chartState;
+
+    ctx.clearRect(0, 0, width, height);
+    const angleSlice = (Math.PI * 2) / axes.length;
+
+    // 1. 绘制网格 (保持不变)
+    ctx.strokeStyle = '#444';
+    ctx.lineWidth = 1;
+    for (let level = 1; level <= 4; level++) {
+      const r = radius * (level / 4);
+      ctx.beginPath();
+      for (let i = 0; i < axes.length; i++) {
+        const angle = i * angleSlice - Math.PI / 2;
+        ctx.lineTo(center.x + r * Math.cos(angle), center.y + r * Math.sin(angle));
+      }
+      ctx.closePath();
+      ctx.stroke();
+    }
+
+    // 2. 绘制轴线 & 文字 (保持不变)
+    ctx.fillStyle = '#888';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    for (let i = 0; i < axes.length; i++) {
+      const angle = i * angleSlice - Math.PI / 2;
+      const x = center.x + radius * Math.cos(angle);
+      const y = center.y + radius * Math.sin(angle);
+      
+      ctx.beginPath();
+      ctx.moveTo(center.x, center.y);
+      ctx.lineTo(x, y);
+      ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+      ctx.stroke();
+
+      const labelDist = radius * 1.25;
+      const lx = center.x + labelDist * Math.cos(angle);
+      const ly = center.y + labelDist * Math.sin(angle);
+      ctx.fillText(axes[i].label, lx, ly);
+    }
+
+    // --- [修改点 2] 核心坐标计算函数 ---
+    const getPoints = (dataObj) => {
+      return axes.map((axis, i) => {
+        let val = dataObj[axis.key];
+        
+        // 容错：如果数据不存在，用 min 兜底，而不是 0
+        if (val === undefined || val === null) val = axis.min;
+
+        // 获取该轴的范围
+        const min = axis.min;
+        const max = axis.max;
+        const range = max - min;
+
+        // 计算比例：(当前值 - 最小值) / (最大值 - 最小值)
+        // 例如 SPR：(-1.5 - (-3)) / (0.6 - (-3)) = 1.5 / 3.6 = 0.41 (41% 半径处)
+        let ratio = (val - min) / range;
+
+        // 钳制在 0~1 之间，防止爆表画到圆外面去
+        ratio = Math.max(0, Math.min(1, ratio));
+
+        const r = radius * ratio;
+        const angle = i * angleSlice - Math.PI / 2;
+        return {
+          x: center.x + r * Math.cos(angle),
+          y: center.y + r * Math.sin(angle)
+        };
+      });
+    };
+
+    // 3. 绘制全服平均线 (保持不变)
+    const avgPoints = getPoints(serverAvg);
+    ctx.beginPath();
+    avgPoints.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+    ctx.closePath();
+    ctx.strokeStyle = '#666';
+    ctx.setLineDash([3, 3]); 
+    ctx.stroke();
+    ctx.setLineDash([]); 
+
+    // 4. 绘制玩家数据 (保持不变)
+    const playerPoints = getPoints(radarData);
+    ctx.beginPath();
+    playerPoints.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+    ctx.closePath();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#de9b35';
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(222, 155, 53, 0.4)';
+    ctx.fill();
+
+    // 5. 绘制顶点 (保持不变)
+    ctx.fillStyle = '#fff';
+    playerPoints.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    
+    // 6. 绘制图例 (Legend) - 可选
+    const legendY = height - 15;
+    // 平均
+    ctx.fillStyle = '#666';
+    ctx.fillRect(center.x - 60, legendY, 10, 10);
+    ctx.fillText('平均', center.x - 30, legendY + 5);
+    // 玩家
+    ctx.fillStyle = '#de9b35';
+    ctx.fillRect(center.x + 20, legendY, 10, 10);
+    ctx.fillText('我的', center.x + 50, legendY + 5);
   },
 
   // --- 触摸事件 ---

@@ -1,14 +1,22 @@
 <navigation-bar title="每日排行榜" back="{{true}}" color="white" background="#1e1e1e"></navigation-bar>
 <view class="container">
-    <view class="toolbar">
-        <picker mode="date" value="{{currentDate}}" end="{{maxDate}}" bindchange="bindDateChange">
-            <view class="date-picker-btn">
-                <text>📅 {{currentDate}}</text>
-                <text class="arrow">▼</text>
+    <view class="toolbar-header">
+  
+        <picker mode="date" value="{{currentDate}}" start="2023-01-01" end="{{maxDate}}" bindchange="bindDateChange">
+            <view class="date-picker-wrap">
+            <text class="date-text">📅 {{currentDate}}</text>
+            <text class="picker-arrow">▼</text>
             </view>
         </picker>
-        <text class="tips">每日 23:30 更新</text>
-    </view>
+
+        <view class="subscribe-capsule" bindtap="onToggleSubscribe">
+            <text class="sub-label"> 日报订阅</text>
+            <view class="toggle-switch {{ isSubscribed ? 'active' : '' }}">
+            <view class="toggle-knob"></view>
+        </view>
+  </view>
+
+</view>
     <view class="list-header">
         <text class="th-rank">排名</text>
         <text class="th-player">玩家</text>
@@ -34,7 +42,7 @@
                         <text class="val {{ item.rating >= 1.2 ? 'gold' : '' }}">
                             {{ item.rating }}
                         </text>
-                        <text class="label">KD</text>
+                        <text class="label">Rating</text>
                     </view>
                     <view class="stat-sub">
                         <text class="val">{{ item.adr }}</text>
@@ -49,3 +57,13 @@
         </view>
     </scroll-view>
 </view>
+<page-container show="{{showSubscribeModal}}" round position="center" custom-style="width: 80%; border-radius: 16rpx; padding: 40rpx;">
+    <view style="text-align: center;">
+        <view style="font-size: 36rpx; font-weight: bold; margin-bottom: 20rpx;">开启每日战报提醒</view>
+        <view style="font-size: 28rpx; color: #666; margin-bottom: 40rpx;">
+            订阅后，每天23:30榜单更新时，您将在微信收到最新的排名和KD数据推送。
+        </view>
+        <button type="primary" bindtap="onSubscribeBtnClick">立即开启</button>
+        <view bindtap="closeSubscribeModal" style="margin-top: 20rpx; color: #999; font-size: 24rpx;">暂不需要</view>
+    </view>
+</page-container>

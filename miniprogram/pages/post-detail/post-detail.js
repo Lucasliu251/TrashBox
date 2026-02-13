@@ -66,7 +66,7 @@ Page({
             url: `${app.globalData.apiBase}/api/v1/posts/${this.data.id}/comment`,
             method: 'POST',
             data: {
-                uuid: wx.getStorageSync('user_uuid'),
+                uuid: app.globalData.userInfo.uuid,
                 content: content
             },
             success: (res) => {

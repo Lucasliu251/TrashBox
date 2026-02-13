@@ -2,9 +2,9 @@
     <view class="header">
         <text class="title">{{post.title}}</text>
         <view class="author-info">
-            <image class="avatar" src="{{post.author.avatar || '/assets/icons/default-avatar.webp'}}"></image>
+            <image class="avatar" src="{{post.avatar || '/assets/icons/default-avatar.webp'}}"></image>
             <view class="meta">
-                <text class="nickname">{{post.author.nickname}}</text>
+                <text class="nickname">{{post.nickname}}</text>
                 <text class="date">{{post.date}} · {{post.views}} 阅读</text>
             </view>
         </view>

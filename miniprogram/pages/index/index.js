@@ -108,7 +108,7 @@ Page({
                         avatar: item.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${item.steam_id}`,
 
                         // 丰富的数据展示
-                        rating: Number(item.daily_kd).toFixed(2), // 主数据 KD
+                        rating: Number(item.daily_Rating).toFixed(2), // 主数据 Rating
                         adr: Number(item.daily_adr).toFixed(1),   // 副数据 ADR
                         mvp: item.daily_mvp,                      // 荣誉数据
                         kills: item.daily_kills                   // 击杀数

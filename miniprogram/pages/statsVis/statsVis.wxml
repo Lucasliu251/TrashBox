@@ -1,9 +1,30 @@
 <view class="container">
     <scroll-view scroll-y class="dashboard">
+        <wxs module="styleHelper">
+            var getStyleClass = function(tag) {
+                // 定义汉字到英文风格的映射
+                var map = {
+                '狠': 'red', '爆': 'red', '燃': 'red', '莽': 'red',
+                '准': 'blue', '巧': 'blue', '力': 'blue',
+                '六': 'purple', '混': 'purple', '牢': 'purple',
+                '富': 'gold', '浪': 'gold',
+                '凡': 'silver', '新': 'silver'
+                };
+                // 如果找不到，默认返回 silver
+                return map[tag] || 'silver';
+            }
+            module.exports.getStyleClass = getStyleClass;
+        </wxs>
         <view class="profile-card">
             <view class="playtime-tag">
                 <text class="label">游戏时长</text>
                 <text class="value">{{ userData.timePlayed }}h</text>
+            </view>
+            <view class="style-badge style-{{styleHelper.getStyleClass(userData.style_tag)}}">
+                <text class="style-label">STYLE</text>
+                <view class="style-char-box">
+                    <text class="style-char">{{ userData.style_tag || '凡' }}</text>
+                </view>
             </view>
             <view class="profile-info">
                 <image class="avatar" src="{{ userData.avatar }}" mode="aspectFill"></image>
@@ -23,7 +44,7 @@
                 </view>
             </view>
             <view class="stat-box">
-                <text class="stat-label">Total Kills</text>
+                <text class="stat-label">★StarTrack™️</text>
                 <text class="stat-value">{{ userData.totalKills }}</text>
             </view>
             <view class="stat-box">
@@ -34,6 +55,10 @@
                 <text class="stat-label">Win Rate</text>
                 <text class="stat-value">{{ userData.winRate }}</text>
             </view>
+        </view>
+        <view class="section-title">能力模型 (Capability)</view>
+        <view class="chart-container radar-container">
+            <canvas type="2d" id="radarCanvas" class="radar-canvas"></canvas>
         </view>
         <view class="section-title">近期状态 (KD Trend)</view>
         <view class="chart-container">
@@ -53,8 +78,8 @@
                     <view class="match-center-main">
                         <text class="score">{{ item.score }}</text>
                         <view class="tag-row">
-                            <view class="kd-tag {{ item.kd >= 1.0 ? 'pos' : 'neg' }}">
-                                {{ item.kd }} KD
+                            <view class="kd-tag {{ item.Rating >= 1.0 ? 'pos' : 'neg' }}">
+                                {{ item.Rating }} Rating
                             </view>
                         </view>
                     </view>

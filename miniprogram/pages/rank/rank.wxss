@@ -20,13 +20,34 @@ page {
     z-index: 10;
 }
 
-.date-picker-btn {
-    background: #333;
-    padding: 10rpx 24rpx;
-    border-radius: 100rpx;
-    font-size: 28rpx;
-    display: flex;
-    align-items: center;
+.toolbar-header {
+  display: flex;
+  justify-content: space-between; /* 关键：左右撑开 */
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background-color: transparent; /* 或者你的背景色 */
+  position: sticky;
+  top: 0;
+  z-index: 99; /* 保证吸顶 */
+  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.05); /* 微微的阴影 */
+}
+
+.date-picker-wrap {
+  display: flex;
+  align-items: center;
+  padding: 10rpx 20rpx;
+  background-color: #444444;
+  border-radius: 12rpx;
+}
+.date-text {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: hsl(0, 0%, 100%);
+}
+.picker-arrow {
+  font-size: 20rpx;
+  color: #999;
+  margin-left: 10rpx;
 }
 
 .arrow {
@@ -38,6 +59,50 @@ page {
 .tips {
     font-size: 22rpx;
     color: #666;
+}
+
+/* 3. 右侧胶囊开关容器 */
+.subscribe-capsule {
+  display: flex;
+  align-items: center;
+}
+.sub-label {
+  font-size: 24rpx;
+  color: #888;
+  margin-right: 12rpx;
+}
+
+/* 4. 纯CSS实现的 iOS 风格开关 */
+.toggle-switch {
+  width: 88rpx;
+  height: 52rpx;
+  background-color: #e9e9eb; /* 默认灰色 */
+  border-radius: 26rpx; /* 圆角是高度的一半 */
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+/* 激活状态：变成绿色 */
+.toggle-switch.active {
+  background-color: #34c759; /* Apple Green */
+}
+
+/* 开关上的白色小圆球 */
+.toggle-knob {
+  width: 44rpx;
+  height: 44rpx;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 4rpx;
+  left: 4rpx;
+  box-shadow: 0 2rpx 6rpx rgba(0,0,0,0.2);
+  transition: transform 0.3s cubic-bezier(0.3, 1.05, 0.4, 1.05); /* 增加一点回弹质感 */
+}
+
+/* 激活时：小圆球向右移动 */
+.toggle-switch.active .toggle-knob {
+  transform: translateX(36rpx); /* 移动距离 = 宽度 - 圆球宽 - 边距*2 */
 }
 
 /* 表头 */
