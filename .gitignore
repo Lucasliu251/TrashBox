@@ -29,3 +29,6 @@ node_modules/
 *.psd
 *.ai
 *.sketch
+
+# Local IDE metadata
+.idea/
