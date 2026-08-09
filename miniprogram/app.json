@@ -9,7 +9,8 @@
     "pages/post-detail/post-detail",
     "pages/rank/rank",
     "pages/statsVis/statsVis",
-    "pages/reaction/reaction"
+    "pages/reaction/reaction",
+    "pages/radar/radar"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -35,6 +36,12 @@
       "text": "反应测试",
       "iconPath": "assets/icons/Flash.png",
       "selectedIconPath": "assets/icons/Flash-active.png"
+      },
+      {
+        "pagePath": "pages/radar/radar",
+        "text": "Radar",
+        "iconPath": "assets/icons/radar.png",
+        "selectedIconPath": "assets/icons/radar-active.png"
       },
       {
         "pagePath": "pages/stats/stats",
