@@ -8,7 +8,8 @@
     "pages/posts/posts",
     "pages/post-detail/post-detail",
     "pages/rank/rank",
-    "pages/statsVis/statsVis"
+    "pages/statsVis/statsVis",
+    "pages/reaction/reaction"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -28,6 +29,12 @@
         "text": "社区",
         "iconPath": "assets/icons/home.png",
         "selectedIconPath": "assets/icons/home-active.png"
+      },
+      {
+      "pagePath": "pages/reaction/reaction",
+      "text": "反应测试",
+      "iconPath": "assets/icons/Flash.png",
+      "selectedIconPath": "assets/icons/Flash-active.png"
       },
       {
         "pagePath": "pages/stats/stats",

@@ -1,0 +1,143 @@
+page {
+  background-color: #1e1e1e;
+  height: 100vh;
+  overflow: hidden; /* 防止滚动 */
+}
+
+.reaction-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* 注意：千万不要在这里加 transition: background-color，会导致变绿有延迟，影响真实反应时间 */
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none; /* 让点击事件穿透到父容器 */
+}
+
+.icon {
+  width: 120rpx;
+  height: 120rpx;
+  opacity: 0.8;
+  margin-bottom: 40rpx;
+}
+
+.main-text {
+  font-size: 64rpx;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 20rpx;
+  text-align: center;
+}
+
+.sub-text {
+  font-size: 32rpx;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+}
+
+/* 历史记录板 */
+.history-board {
+  position: absolute;
+  bottom: 100rpx;
+  width: 80%;
+  text-align: center;
+}
+
+.history-title {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.history-list {
+  display: flex;
+  justify-content: center;
+  gap: 20rpx;
+}
+
+.history-item {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 8rpx 16rpx;
+  border-radius: 8rpx;
+}
+
+/* 最终结果面板 */
+.result-board {
+  position: absolute;
+  bottom: 80rpx;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+.score-box {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 40rpx;
+  border-radius: 20rpx;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 30rpx;
+}
+
+.score-label {
+  font-size: 28rpx;
+  color: #aaa;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.score-value {
+  font-size: 80rpx;
+  font-weight: 900;
+  color: #fff;
+}
+
+/* 小于 200ms 的神级反应高亮 */
+.score-value.god {
+  color: #de9b35; /* CS 金色 */
+  text-shadow: 0 0 20rpx rgba(222, 155, 53, 0.5);
+}
+
+.unit {
+  font-size: 32rpx;
+  font-weight: normal;
+  color: #888;
+}
+
+.eval-tag {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 50rpx;
+}
+
+.btn-primary {
+  background-color: #de9b35;
+  color: #fff;
+  width: 100%;
+  font-weight: bold;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #de9b35;
+  border: 2rpx solid #de9b35;
+  width: 100%;
+  font-weight: bold;
+  border-radius: 12rpx;
+}

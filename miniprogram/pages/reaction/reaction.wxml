@@ -1,0 +1,30 @@
+<view class="reaction-container" style="background-color: {{bgColor}};" bindtouchstart="handleTap">
+  
+  <view class="content-wrapper">
+    <image wx:if="{{gameState === 'idle' || gameState === 'done'}}" class="icon" src="/assets/icons/cs-logo-grey.avif" mode="widthFix"></image>
+    <image wx:if="{{gameState === 'early'}}" class="icon" src="/assets/icons/warning.avif" mode="widthFix"></image>
+    
+    <text class="main-text">{{mainText}}</text>
+    <text class="sub-text">{{subText}}</text>
+  </view>
+
+  <view class="history-board" wx:if="{{results.length > 0 && gameState !== 'done'}}">
+    <text class="history-title">测试进度 ({{results.length}}/{{maxTests}})</text>
+    <view class="history-list">
+      <block wx:for="{{results}}" wx:key="*this">
+        <text class="history-item">{{item}} ms</text>
+      </block>
+    </view>
+  </view>
+
+  <view class="result-board" wx:if="{{gameState === 'done'}}">
+    <view class="score-box">
+      <text class="score-label">平均反应时间</text>
+      <text class="score-value {{average < 200 ? 'god' : ''}}">{{average}} <text class="unit">ms</text></text>
+    </view>
+    <view class="eval-tag">{{evaluation}}</view>
+    <button class="btn-primary" catchtap="resetTest">再测一次</button>
+    <button class="btn-secondary" catchtap="submitResult">保存成绩</button>
+  </view>
+
+</view>
