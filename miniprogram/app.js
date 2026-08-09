@@ -4,11 +4,13 @@ App({
   globalData: {
     userInfo: null,   // 存用户的 SteamID, 头像等
     hasLogin: false,  // 明确的登录标记
+    accessToken: null,
     apiBase: 'https://trashbox.tech' // 方便你以后一键改回域名 (改成你的真实IP)
   },
 
   // 2. 小程序启动时执行
   onLaunch() {
+    this.globalData.accessToken = wx.getStorageSync('access_token') || null;
     this.autoLogin();
     // 检查本地缓存有没有 UUID (OpenID)
     // const uuid = wx.getStorageSync('user_uuid');
@@ -80,6 +82,10 @@ App({
                   // 存入全局变量
                   that.fetchUserInfo(result.uuid);
                   that.globalData.hasLogin = true;
+                  if (result.access_token) {
+                    that.globalData.accessToken = result.access_token;
+                    wx.setStorageSync('access_token', result.access_token);
+                  }
 
                   // 3. 执行回调（通知首页或Stats页更新UI）
                   if (that.userCallback) {
@@ -109,7 +115,9 @@ App({
   // 4. 提供一个退出登录的方法
   logout() {
     wx.removeStorageSync('user_uuid');
+    wx.removeStorageSync('access_token');
     this.globalData.userInfo = null;
     this.globalData.hasLogin = false;
+    this.globalData.accessToken = null;
   }
 })

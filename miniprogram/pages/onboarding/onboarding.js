@@ -93,6 +93,11 @@ Page({
             nickname: responseData.steam_id,
             avatar: null
           };
+          app.globalData.hasLogin = true;
+          if (responseData.access_token) {
+            app.globalData.accessToken = responseData.access_token;
+            wx.setStorageSync('access_token', responseData.access_token);
+          }
           setTimeout(() => { wx.navigateBack() }, 1500);
         } else {
           // 处理 FastAPI 抛出的 HTTPException
@@ -158,4 +163,3 @@ Page({
     });
   }
 });
-
