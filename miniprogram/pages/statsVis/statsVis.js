@@ -173,11 +173,11 @@ Page({
             center: { x: res[0].width / 2, y: res[0].height / 2 },
             // 定义 6 个轴的配置：label=名称, key=数据字段名, max=该项数据的理论上限(用于归一化)
             axes: [
-            { label: 'KPR', key: 'kpr', min: 0, max: 4 },   // 击杀
+            { label: 'KPR', key: 'kpr', min: 0, max: 2 },   // 击杀
             { label: 'ADR', key: 'adr', min: 0, max: 150 },   // 伤害
             { label: 'SPR', key: 'spr', min: -3, max: 1 },   // 生存 (注意SPR通常小于1)
             { label: 'WR',  key: 'wr',  min: 0, max: 0.8 },   // 胜率
-            { label: 'MPR', key: 'mpr', min: 0, max: 0.8 },   // MVP
+            { label: 'MPR', key: 'mpr', min: 0, max: 0.3 },   // MVP
             { label: 'HSR', key: 'hsr', min: 0, max: 1.0 }    // 爆头
             ]
         };

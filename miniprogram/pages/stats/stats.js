@@ -1,5 +1,21 @@
 // pages/stats/stats.js
 const app = getApp();
+const createDefaultChartState = () => ({
+  canvas: null,
+  ctx: null,
+  width: 0,
+  height: 0,
+  dpr: 1,
+  history: [],
+  startIndex: 0,
+  visibleCount: 7,
+  itemWidth: 0,
+  touchStartX: 0,
+  startOffset: 0,
+  tooltipIndex: -1,
+  radarData: {},
+  serverAvg: {}
+});
 
 Page({
   data: {
@@ -21,22 +37,11 @@ Page({
   },
 
   // 图表运行时状态
-  chartState: {
-    canvas: null,
-    ctx: null,
-    width: 0,
-    height: 0,
-    dpr: 1,
-    history: [],
-    startIndex: 0,
-    visibleCount: 7,
-    itemWidth: 0,
-    touchStartX: 0,
-    startOffset: 0,
-    tooltipIndex: -1,
+  chartState: createDefaultChartState(),
 
-    radarData: {},
-    serverAvg: {}
+  ensureChartState() {
+    if (!this.chartState) this.chartState = createDefaultChartState();
+    return this.chartState;
   },
 
   onLoad(options) {
@@ -92,6 +97,7 @@ Page({
 
   processData(data) {
     const { summary, history } = data;
+    const chartState = this.ensureChartState();
 
     const hoursPlayed = ((summary.time_played || 0) / 3600).toFixed(1);
     const rawKD = Number(summary.avg_kd || 0);
@@ -113,9 +119,9 @@ Page({
     });
 
     // 2. 初始化图表状态
-    this.chartState.history = history;
-    this.chartState.startIndex = Math.max(0, history.length - this.chartState.visibleCount);
-    this.chartState.tooltipIndex = -1;
+    chartState.history = Array.isArray(history) ? history : [];
+    chartState.startIndex = Math.max(0, chartState.history.length - chartState.visibleCount);
+    chartState.tooltipIndex = -1;
 
     const radarData = {
       kpr: summary.avg_KPR,
@@ -127,8 +133,8 @@ Page({
     }
     const serverAvg = summary.server_avg
 
-    this.chartState.radarData = radarData;
-    this.chartState.serverAvg = serverAvg;
+    chartState.radarData = radarData;
+    chartState.serverAvg = serverAvg;
 
     setTimeout(() => {
       this.initChart();       // 折线图
@@ -136,7 +142,7 @@ Page({
     }, 200);
 
     // 3. 列表映射
-    const matchList = history.slice().reverse().map(item => {
+    const matchList = chartState.history.slice().reverse().map(item => {
       const rounds = item.rounds_played || 1;
       return {
         map: 'Daily',
@@ -209,6 +215,7 @@ Page({
 
   // --- 图表核心逻辑 ---
   initChart() {
+    const chartState = this.ensureChartState();
     const query = wx.createSelectorQuery();
     query.select('#trendCanvas').fields({ node: true, size: true }).exec((res) => {
       if (!res[0]) return;
@@ -220,10 +227,10 @@ Page({
       canvas.height = res[0].height * dpr;
       ctx.scale(dpr, dpr);
 
-      this.chartState.canvas = canvas;
-      this.chartState.ctx = ctx;
-      this.chartState.width = res[0].width;
-      this.chartState.height = res[0].height;
+      chartState.canvas = canvas;
+      chartState.ctx = ctx;
+      chartState.width = res[0].width;
+      chartState.height = res[0].height;
 
       this.drawTrendChart();
     });
@@ -263,7 +270,7 @@ Page({
   },
 
   drawTrendChart() {
-    const { ctx, width, height, history, startIndex, visibleCount, tooltipIndex } = this.chartState;
+    const { ctx, width, height, history, startIndex, visibleCount, tooltipIndex } = this.ensureChartState();
     if (!ctx || !history.length) return;
 
     const renderData = history.slice(startIndex, startIndex + visibleCount);
@@ -360,8 +367,9 @@ Page({
   },
 
   drawRadar(ctx, config) {
+    const chartState = this.ensureChartState();
     const { width, height, radius, center, axes } = config;
-    const { radarData, serverAvg } = this.chartState;
+    const { radarData, serverAvg } = chartState;
 
     ctx.clearRect(0, 0, width, height);
     const angleSlice = (Math.PI * 2) / axes.length;
@@ -475,30 +483,39 @@ Page({
 
   // --- 触摸事件 ---
   onTouchChartStart(e) {
-    this.chartState.touchStartX = e.touches[0].x;
-    this.chartState.startOffset = this.chartState.startIndex;
+    if (!e.touches || !e.touches.length) return;
+    const chartState = this.ensureChartState();
+    chartState.touchStartX = e.touches[0].x;
+    chartState.startOffset = chartState.startIndex;
   },
   onTouchChartMove(e) {
-    const deltaX = e.touches[0].x - this.chartState.touchStartX;
-    const deltaIndex = Math.round(deltaX / (this.chartState.itemWidth / 1.5));
-    let newStart = this.chartState.startOffset - deltaIndex;
-    const maxStart = Math.max(0, this.chartState.history.length - this.chartState.visibleCount);
+    if (!e.touches || !e.touches.length) return;
+    const chartState = this.ensureChartState();
+    if (!chartState.itemWidth) return;
+    const deltaX = e.touches[0].x - chartState.touchStartX;
+    const deltaIndex = Math.round(deltaX / (chartState.itemWidth / 1.5));
+    let newStart = chartState.startOffset - deltaIndex;
+    const maxStart = Math.max(0, chartState.history.length - chartState.visibleCount);
 
     newStart = Math.max(0, Math.min(newStart, maxStart));
-    if (newStart !== this.chartState.startIndex) {
-      this.chartState.startIndex = newStart;
+    if (newStart !== chartState.startIndex) {
+      chartState.startIndex = newStart;
       this.drawTrendChart();
     }
   },
   onTouchChartEnd(e) {
+    if (!e.changedTouches || !e.changedTouches.length) return;
+    const chartState = this.ensureChartState();
     const x = e.changedTouches[0].x;
-    if (Math.abs(x - this.chartState.touchStartX) < 5) this.handleChartTap(x);
+    if (Math.abs(x - chartState.touchStartX) < 5) this.handleChartTap(x);
   },
   handleChartTap(x) {
-    const { itemWidth, startIndex, visibleCount } = this.chartState;
+    const chartState = this.ensureChartState();
+    const { itemWidth, startIndex, visibleCount } = chartState;
+    if (!itemWidth) return;
     let relIndex = Math.round((x - 10) / itemWidth);
     relIndex = Math.max(0, Math.min(relIndex, visibleCount - 1));
-    this.chartState.tooltipIndex = startIndex + relIndex;
+    chartState.tooltipIndex = startIndex + relIndex;
     this.drawTrendChart();
     wx.vibrateShort({ type: 'light' });
   }
