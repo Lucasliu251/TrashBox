@@ -6,6 +6,24 @@ import type { RadarSession, RadarStatus, RadarTarget, ResolvedTarget } from '../
 const props = defineProps<{ token: string }>()
 const emit = defineEmits<{ logout: [] }>()
 
+const QUICK_TAGS = ['外挂', '高玩', '蠢猪', '可疑'] as const
+type ServiceMedal = 'unknown' | 'yes' | 'no'
+interface TargetDraft {
+  alias: string
+  tags: string[]
+  manual_cs_level: string
+  service_medal: ServiceMedal
+  note: string
+}
+
+const emptyDraft = (): TargetDraft => ({
+  alias: '',
+  tags: [],
+  manual_cs_level: '',
+  service_medal: 'unknown',
+  note: '',
+})
+
 const targets = ref<RadarTarget[]>([])
 const session = ref<RadarSession | null>(null)
 const loading = ref(true)
@@ -17,7 +35,12 @@ const now = ref(Date.now())
 const addOpen = ref(false)
 const resolveValue = ref('')
 const preview = ref<ResolvedTarget | null>(null)
-const draft = reactive({ alias: '', tags: '', manual_cs_level: '', service_medal: 'unknown', note: '' })
+const draft = reactive<TargetDraft>(emptyDraft())
+const customTag = ref('')
+const editingTarget = ref<RadarTarget | null>(null)
+const editDraft = reactive<TargetDraft>(emptyDraft())
+const editCustomTag = ref('')
+const editSaving = ref(false)
 let pollTimer: number | undefined
 let clockTimer: number | undefined
 
@@ -108,6 +131,31 @@ async function resolveTarget() {
   }
 }
 
+function toggleTag(tags: string[], tag: string) {
+  const index = tags.indexOf(tag)
+  if (index >= 0) tags.splice(index, 1)
+  else if (tags.length < 20) tags.push(tag)
+}
+
+function isQuickTag(tag: string) {
+  return (QUICK_TAGS as readonly string[]).includes(tag)
+}
+
+function addCustomTag(tags: string[], value: string) {
+  const tag = value.trim()
+  if (!tag || tags.includes(tag) || tags.length >= 20) return false
+  tags.push(tag)
+  return true
+}
+
+function commitCustomTag() {
+  if (addCustomTag(draft.tags, customTag.value)) customTag.value = ''
+}
+
+function commitEditCustomTag() {
+  if (addCustomTag(editDraft.tags, editCustomTag.value)) editCustomTag.value = ''
+}
+
 async function readClipboard() {
   try {
     resolveValue.value = await navigator.clipboard.readText()
@@ -123,7 +171,7 @@ async function addTarget() {
     await api.addTarget(props.token, {
       steam_id: preview.value.steam_id,
       alias: draft.alias || null,
-      tags: draft.tags.split(/[,，]/).map(item => item.trim()).filter(Boolean),
+      tags: draft.tags,
       note: draft.note || null,
       manual_cs_level: draft.manual_cs_level === '' ? null : Number(draft.manual_cs_level),
       service_medal: draft.service_medal,
@@ -131,7 +179,8 @@ async function addTarget() {
     addOpen.value = false
     preview.value = null
     resolveValue.value = ''
-    Object.assign(draft, { alias: '', tags: '', manual_cs_level: '', service_medal: 'unknown', note: '' })
+    customTag.value = ''
+    Object.assign(draft, emptyDraft())
     await snapshot()
   } catch (cause) {
     error.value = cause instanceof Error ? cause.message : '添加失败'
@@ -144,29 +193,47 @@ async function removeTarget(target: RadarTarget) {
   await loadTargets()
 }
 
-async function editTarget(target: RadarTarget) {
-  const alias = window.prompt('备注名', target.alias || target.personaname || '')
-  if (alias === null) return
-  const tags = window.prompt('标签（用逗号分隔）', (target.tags || []).join(', '))
-  if (tags === null) return
-  const level = window.prompt('人工 CS 等级（留空表示未知）', target.manual_cs_level == null ? '' : String(target.manual_cs_level))
-  if (level === null) return
-  const medal = window.prompt('服役勋章：unknown / yes / no', target.service_medal || 'unknown')
-  if (medal === null || !['unknown', 'yes', 'no'].includes(medal)) return
-  const note = window.prompt('补充说明', target.note || '')
-  if (note === null) return
+function openEditTarget(target: RadarTarget) {
+  editingTarget.value = target
+  editCustomTag.value = ''
+  Object.assign(editDraft, {
+    alias: target.alias || '',
+    tags: [...(target.tags || [])],
+    manual_cs_level: target.manual_cs_level == null ? '' : String(target.manual_cs_level),
+    service_medal: target.service_medal || 'unknown',
+    note: target.note || '',
+  })
+}
+
+function closeEditTarget() {
+  if (editSaving.value) return
+  editingTarget.value = null
+  editCustomTag.value = ''
+}
+
+async function saveEditTarget() {
+  if (!editingTarget.value) return
+  editSaving.value = true
+  error.value = ''
   try {
-    await api.updateTarget(props.token, target.id, {
-      alias: alias.trim() || null,
-      tags: tags.split(/[,，]/).map(item => item.trim()).filter(Boolean),
-      manual_cs_level: level.trim() === '' ? null : Number(level),
-      service_medal: medal,
-      note: note.trim() || null,
+    await api.updateTarget(props.token, editingTarget.value.id, {
+      alias: editDraft.alias.trim() || null,
+      tags: editDraft.tags,
+      manual_cs_level: editDraft.manual_cs_level === '' ? null : Number(editDraft.manual_cs_level),
+      service_medal: editDraft.service_medal,
+      note: editDraft.note.trim() || null,
     })
+    editingTarget.value = null
     await loadTargets()
   } catch (cause) {
     error.value = cause instanceof Error ? cause.message : '更新标注失败'
+  } finally {
+    editSaving.value = false
   }
+}
+
+function onWindowKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape') closeEditTarget()
 }
 
 function formatClock(date: Date | null) {
@@ -181,11 +248,13 @@ onMounted(() => {
   void initialize()
   pollTimer = window.setInterval(() => Promise.all([loadTargets(), loadSession()]).catch(() => undefined), 5000)
   clockTimer = window.setInterval(() => { now.value = Date.now() }, 1000)
+  window.addEventListener('keydown', onWindowKeydown)
 })
 
 onBeforeUnmount(() => {
   if (pollTimer) window.clearInterval(pollTimer)
   if (clockTimer) window.clearInterval(clockTimer)
+  window.removeEventListener('keydown', onWindowKeydown)
 })
 </script>
 
@@ -227,7 +296,19 @@ onBeforeUnmount(() => {
       <div v-if="preview" class="resolved-profile">
         <img :src="preview.avatar_url || ''" alt="" />
         <div><strong>{{ preview.personaname }}</strong><code>{{ preview.steam_id }}</code></div>
-        <div class="target-form"><input v-model="draft.alias" placeholder="备注名" /><input v-model="draft.tags" placeholder="标签，用逗号分隔" /><input v-model="draft.manual_cs_level" type="number" placeholder="人工 CS 等级" /><select v-model="draft.service_medal"><option value="unknown">勋章未知</option><option value="yes">有服役勋章</option><option value="no">无服役勋章</option></select><input v-model="draft.note" class="wide-input" placeholder="补充说明" /><button class="button primary compact wide-input" @click="addTarget">加入共享 Radar</button></div>
+        <div class="target-form">
+          <label class="form-field"><span>备注名 <small>可选</small></span><input v-model="draft.alias" placeholder="例如：老熟人" /></label>
+          <label class="form-field"><span>人工 CS 等级 <small>可选</small></span><input v-model="draft.manual_cs_level" type="number" min="0" max="100" placeholder="未知则留空" /></label>
+          <label class="form-field"><span>服役勋章 <small>可选</small></span><select v-model="draft.service_medal"><option value="unknown">未知 / 不标注</option><option value="yes">有服役勋章</option><option value="no">无服役勋章</option></select></label>
+          <label class="form-field"><span>补充说明 <small>可选</small></span><input v-model="draft.note" maxlength="500" placeholder="阵容、习惯或其他信息" /></label>
+          <div class="form-field tag-field wide-input">
+            <span>标签 <small>可多选，也可留空</small></span>
+            <div class="tag-options"><button v-for="tag in QUICK_TAGS" :key="tag" type="button" :class="{ selected: draft.tags.includes(tag) }" @click="toggleTag(draft.tags, tag)">{{ tag }}</button></div>
+            <div class="custom-tag-row"><input v-model="customTag" maxlength="30" placeholder="其他标签，回车创建" @keydown.enter.prevent="commitCustomTag" /><button type="button" @click="commitCustomTag">添加</button></div>
+            <div v-if="draft.tags.some(tag => !isQuickTag(tag))" class="selected-tags"><button v-for="tag in draft.tags.filter(tag => !isQuickTag(tag))" :key="tag" type="button" @click="toggleTag(draft.tags, tag)">{{ tag }} ×</button></div>
+          </div>
+          <button class="button primary compact wide-input" @click="addTarget">加入共享 Radar</button>
+        </div>
       </div>
     </section>
 
@@ -244,11 +325,36 @@ onBeforeUnmount(() => {
           <div class="signals"><span v-if="target.group_key && sameMatchCounts[target.group_key] > 1" class="danger">疑似同局 ×{{ sameMatchCounts[target.group_key] }}</span><span v-if="target.manual_cs_level != null && target.manual_cs_level < 40" class="danger">CS Lv.{{ target.manual_cs_level }}</span><span v-for="tag in target.tags" :key="tag">{{ tag }}</span></div>
           <div class="card-metrics"><div><strong>{{ hours(target.cs2_playtime_minutes) }}</strong><span>CS2 小时</span></div><div><strong :class="{ hot: target.risk_signals?.length }">{{ target.risk_signals?.length || 0 }}</strong><span>风险信号</span></div><div><strong class="time">{{ target.observed_at ? new Date(target.observed_at).toLocaleTimeString('zh-CN', { hour12: false }) : '未扫描' }}</strong><span>最近观测</span></div></div>
           <div v-if="target.risk_signals?.length" class="risk-list"><span v-for="signal in target.risk_signals" :key="signal.code" :class="signal.severity">{{ signal.label }}</span></div>
-          <footer><a v-if="target.profile_url" :href="target.profile_url" target="_blank">Steam 资料 ↗</a><span class="card-actions"><button @click="editTarget(target)">编辑标注</button><button @click="removeTarget(target)">移出 Radar</button></span></footer>
+          <footer><a v-if="target.profile_url" :href="target.profile_url" target="_blank">Steam 资料 ↗</a><span class="card-actions"><button @click="openEditTarget(target)">编辑标注</button><button @click="removeTarget(target)">移出 Radar</button></span></footer>
         </article>
       </div>
     </section>
 
     <footer class="page-footer"><span>OFFICIAL STEAM DATA ONLY</span><p>“疑似同局”仅来自相同公开服务器或大厅标识，不证明组排；未知资料不代表安全或作弊。</p></footer>
   </main>
+
+  <Teleport to="body">
+    <div v-if="editingTarget" class="modal-backdrop" role="presentation" @click.self="closeEditTarget">
+      <section class="edit-modal" role="dialog" aria-modal="true" aria-labelledby="edit-target-title">
+        <header class="modal-head">
+          <div><span class="kicker">PLAYER ANNOTATION</span><h2 id="edit-target-title">编辑全部标注</h2><p>{{ editingTarget.alias || editingTarget.personaname || editingTarget.steam_id }}</p></div>
+          <button class="modal-close" type="button" aria-label="关闭" @click="closeEditTarget">×</button>
+        </header>
+        <p class="optional-hint">所有字段均为可选项，留空不会阻止保存。</p>
+        <form class="edit-form" @submit.prevent="saveEditTarget">
+          <label class="form-field"><span>备注名 <small>可选</small></span><input v-model="editDraft.alias" maxlength="100" placeholder="给队友容易识别的名字" /></label>
+          <label class="form-field"><span>人工 CS 等级 <small>可选</small></span><input v-model="editDraft.manual_cs_level" type="number" min="0" max="100" placeholder="未知则留空" /></label>
+          <label class="form-field"><span>服役勋章 <small>可选</small></span><select v-model="editDraft.service_medal"><option value="unknown">未知 / 不标注</option><option value="yes">有服役勋章</option><option value="no">无服役勋章</option></select></label>
+          <label class="form-field"><span>补充说明 <small>可选</small></span><textarea v-model="editDraft.note" maxlength="500" rows="4" placeholder="阵容、习惯或其他信息" /></label>
+          <div class="form-field tag-field full-row">
+            <span>标签 <small>可多选，也可留空</small></span>
+            <div class="tag-options"><button v-for="tag in QUICK_TAGS" :key="tag" type="button" :class="{ selected: editDraft.tags.includes(tag) }" @click="toggleTag(editDraft.tags, tag)">{{ tag }}</button></div>
+            <div class="custom-tag-row"><input v-model="editCustomTag" maxlength="30" placeholder="其他标签，回车创建" @keydown.enter.prevent="commitEditCustomTag" /><button type="button" @click="commitEditCustomTag">添加</button></div>
+            <div v-if="editDraft.tags.some(tag => !isQuickTag(tag))" class="selected-tags"><button v-for="tag in editDraft.tags.filter(tag => !isQuickTag(tag))" :key="tag" type="button" @click="toggleTag(editDraft.tags, tag)">{{ tag }} ×</button></div>
+          </div>
+          <footer class="modal-actions full-row"><button class="button outline compact" type="button" :disabled="editSaving" @click="closeEditTarget">取消</button><button class="button primary compact" type="submit" :disabled="editSaving">{{ editSaving ? '保存中…' : '保存全部标注' }}</button></footer>
+        </form>
+      </section>
+    </div>
+  </Teleport>
 </template>
