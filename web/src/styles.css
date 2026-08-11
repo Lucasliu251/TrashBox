@@ -121,7 +121,10 @@ input:focus, select:focus, textarea:focus { border-color: var(--gold); }
 .risk-list .medium { color: #e6af60; }
 .player-card footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; }
 .player-card footer a, .player-card footer button { color: #a2a8a8; font-size: 10px; background: none; border: 0; padding: 0; text-decoration: none; cursor: pointer; }
+.player-card footer a:hover { color: #e1ddd5; }
 .player-card footer button { color: #9d7772; }
+.player-card footer .profile-links { display: flex; flex-wrap: wrap; gap: 6px 12px; }
+.player-card footer .profile-links a:last-child { color: #85b7c0; }
 .player-card footer .card-actions { display: flex; gap: 14px; }
 .player-card footer .card-actions button:first-child { color: var(--gold); }
 .empty-panel { max-width: var(--content); min-height: 250px; margin: 20px auto; border: 1px dashed var(--line); display: grid; place-content: center; text-align: center; color: var(--muted); }

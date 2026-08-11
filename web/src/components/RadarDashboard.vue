@@ -244,6 +244,10 @@ function hours(minutes: number | null) {
   return minutes == null ? '未知' : Math.round(minutes / 60).toLocaleString('zh-CN')
 }
 
+function communityRipUrl(steamId: string) {
+  return `https://steamcommunity.rip/profiles/${encodeURIComponent(steamId)}/`
+}
+
 onMounted(() => {
   void initialize()
   pollTimer = window.setInterval(() => Promise.all([loadTargets(), loadSession()]).catch(() => undefined), 5000)
@@ -325,7 +329,7 @@ onBeforeUnmount(() => {
           <div class="signals"><span v-if="target.group_key && sameMatchCounts[target.group_key] > 1" class="danger">疑似同局 ×{{ sameMatchCounts[target.group_key] }}</span><span v-if="target.manual_cs_level != null && target.manual_cs_level < 40" class="danger">CS Lv.{{ target.manual_cs_level }}</span><span v-for="tag in target.tags" :key="tag">{{ tag }}</span></div>
           <div class="card-metrics"><div><strong>{{ hours(target.cs2_playtime_minutes) }}</strong><span>CS2 小时</span></div><div><strong :class="{ hot: target.risk_signals?.length }">{{ target.risk_signals?.length || 0 }}</strong><span>风险信号</span></div><div><strong class="time">{{ target.observed_at ? new Date(target.observed_at).toLocaleTimeString('zh-CN', { hour12: false }) : '未扫描' }}</strong><span>最近观测</span></div></div>
           <div v-if="target.risk_signals?.length" class="risk-list"><span v-for="signal in target.risk_signals" :key="signal.code" :class="signal.severity">{{ signal.label }}</span></div>
-          <footer><a v-if="target.profile_url" :href="target.profile_url" target="_blank">Steam 资料 ↗</a><span class="card-actions"><button @click="openEditTarget(target)">编辑标注</button><button @click="removeTarget(target)">移出 Radar</button></span></footer>
+          <footer><span class="profile-links"><a v-if="target.profile_url" :href="target.profile_url" target="_blank" rel="noopener noreferrer">Steam 资料 ↗</a><a :href="communityRipUrl(target.steam_id)" target="_blank" rel="noopener noreferrer">CS 数据导航 ↗</a></span><span class="card-actions"><button @click="openEditTarget(target)">编辑标注</button><button @click="removeTarget(target)">移出 Radar</button></span></footer>
         </article>
       </div>
     </section>
