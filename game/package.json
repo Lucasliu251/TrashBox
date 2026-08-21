@@ -1,0 +1,14 @@
+{
+  "name": "trashbox-sniper-game",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "predev": "pnpm --filter @trashbox/sniper-shared build",
+    "dev": "pnpm --parallel --filter @trashbox/sniper-shared --filter @trashbox/sniper-server --filter @trashbox/sniper-client dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm --filter @trashbox/sniper-shared build && pnpm -r typecheck",
+    "test": "pnpm --filter @trashbox/sniper-shared build && pnpm -r test",
+    "start": "pnpm --filter @trashbox/sniper-server start"
+  }
+}
