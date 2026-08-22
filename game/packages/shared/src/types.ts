@@ -123,6 +123,12 @@ export interface ShotEvent {
   rttMs: number
 }
 
+export interface ReloadEvent {
+  playerId: string
+  startedAt: number
+  endsAt: number
+}
+
 export interface HitResult {
   shotId: string
   shooterId: string
@@ -162,6 +168,7 @@ export type ServerMessage =
   | { type: 'room.closed'; payload: { roomCode: string; message: string } }
   | { type: 'room.state'; payload: RoomSnapshot }
   | { type: 'state.snapshot'; payload: { serverTime: number; room: RoomSnapshot } }
+  | { type: 'weapon.reload.started'; payload: ReloadEvent }
   | { type: 'shot.result'; payload: HitResult }
   | { type: 'round.result'; payload: { room: RoomSnapshot } }
   | { type: 'match.result'; payload: { scores: ScoreEntry[] } }

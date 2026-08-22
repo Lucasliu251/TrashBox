@@ -1,7 +1,7 @@
 import { createServer, type Server } from 'node:http'
 import { afterEach, describe, expect, it } from 'vitest'
 import WebSocket, { WebSocketServer } from 'ws'
-import { SIMULATION_DT, type ClientMessage, type ServerMessage } from '@trashbox/sniper-shared'
+import { CS2_AWP_2026_08, SIMULATION_DT, type ClientMessage, type ServerMessage } from '@trashbox/sniper-shared'
 import { RoomManager } from './manager.js'
 
 class Probe {
@@ -90,8 +90,7 @@ describe('five-player websocket room', () => {
     sockets.pop()
 
     const oldSecond = sockets[1]!
-    oldSecond.close()
-    await new Promise(resolve => setTimeout(resolve, 15))
+    const oldSecondClosed = new Promise<void>(resolve => oldSecond.socket.once('close', () => resolve()))
     const resumed = await Probe.connect(url)
     resumed.send({
       type: 'session.resume',
@@ -103,10 +102,25 @@ describe('five-player websocket room', () => {
     const resumedWelcome = await resumed.waitFor(isType('session.welcome'))
     expect(resumedWelcome.payload.reconnectToken).not.toBe(welcomes[1]!.payload.reconnectToken)
     sockets[1] = resumed
+    await oldSecondClosed
 
-    for (const probe of sockets) probe.send({ type: 'room.ready', payload: { ready: true } })
     const room = manager.rooms.get(roomCode)
     if (!room) throw new Error('Room not created')
+    expect(room.snapshot().players.find(player => player.id === resumedWelcome.payload.playerId)?.connected).toBe(true)
+
+    const snapshotCursor = resumed.messages.length
+    let tickNow = Date.now()
+    for (let tick = 0; tick < 128; tick += 1) {
+      tickNow += 1000 / 128
+      manager.tick(tickNow, SIMULATION_DT)
+      if (tick % 8 === 7) await new Promise(resolve => setTimeout(resolve, 0))
+    }
+    for (let attempt = 0; attempt < 100 && resumed.messages.slice(snapshotCursor).filter(isType('state.snapshot')).length < 128; attempt += 1) {
+      await new Promise(resolve => setTimeout(resolve, 5))
+    }
+    expect(resumed.messages.slice(snapshotCursor).filter(isType('state.snapshot'))).toHaveLength(128)
+
+    for (const probe of sockets) probe.send({ type: 'room.ready', payload: { ready: true } })
     for (let attempt = 0; attempt < 100 && !room.snapshot().players.every(player => player.ready); attempt += 1) {
       await new Promise(resolve => setTimeout(resolve, 5))
     }
@@ -116,6 +130,15 @@ describe('five-player websocket room', () => {
     host.send({ type: 'room.start', payload: {} })
     for (let attempt = 0; attempt < 100 && room.phase !== 'active'; attempt += 1) await new Promise(resolve => setTimeout(resolve, 5))
     expect(room.phase).toBe('active')
+
+    const shotCursor = host.messages.length
+    host.send({ type: 'shot.fire', payload: { shotId: 'reload-test-shot', inputSeq: 0, clientTime: Date.now(), rttMs: 0 } })
+    await host.waitFor(isType('shot.result'), shotCursor)
+    const reloadCursor = resumed.messages.length
+    host.send({ type: 'weapon.reload', payload: {} })
+    const reloadStarted = await resumed.waitFor(isType('weapon.reload.started'), reloadCursor)
+    expect(reloadStarted.payload.playerId).toBe(welcomes[0]!.payload.playerId)
+    expect(reloadStarted.payload.endsAt - reloadStarted.payload.startedAt).toBe(CS2_AWP_2026_08.reloadTimeMs)
 
     const sniperRotation: string[] = []
     for (let roundIndex = 0; roundIndex < 5; roundIndex += 1) {

@@ -15,11 +15,12 @@ interface StoredSession {
 /**
  * 解析 WebSocket 地址。
  * 优先使用构建时注入的 VITE_WS_URL；否则连接当前页面源 + Vite base + /ws，
- * 以便站点挂在 /trashbox/game/sniper 这类子路径时仍能打到同一反代。
+ * 以便站点挂在 /game/sniper 这类子路径时仍能打到同一反代。
  * @returns 浏览器 WebSocket 将要连接的绝对 URL
  *
  * @changelog
  * - 2026-08-22: 跟随 import.meta.env.BASE_URL，支持 Nginx 子路径反代
+ * - 2026-08-22: 生产公共路径改为 /game/sniper
  */
 function websocketUrl() {
   const configured = import.meta.env.VITE_WS_URL as string | undefined

@@ -5,6 +5,8 @@ import type { RadarSession, RadarStatus, RadarTarget, ResolvedTarget } from '../
 
 const props = defineProps<{ token: string }>()
 const emit = defineEmits<{ logout: [] }>()
+/** 品牌回首页地址，跟随 Vite base（生产为 /radar/） */
+const homeHref = import.meta.env.BASE_URL
 
 const QUICK_TAGS = ['外挂', '高玩', '蠢猪', '可疑'] as const
 type ServiceMedal = 'unknown' | 'yes' | 'no'
@@ -265,7 +267,7 @@ onBeforeUnmount(() => {
 <template>
   <main class="dashboard-shell">
     <header class="topbar">
-      <a class="brand" href="/"><span class="brand-mark">TB</span><span>TRASHBOX</span></a>
+      <a class="brand" :href="homeHref"><span class="brand-mark">TB</span><span>TRASHBOX</span></a>
       <div class="top-status"><span :class="['live-dot', { active: scanning || session }]" />{{ session ? `扫描中 ${remaining}` : 'RADAR STANDBY' }}</div>
       <button class="text-button" @click="emit('logout')">退出</button>
     </header>

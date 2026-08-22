@@ -25,7 +25,7 @@ function isClientMessage(value: unknown): value is ClientMessage {
 export class RoomManager {
   readonly rooms = new Map<string, Room>()
   private readonly sessions = new Map<WebSocket, Session>()
-  private lastSnapshotAt = 0
+  private snapshotAccumulator = 0
 
   connect(socket: WebSocket) {
     socket.on('message', raw => {
@@ -42,7 +42,7 @@ export class RoomManager {
     })
     socket.on('close', () => {
       const session = this.sessions.get(socket)
-      if (session) session.room.disconnect(session.playerId, Date.now())
+      if (session) session.room.disconnect(session.playerId, socket, Date.now())
       this.sessions.delete(socket)
     })
     socket.on('error', () => undefined)
@@ -50,9 +50,11 @@ export class RoomManager {
 
   tick(now: number, dt: number) {
     for (const room of this.rooms.values()) room.tick(now, dt)
-    if (now - this.lastSnapshotAt >= 1000 / SNAPSHOT_HZ) {
+    this.snapshotAccumulator += dt
+    const snapshotInterval = 1 / SNAPSHOT_HZ
+    if (this.snapshotAccumulator + Number.EPSILON >= snapshotInterval) {
       for (const room of this.rooms.values()) room.broadcastSnapshot(now)
-      this.lastSnapshotAt = now
+      this.snapshotAccumulator %= snapshotInterval
     }
     for (const [code, room] of this.rooms) {
       if (room.size === 0 && now - room.lastOccupiedAt >= EMPTY_ROOM_TTL_MS) this.rooms.delete(code)

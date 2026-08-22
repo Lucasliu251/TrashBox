@@ -24,6 +24,7 @@ const runtime = reactive<RuntimeInfo>({
   roundTimeMs: 0,
   velocity: 0,
   hitText: '',
+  reloading: false,
 })
 let engine: GameEngine | null = null
 
@@ -78,14 +79,14 @@ function enter() {
       <span class="eyebrow">STATUS</span>
       <strong>{{ runtime.health }} <small>HP</small></strong>
       <div class="health-meter"><i :style="{ width: `${runtime.health}%` }" /></div>
-      <small v-if="runtime.role === 'runner'">WASD 移动 · SHIFT 静步 · CTRL 蹲伏 · SPACE 跳跃</small>
+      <small v-if="runtime.role === 'runner'">WASD 移动 · SHIFT 静步 · C / CTRL 蹲伏 · SPACE 跳跃</small>
       <small v-else>固定射击位 · 鼠标瞄准 · 无移动输入</small>
     </aside>
 
     <aside v-if="runtime.role === 'sniper'" class="weapon-panel">
-      <span class="eyebrow">BOLT ACTION / 7.62</span>
+      <span class="eyebrow">{{ runtime.reloading ? 'RELOADING / 换弹中' : 'BOLT ACTION / 7.62' }}</span>
       <strong>{{ runtime.ammo }}<small>/ {{ runtime.reserveAmmo }}</small></strong>
-      <p>右键倍率 · R 装填 · 左键射击</p>
+      <p>{{ runtime.reloading ? '弹匣退出 · 装填 · 枪机复位' : '右键倍率 · R 装填 · 左键射击' }}</p>
     </aside>
 
     <button v-if="!runtime.pointerLocked" class="capture-input" type="button" @click="enter">

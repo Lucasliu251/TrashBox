@@ -16,6 +16,7 @@ import {
   type InputCommand,
   type LimbPart,
   type PlayerSnapshot,
+  type ReloadEvent,
   type RoomSnapshot,
   type ServerMessage,
   type SimPlayerState,
@@ -23,6 +24,7 @@ import {
 import type { GameConnection } from '../network'
 import type { TrainingSettings } from '../settings'
 import { RoundInputSequence } from './InputSequence'
+import { reloadPose } from './WeaponFeedback'
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree
@@ -40,6 +42,7 @@ export interface RuntimeInfo {
   roundTimeMs: number
   velocity: number
   hitText: string
+  reloading: boolean
 }
 
 interface EngineOptions {
@@ -64,6 +67,9 @@ interface Debris {
 }
 
 const UP = new THREE.Vector3(0, 1, 0)
+const GAME_KEY_CODES = ['KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyC', 'KeyR', 'ShiftLeft', 'ShiftRight', 'ControlLeft', 'ControlRight', 'Space']
+const GAME_KEYS = new Set(GAME_KEY_CODES)
+type KeyboardLockNavigator = Navigator & { keyboard?: { lock(keys?: string[]): Promise<void>; unlock(): void } }
 const clampPitch = (pitch: number) => THREE.MathUtils.clamp(pitch, -Math.PI * 0.494, Math.PI * 0.494)
 const createShotId = () => typeof globalThis.crypto?.randomUUID === 'function'
   ? globalThis.crypto.randomUUID()
@@ -94,6 +100,7 @@ function makeTextCanvas(text: string, color: string) {
 
 export class GameEngine {
   private readonly canvas: HTMLCanvasElement
+  private readonly inputSurface: HTMLElement
   private readonly connection: GameConnection
   private readonly settings: TrainingSettings
   private readonly onRuntime: EngineOptions['onRuntime']
@@ -108,6 +115,7 @@ export class GameEngine {
   private readonly particles: Debris[] = []
   private readonly stains: Array<{ mesh: THREE.Mesh; expiresAt: number }> = []
   private readonly viewModel = new THREE.Group()
+  private magazine: THREE.Mesh | null = null
   private readonly muzzleLight = new THREE.PointLight(0xffd8a0, 0, 7, 2)
   private readonly weaponLight = new THREE.PointLight(0xffe0b0, 0, 2.6, 2)
   private readonly platformWeaponLight = new THREE.SpotLight(0xffd69b, 0, 4, Math.PI / 5, 0.5, 1.4)
@@ -128,6 +136,9 @@ export class GameEngine {
   private hitText = ''
   private hitTextUntil = 0
   private recoil = 0
+  private reloadRequestedAt = 0
+  private reloadStartedAt = 0
+  private reloadEndsAt = 0
   private walkPhase = 0
   private lastLocalStepAt = 0
   private messageOff: (() => void) | null = null
@@ -135,6 +146,7 @@ export class GameEngine {
 
   constructor(options: EngineOptions) {
     this.canvas = options.canvas
+    this.inputSurface = this.canvas.parentElement ?? this.canvas
     this.connection = options.connection
     this.settings = options.settings
     this.onRuntime = options.onRuntime
@@ -161,6 +173,7 @@ export class GameEngine {
     if (!document.fullscreenElement) {
       await this.canvas.parentElement?.requestFullscreen({ navigationUI: 'hide' }).catch(() => undefined)
     }
+    await (navigator as KeyboardLockNavigator).keyboard?.lock(GAME_KEY_CODES).catch(() => undefined)
     try {
       await this.canvas.requestPointerLock({ unadjustedMovement: true })
       this.rawInput = true
@@ -183,11 +196,13 @@ export class GameEngine {
     document.removeEventListener('mousemove', this.mouseMoved)
     window.removeEventListener('keydown', this.keyDown, true)
     window.removeEventListener('keyup', this.keyUp, true)
-    window.removeEventListener('mousedown', this.mouseDown)
-    window.removeEventListener('contextmenu', this.preventContext)
-    window.removeEventListener('auxclick', this.preventContext)
-    window.removeEventListener('wheel', this.preventWheel, true)
-    window.removeEventListener('dragstart', this.preventContext)
+    this.canvas.removeEventListener('mousedown', this.mouseDown)
+    this.inputSurface.removeEventListener('contextmenu', this.preventContext)
+    this.inputSurface.removeEventListener('auxclick', this.preventContext)
+    this.inputSurface.removeEventListener('wheel', this.preventWheel, true)
+    this.inputSurface.removeEventListener('dragstart', this.preventContext)
+    window.removeEventListener('beforeunload', this.preventUnload)
+    ;(navigator as KeyboardLockNavigator).keyboard?.unlock()
     if (document.fullscreenElement === this.canvas.parentElement) {
       void document.exitFullscreen().catch(() => undefined)
     }
@@ -366,7 +381,10 @@ export class GameEngine {
     scope.position.set(0.31, -0.105, -0.67)
     const stock = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.18, 0.44), accent)
     stock.position.set(0.35, -0.29, -0.22)
-    this.viewModel.add(receiver, barrel, scope, stock, this.muzzleLight, this.weaponLight)
+    this.magazine = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.26, 0.11), dark)
+    this.magazine.position.set(0.31, -0.38, -0.58)
+    this.magazine.rotation.x = -0.12
+    this.viewModel.add(receiver, barrel, scope, stock, this.magazine, this.muzzleLight, this.weaponLight)
     this.muzzleLight.position.set(0.31, -0.2, -1.78)
     this.weaponLight.position.set(0.05, 0.08, -0.25)
     this.camera.add(this.viewModel)
@@ -378,15 +396,17 @@ export class GameEngine {
     document.addEventListener('mousemove', this.mouseMoved)
     window.addEventListener('keydown', this.keyDown, true)
     window.addEventListener('keyup', this.keyUp, true)
-    window.addEventListener('mousedown', this.mouseDown)
-    window.addEventListener('contextmenu', this.preventContext)
-    window.addEventListener('auxclick', this.preventContext)
-    window.addEventListener('wheel', this.preventWheel, { passive: false, capture: true })
-    window.addEventListener('dragstart', this.preventContext)
+    this.canvas.addEventListener('mousedown', this.mouseDown)
+    this.inputSurface.addEventListener('contextmenu', this.preventContext)
+    this.inputSurface.addEventListener('auxclick', this.preventContext)
+    this.inputSurface.addEventListener('wheel', this.preventWheel, { passive: false, capture: true })
+    this.inputSurface.addEventListener('dragstart', this.preventContext)
+    window.addEventListener('beforeunload', this.preventUnload)
   }
 
   private pointerLockChanged = () => {
     this.pointerLocked = document.pointerLockElement === this.canvas
+    if (!this.pointerLocked) this.keys.clear()
   }
 
   private mouseMoved = (event: MouseEvent) => {
@@ -397,19 +417,26 @@ export class GameEngine {
   }
 
   private keyDown = (event: KeyboardEvent) => {
+    if (!this.pointerLocked || !GAME_KEYS.has(event.code)) return
     event.preventDefault()
     event.stopPropagation()
     this.keys.add(event.code)
-    if (!event.repeat && event.code === 'KeyR') this.connection.send({ type: 'weapon.reload', payload: {} })
+    if (!event.repeat && event.code === 'KeyR') this.requestReload()
   }
 
   private keyUp = (event: KeyboardEvent) => {
+    if (!GAME_KEYS.has(event.code)) return
+    this.keys.delete(event.code)
+    if (!this.pointerLocked) return
     event.preventDefault()
     event.stopPropagation()
-    this.keys.delete(event.code)
   }
   private preventContext = (event: MouseEvent) => event.preventDefault()
   private preventWheel = (event: WheelEvent) => event.preventDefault()
+  private preventUnload = (event: BeforeUnloadEvent) => {
+    event.preventDefault()
+    event.returnValue = ''
+  }
 
   private mouseDown = (event: MouseEvent) => {
     event.preventDefault()
@@ -427,9 +454,30 @@ export class GameEngine {
     this.playClick(this.localScope ? 430 : 260)
   }
 
+  private requestReload() {
+    const now = performance.now()
+    if (
+      this.latestOwn?.role !== 'sniper'
+      || this.latestOwn.life !== 'alive'
+      || this.localAmmo >= CS2_AWP_2026_08.magazineSize
+      || this.localReserve <= 0
+      || now < this.reloadEndsAt
+      || (this.reloadRequestedAt > 0 && now - this.reloadRequestedAt < 500)
+    ) return
+    this.reloadRequestedAt = now
+    this.connection.send({ type: 'weapon.reload', payload: {} })
+  }
+
   private fire() {
     const now = Date.now()
-    if (this.latestOwn?.role !== 'sniper' || this.latestOwn.life !== 'alive' || this.localAmmo <= 0 || now < this.localNextShotAt) return
+    if (
+      this.latestOwn?.role !== 'sniper'
+      || this.latestOwn.life !== 'alive'
+      || this.localAmmo <= 0
+      || now < this.localNextShotAt
+      || performance.now() < this.reloadEndsAt
+      || (this.reloadRequestedAt > 0 && performance.now() - this.reloadRequestedAt < 500)
+    ) return
     this.localAmmo -= 1
     this.localNextShotAt = now + CS2_AWP_2026_08.cycleTimeMs
     this.localScope = 0
@@ -462,10 +510,11 @@ export class GameEngine {
     oscillator.stop(this.audio.currentTime + 0.05)
   }
 
-  private playShot() {
+  private playShot(volume = 0.32, pan = 0, delaySeconds = 0, cutoff = 1700) {
+    if (this.audio.state !== 'running' || volume <= 0.001) return
     const duration = 0.42
     const sampleRate = this.audio.sampleRate
-    const buffer = this.audio.createBuffer(1, sampleRate * duration, sampleRate)
+    const buffer = this.audio.createBuffer(1, Math.floor(sampleRate * duration), sampleRate)
     const values = buffer.getChannelData(0)
     for (let index = 0; index < values.length; index += 1) {
       const time = index / sampleRate
@@ -474,12 +523,76 @@ export class GameEngine {
     const source = this.audio.createBufferSource()
     const filter = this.audio.createBiquadFilter()
     const gain = this.audio.createGain()
+    const stereo = this.audio.createStereoPanner()
     filter.type = 'lowpass'
-    filter.frequency.value = 1700
-    gain.gain.value = 0.32
+    filter.frequency.value = cutoff
+    gain.gain.value = volume
+    stereo.pan.value = THREE.MathUtils.clamp(pan, -1, 1)
     source.buffer = buffer
-    source.connect(filter).connect(gain).connect(this.audio.destination)
-    source.start()
+    source.connect(filter).connect(gain).connect(stereo).connect(this.audio.destination)
+    source.start(this.audio.currentTime + delaySeconds)
+  }
+
+  private playMechanicalClick(delay: number, frequency: number, volume: number, pan = 0) {
+    if (this.audio.state !== 'running') return
+    const start = this.audio.currentTime + delay
+    const oscillator = this.audio.createOscillator()
+    const gain = this.audio.createGain()
+    const filter = this.audio.createBiquadFilter()
+    const stereo = this.audio.createStereoPanner()
+    oscillator.type = 'square'
+    oscillator.frequency.setValueAtTime(frequency, start)
+    oscillator.frequency.exponentialRampToValueAtTime(Math.max(90, frequency * 0.34), start + 0.075)
+    filter.type = 'bandpass'
+    filter.frequency.value = frequency
+    filter.Q.value = 0.8
+    gain.gain.setValueAtTime(volume, start)
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.09)
+    stereo.pan.value = THREE.MathUtils.clamp(pan, -1, 1)
+    oscillator.connect(filter).connect(gain).connect(stereo).connect(this.audio.destination)
+    oscillator.start(start)
+    oscillator.stop(start + 0.1)
+  }
+
+  private playReloadSound(volume = 1, pan = 0) {
+    this.playMechanicalClick(0.02, 1150, 0.045 * volume, pan)
+    this.playMechanicalClick(0.82, 420, 0.075 * volume, pan)
+    this.playMechanicalClick(2.08, 280, 0.095 * volume, pan)
+    this.playMechanicalClick(3.2, 920, 0.075 * volume, pan)
+  }
+
+  private spatialAudio(playerId: string, maxDistance: number) {
+    const player = this.room?.players.find(candidate => candidate.id === playerId)
+    if (!player) return null
+    const offset = new THREE.Vector3(player.position.x, player.position.y + 1.4, player.position.z).sub(this.camera.position)
+    const distance = offset.length()
+    if (distance > maxDistance) return null
+    const right = new THREE.Vector3(1, 0, 0).applyQuaternion(this.camera.quaternion)
+    const pan = distance > 0.001 ? offset.normalize().dot(right) : 0
+    return { distance, pan }
+  }
+
+  private playRemoteShot(shooterId: string) {
+    const spatial = this.spatialAudio(shooterId, 120)
+    if (!spatial) return
+    const volume = THREE.MathUtils.clamp(0.34 * (1 - spatial.distance / 95), 0.08, 0.3)
+    const cutoff = THREE.MathUtils.clamp(1800 - spatial.distance * 15, 650, 1800)
+    this.playShot(volume, spatial.pan, Math.min(0.2, spatial.distance / 343), cutoff)
+  }
+
+  private handleReloadStarted(event: ReloadEvent) {
+    if (event.playerId === this.connection.playerId) {
+      const duration = Math.max(1, event.endsAt - event.startedAt)
+      this.reloadRequestedAt = 0
+      this.reloadStartedAt = performance.now()
+      this.reloadEndsAt = this.reloadStartedAt + duration
+      this.localScope = 0
+      if (this.localState) this.localState.scopedLevel = 0
+      this.playReloadSound()
+      return
+    }
+    const spatial = this.spatialAudio(event.playerId, 24)
+    if (spatial) this.playReloadSound(THREE.MathUtils.clamp(1 - spatial.distance / 24, 0.08, 0.35), spatial.pan)
   }
 
   private playFootstep(volume: number, pan = 0) {
@@ -509,7 +622,11 @@ export class GameEngine {
     if (message.type === 'room.state') this.applyRoom(message.payload, Date.now())
     else if (message.type === 'state.snapshot') this.applyRoom(message.payload.room, message.payload.serverTime)
     else if (message.type === 'round.result') this.applyRoom(message.payload.room, Date.now())
-    else if (message.type === 'shot.result') this.showHit(message.payload)
+    else if (message.type === 'weapon.reload.started') this.handleReloadStarted(message.payload)
+    else if (message.type === 'shot.result') {
+      if (message.payload.shooterId !== this.connection.playerId) this.playRemoteShot(message.payload.shooterId)
+      this.showHit(message.payload)
+    }
   }
 
   private applyRoom(room: RoomSnapshot, serverTime: number) {
@@ -520,6 +637,9 @@ export class GameEngine {
       this.pendingInputs.splice(0)
       this.keys.clear()
       this.lastLocalStepAt = 0
+      this.reloadRequestedAt = 0
+      this.reloadStartedAt = 0
+      this.reloadEndsAt = 0
     }
     const own = room.players.find(player => player.id === this.connection.playerId) ?? null
     this.latestOwn = own
@@ -566,7 +686,7 @@ export class GameEngine {
       visual.group.userData.snapshot = player
       const lastFrame = visual.frames.at(-1)
       if (!lastFrame || serverTime > lastFrame.at) visual.frames.push({ at: serverTime, snapshot: structuredClone(player) })
-      while (visual.frames.length > 12) visual.frames.shift()
+      while (visual.frames.length > 32) visual.frames.shift()
       visual.parts.leftArm.visible = player.body.limbs.leftArm === 'intact'
       visual.parts.rightArm.visible = player.body.limbs.rightArm === 'intact'
       visual.parts.leftLeg.visible = player.body.limbs.leftLeg === 'intact'
@@ -704,7 +824,7 @@ export class GameEngine {
       left: this.keys.has('KeyA'),
       right: this.keys.has('KeyD'),
       walk: this.keys.has('ShiftLeft') || this.keys.has('ShiftRight'),
-      crouch: this.keys.has('ControlLeft') || this.keys.has('ControlRight'),
+      crouch: this.keys.has('KeyC') || this.keys.has('ControlLeft') || this.keys.has('ControlRight'),
       jump: this.keys.has('Space'),
     }
     const command: InputCommand = {
@@ -732,16 +852,32 @@ export class GameEngine {
     this.camera.rotation.order = 'YXZ'
     this.camera.rotation.y = state.yaw
     this.camera.rotation.x = -state.pitch
+    const now = performance.now()
+    if (this.reloadRequestedAt > 0 && now - this.reloadRequestedAt > 1000 && (this.latestOwn?.reloadingUntil ?? 0) <= Date.now()) {
+      this.reloadRequestedAt = 0
+    }
+    if (this.reloadEndsAt > 0 && now >= this.reloadEndsAt) {
+      this.reloadStartedAt = 0
+      this.reloadEndsAt = 0
+    }
+    const reloadProgress = this.reloadEndsAt > now
+      ? (now - this.reloadStartedAt) / Math.max(1, this.reloadEndsAt - this.reloadStartedAt)
+      : 0
+    const pose = reloadPose(reloadProgress)
     this.recoil = THREE.MathUtils.damp(this.recoil, 0, 13, dt)
     this.viewModel.rotation.x = -this.recoil * 0.08
-    this.viewModel.position.y = -this.recoil * 0.04
+    this.viewModel.rotation.z = -pose.weaponAmount * 0.34
+    this.viewModel.position.set(pose.weaponAmount * 0.12, -this.recoil * 0.04 - pose.weaponAmount * 0.34, pose.weaponAmount * 0.08)
+    if (this.magazine) {
+      this.magazine.position.set(0.31, -0.38 - pose.magazineAmount * 0.48, -0.58 + pose.magazineAmount * 0.04)
+      this.magazine.rotation.z = pose.magazineAmount * 0.18
+    }
     this.viewModel.visible = state.role === 'sniper' && this.latestOwn?.life === 'alive' && this.localScope === 0
     this.weaponLight.intensity = state.role === 'sniper' && this.latestOwn?.life === 'alive' ? 3.2 : 0
     this.platformWeaponLight.intensity = state.role === 'sniper' && this.latestOwn?.life === 'alive' ? 30 : 0
     const targetFov = sourceFovToVertical(this.localScope === 0 ? CS2_AWP_2026_08.baseFov : CS2_AWP_2026_08.zoomFovs[this.localScope - 1]!)
     this.camera.fov = THREE.MathUtils.damp(this.camera.fov, targetFov, this.localScope ? 14 : 18, dt)
     this.camera.updateProjectionMatrix()
-    const now = performance.now()
     const quietStep = state.crouching || this.keys.has('ShiftLeft') || this.keys.has('ShiftRight')
     const stepInterval = quietStep ? 620 : Math.max(285, 535 - speed * 48)
     if (state.role === 'runner' && this.latestOwn?.life === 'alive' && state.grounded && speed > 0.65 && now - this.lastLocalStepAt >= stepInterval) {
@@ -851,6 +987,7 @@ export class GameEngine {
       roundTimeMs: this.room?.round ? Math.max(0, this.room.round.endsAt - Date.now()) : 0,
       velocity: this.localState ? Math.hypot(this.localState.velocity.x, this.localState.velocity.z) : 0,
       hitText: this.hitText,
+      reloading: this.reloadEndsAt > performance.now(),
     })
   }
 

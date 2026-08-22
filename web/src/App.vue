@@ -11,10 +11,18 @@ const loginError = ref('')
 const loginBusy = ref(false)
 let pollTimer: number | undefined
 
+/**
+ * 写入登录态并清掉回调查询串。
+ * 跳转目标使用 Vite base，避免挂在 /radar 时被打回站点根路径。
+ *
+ * @param value - 接口返回的访问令牌
+ * @changelog
+ * - 2026-08-22: replaceState 改为 import.meta.env.BASE_URL，支持路径反代
+ */
 function acceptToken(value: string) {
   token.value = value
   localStorage.setItem('trashbox_access_token', value)
-  window.history.replaceState({}, '', '/')
+  window.history.replaceState({}, '', import.meta.env.BASE_URL)
   if (pollTimer) window.clearInterval(pollTimer)
 }
 

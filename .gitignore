@@ -37,3 +37,16 @@ web/vite.config.d.ts
 
 # Local IDE metadata
 .idea/
+
+# Local serve.sh process files
+.serve-*.pid
+.serve-*.log
+.serve.pid
+.serve.log
+.serve-public/
+.serve-public.previous/
+.serve-public.tmp.*/
+.env
+game/.run/
+game/.env
+web/.env

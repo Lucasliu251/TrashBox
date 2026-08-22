@@ -184,9 +184,9 @@ export class Room {
     return player
   }
 
-  disconnect(playerId: string, now: number) {
+  disconnect(playerId: string, socket: WebSocket, now: number) {
     const player = this.players.get(playerId)
-    if (!player) return
+    if (!player || player.socket !== socket) return
     player.socket = null
     player.connected = false
     player.disconnectedAt = now
@@ -304,7 +304,12 @@ export class Room {
   }
 
   broadcastSnapshot(serverTime: number) {
-    this.broadcast({ type: 'state.snapshot', payload: { serverTime, room: this.snapshot() } })
+    const payload = JSON.stringify({ type: 'state.snapshot', payload: { serverTime, room: this.snapshot() } } satisfies ServerMessage)
+    for (const player of this.players.values()) {
+      const socket = player.socket
+      // 快照会被下一帧替代；慢连接不堆积旧帧，否则 128 Hz 会不断增加输入延迟。
+      if (socket?.readyState === 1 && socket.bufferedAmount < 64 * 1024) socket.send(payload)
+    }
   }
 
   private startMatch(playerId: string, now: number) {
@@ -399,6 +404,10 @@ export class Room {
     player.reloadingUntil = now + CS2_AWP_2026_08.reloadTimeMs
     player.state.scopedLevel = 0
     player.scopeReadyAt = 0
+    this.broadcast({
+      type: 'weapon.reload.started',
+      payload: { playerId: player.id, startedAt: now, endsAt: player.reloadingUntil },
+    })
   }
 
   private finishReload(player: Player) {

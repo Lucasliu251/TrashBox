@@ -1,7 +1,7 @@
 import type { MapObstacle, Vec3, WeaponPreset } from './types.js'
 
 export const SIMULATION_HZ = 128
-export const SNAPSHOT_HZ = 64
+export const SNAPSHOT_HZ = 128
 export const SIMULATION_DT = 1 / SIMULATION_HZ
 export const ROUND_DURATION_MS = 90_000
 export const ROUND_RESULT_MS = 5_000

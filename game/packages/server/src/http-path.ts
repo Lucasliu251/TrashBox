@@ -7,7 +7,7 @@
 
 /**
  * 将环境变量中的 BASE_PATH 规范为「空字符串或 /a/b」形式（无尾斜杠）。
- * @param raw - 原始路径，例如 `/trashbox/game/sniper`、`trashbox/game/sniper/` 或未设置
+ * @param raw - 原始路径，例如 `/game/sniper`、`game/sniper/` 或未设置
  * @returns 空字符串表示挂在站点根路径；否则为带前导斜杠、无尾斜杠的前缀
  */
 export function normalizeBasePath(raw: string | undefined): string {

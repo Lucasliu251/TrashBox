@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue'
 
 /**
  * 将 BASE_PATH 转成 Vite `base`（必须以 / 开头和结尾）。
- * 构建生产包时需与运行时环境变量、Nginx location 保持一致，例如 `/trashbox/game/sniper/`。
+ * 构建生产包时需与运行时环境变量、Nginx location 保持一致，例如 `/game/sniper/`。
  * @param raw - 原始路径前缀
  * @returns Vite public base
  */

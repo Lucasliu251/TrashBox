@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { MAP_OBSTACLES, PLAYER_DIMENSIONS, SIMULATION_DT, SIMULATION_HZ, WORLD, createBodyState, createSimState, simulateMovement, type InputCommand } from './index.js'
+import { MAP_OBSTACLES, PLAYER_DIMENSIONS, SIMULATION_DT, SIMULATION_HZ, SNAPSHOT_HZ, WORLD, createBodyState, createSimState, simulateMovement, type InputCommand } from './index.js'
 
 const input = (seq: number, overrides: Partial<InputCommand['buttons']> = {}): InputCommand => ({
   seq,
@@ -42,6 +42,7 @@ describe('128 Hz movement simulation', () => {
     const covers = MAP_OBSTACLES.filter(obstacle => obstacle.kind !== 'platform')
     expect(WORLD).toMatchObject({ width: 12, length: 56 })
     expect(SIMULATION_HZ).toBe(128)
+    expect(SNAPSHOT_HZ).toBe(128)
     for (const obstacle of covers) {
       expect(obstacle.size.x).toBeGreaterThanOrEqual(PLAYER_DIMENSIONS.visualWidth)
       expect(obstacle.size.x).toBeLessThanOrEqual(PLAYER_DIMENSIONS.visualWidth * 1.8)

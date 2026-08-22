@@ -145,7 +145,7 @@ function scoreRank(index: number) {
           <h1>一条封锁线。<br /><em>五个人的准星。</em></h1>
           <p class="hero-lead">一名狙击手控制终点，最多四名士兵借夜色与掩体突围。无需下载，房间码直达。</p>
           <div class="hero-stats">
-            <div><b>64</b><span>SERVER HZ</span></div>
+            <div><b>128</b><span>SERVER HZ</span></div>
             <div><b>90</b><span>SECONDS</span></div>
             <div><b>2–5</b><span>PLAYERS</span></div>
           </div>
