@@ -6,10 +6,19 @@ import RadarDashboard from './components/RadarDashboard.vue'
 
 const token = ref(localStorage.getItem('trashbox_access_token') || '')
 const qrUrl = ref('')
-const challenge = ref('')
 const loginError = ref('')
 const loginBusy = ref(false)
+const showMiniLogin = ref(false)
+const scanMode = ref<'wechat' | 'mini'>('mini')
 let pollTimer: number | undefined
+let expiryTimer: number | undefined
+
+function stopChallenge() {
+  if (pollTimer) window.clearInterval(pollTimer)
+  if (expiryTimer) window.clearTimeout(expiryTimer)
+  pollTimer = undefined
+  expiryTimer = undefined
+}
 
 /**
  * 写入登录态并清掉回调查询串。
@@ -23,7 +32,7 @@ function acceptToken(value: string) {
   token.value = value
   localStorage.setItem('trashbox_access_token', value)
   window.history.replaceState({}, '', import.meta.env.BASE_URL)
-  if (pollTimer) window.clearInterval(pollTimer)
+  stopChallenge()
 }
 
 async function poll(code: string) {
@@ -31,25 +40,41 @@ async function poll(code: string) {
     const result = await api.pollChallenge(code)
     if (result.access_token) acceptToken(result.access_token)
   } catch (error) {
-    if (error instanceof Error && !error.message.includes('410')) loginError.value = error.message
+    if (error instanceof Error && error.message.includes('410')) {
+      stopChallenge()
+      qrUrl.value = ''
+      loginError.value = '登录码已过期，请刷新后重试。'
+    } else if (error instanceof Error) {
+      loginError.value = error.message
+    }
   }
 }
 
 async function beginQrLogin() {
+  if (loginBusy.value) return
+  stopChallenge()
   loginBusy.value = true
   loginError.value = ''
+  qrUrl.value = ''
   try {
     const result = await api.createChallenge()
-    challenge.value = result.challenge_token
-    qrUrl.value = await QRCode.toDataURL(result.qr_payload, {
-      width: 260,
-      margin: 2,
-      color: { dark: '#121516', light: '#f0ede6' },
-    })
-    if (pollTimer) window.clearInterval(pollTimer)
+    scanMode.value = result.mini_program_qr ? 'wechat' : 'mini'
+    qrUrl.value = result.mini_program_qr || await QRCode.toDataURL(result.qr_payload, {
+        width: 260,
+        margin: 2,
+        color: { dark: '#121516', light: '#f0ede6' },
+      })
     pollTimer = window.setInterval(() => poll(result.challenge_token), 1800)
+    const expiresIn = new Date(result.expires_at).getTime() - Date.now()
+    expiryTimer = window.setTimeout(() => {
+      stopChallenge()
+      qrUrl.value = ''
+      loginError.value = '登录码已过期，请刷新后重试。'
+    }, Math.max(0, expiresIn))
   } catch (error) {
-    loginError.value = error instanceof Error ? error.message : '无法创建登录码'
+    loginError.value = error instanceof Error && error.message.includes('502')
+      ? '登录服务暂不可用，请稍后重试。'
+      : error instanceof Error ? error.message : '无法创建登录码'
   } finally {
     loginBusy.value = false
   }
@@ -58,7 +83,17 @@ async function beginQrLogin() {
 function logout() {
   localStorage.removeItem('trashbox_access_token')
   token.value = ''
-  void beginQrLogin()
+  if (showMiniLogin.value) void beginQrLogin()
+}
+
+function toggleMiniLogin() {
+  showMiniLogin.value = !showMiniLogin.value
+  if (showMiniLogin.value) void beginQrLogin()
+  else {
+    stopChallenge()
+    qrUrl.value = ''
+    loginError.value = ''
+  }
 }
 
 onMounted(async () => {
@@ -68,11 +103,11 @@ onMounted(async () => {
     await poll(callbackCode)
     loginBusy.value = false
   }
-  if (!token.value) await beginQrLogin()
+  if (!token.value && showMiniLogin.value) await beginQrLogin()
 })
 
 onBeforeUnmount(() => {
-  if (pollTimer) window.clearInterval(pollTimer)
+  stopChallenge()
 })
 </script>
 
@@ -89,16 +124,21 @@ onBeforeUnmount(() => {
     </section>
     <section class="login-panel">
       <div class="panel-head"><span class="live-dot"></span><span>SECURE ACCESS</span></div>
-      <h2>用 TrashBox 小程序确认</h2>
-      <p>在 Radar 页面点击“扫码登录”，只有已注册成员可以进入。</p>
-      <div class="qr-frame">
-        <img v-if="qrUrl" :src="qrUrl" alt="TrashBox 登录二维码" />
-        <div v-else class="qr-loading">{{ loginBusy ? '生成中…' : '二维码不可用' }}</div>
-      </div>
-      <button class="button primary" :disabled="loginBusy" @click="beginQrLogin">刷新登录码</button>
-      <a class="button steam" :href="api.steamLoginUrl">通过已绑定 Steam 登录</a>
+      <h2>登录 Radar</h2>
+      <p>已绑定 Steam 的成员可直接登录。</p>
+      <a class="button primary" :href="api.steamLoginUrl">通过 Steam 登录</a>
+      <div class="login-divider">或</div>
+      <button class="button steam" @click="toggleMiniLogin">{{ showMiniLogin ? '收起扫码登录' : '扫码登录' }}</button>
+      <template v-if="showMiniLogin">
+        <p class="mini-login-hint">{{ scanMode === 'wechat' ? '用微信扫一扫，在小程序中确认登录。' : '请打开 TrashBox 小程序，在 Radar 页面点击“扫码登录”。' }}</p>
+        <div class="qr-frame">
+          <img v-if="qrUrl" :src="qrUrl" :alt="scanMode === 'wechat' ? '微信扫一扫登录码' : 'TrashBox 小程序登录码'" />
+          <div v-else class="qr-loading">{{ loginBusy ? '生成中…' : '登录码不可用' }}</div>
+        </div>
+        <button class="button steam" :disabled="loginBusy" @click="beginQrLogin">刷新登录码</button>
+        <small>登录码 5 分钟内有效，确认后立即失效。</small>
+      </template>
       <div v-if="loginError" class="error-message">{{ loginError }}</div>
-      <small>登录码 5 分钟内有效，确认后立即失效。</small>
     </section>
   </main>
 </template>

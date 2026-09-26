@@ -1,6 +1,6 @@
 import type { RadarSession, RadarTarget, ResolvedTarget } from './types'
 
-export const API_BASE = (import.meta.env.VITE_API_BASE || 'https://trashbox.tech').replace(/\/$/, '')
+export const API_BASE = (import.meta.env.VITE_API_BASE || window.location.origin).replace(/\/$/, '')
 
 interface ApiEnvelope<T> {
   code: number
@@ -18,12 +18,12 @@ async function request<T>(path: string, token?: string, init: RequestInit = {}):
     },
   })
   const body = await response.json().catch(() => ({}))
-  if (!response.ok) throw new Error(body.detail || `请求失败 (${response.status})`)
+  if (!response.ok) throw new Error(`${response.status}: ${body.detail || '请求失败'}`)
   return body.data as T
 }
 
 export const api = {
-  createChallenge: () => request<{ challenge_token: string; qr_payload: string; expires_at: string }>(
+  createChallenge: () => request<{ challenge_token: string; qr_payload: string; mini_program_qr?: string | null; expires_at: string }>(
     '/api/v1/web-auth/challenges', undefined, { method: 'POST' },
   ),
   pollChallenge: (code: string) => request<{ status: string; access_token?: string }>(

@@ -5,6 +5,7 @@ $RECYCLE.BIN/
 
 # macOS
 .DS_Store
+._*
 .fseventsd
 .Spotlight-V100
 .TemporaryItems
@@ -12,6 +13,7 @@ $RECYCLE.BIN/
 
 # Node.js
 node_modules/
+site/node_modules
 dist/
 .pnpm-store/
 *.tsbuildinfo
@@ -46,6 +48,9 @@ web/vite.config.d.ts
 .serve-public/
 .serve-public.previous/
 .serve-public.tmp.*/
+.serve-public.paused-*/
+.local-venv/
+.run-local/
 .env
 game/.run/
 game/.env

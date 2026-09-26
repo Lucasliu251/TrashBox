@@ -33,9 +33,23 @@ Page({
     editDraft: null
   },
 
+  onLoad(options) {
+    let scene = '';
+    try {
+      scene = options && options.scene ? decodeURIComponent(String(options.scene)) : '';
+    } catch (_) {
+      scene = '';
+    }
+    this._webLoginScene = /^[A-Za-z0-9_-]{20,32}$/.test(scene) ? scene : '';
+  },
+
   onShow() {
     this._visible = true;
     this.initializeRadar();
+    if (this._webLoginScene && !this._webLoginPrompted) {
+      this._webLoginPrompted = true;
+      this.confirmWebLogin(this._webLoginScene);
+    }
   },
 
   onHide() {
@@ -55,7 +69,7 @@ Page({
     return new Promise((resolve, reject) => {
       const token = app.globalData.accessToken || wx.getStorageSync('access_token');
       if (token) return resolve(token);
-      if (attempt >= 20) return reject(new Error('请先完成 TrashBox 登录'));
+      if (attempt >= 40) return reject(new Error('请先完成 TrashBox 登录'));
       setTimeout(() => this.waitForToken(attempt + 1).then(resolve).catch(reject), 250);
     });
   },
@@ -340,18 +354,30 @@ Page({
     });
   },
 
-  scanWebLogin() {
-    wx.scanCode({
-      onlyFromCamera: false,
-      success: async result => {
-        const match = String(result.result || '').match(/^trashbox:\/\/web-login\/(.+)$/);
-        if (!match) return wx.showToast({ title: '不是 TrashBox 登录码', icon: 'none' });
+  confirmWebLogin(token) {
+    wx.showModal({
+      title: '确认网页登录',
+      content: '是否允许当前电脑登录 TrashBox Radar？',
+      confirmText: '确认登录',
+      success: async answer => {
+        if (!answer.confirm) return;
         try {
-          await this.request(`/api/v1/web-auth/challenges/${encodeURIComponent(match[1])}/confirm`, { method: 'POST' });
+          await this.request(`/api/v1/web-auth/challenges/${encodeURIComponent(token)}/confirm`, { method: 'POST' });
           wx.showToast({ title: '登录已确认', icon: 'success' });
         } catch (error) {
           this.setData({ error: error.message });
         }
+      }
+    });
+  },
+
+  scanWebLogin() {
+    wx.scanCode({
+      onlyFromCamera: false,
+      success: result => {
+        const match = String(result.result || '').match(/^trashbox:\/\/web-login\/(.+)$/);
+        if (!match) return wx.showToast({ title: '不是 TrashBox 登录码', icon: 'none' });
+        this.confirmWebLogin(match[1]);
       }
     });
   },

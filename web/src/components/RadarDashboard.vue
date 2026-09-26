@@ -31,6 +31,7 @@ const session = ref<RadarSession | null>(null)
 const loading = ref(true)
 const scanning = ref(false)
 const error = ref('')
+const snapshotFailed = ref(false)
 const selectedTag = ref('')
 const lastUpdated = ref<Date | null>(null)
 const now = ref(Date.now())
@@ -87,6 +88,7 @@ async function snapshot() {
     targets.value = result.targets
     session.value = result.session
     lastUpdated.value = new Date()
+    snapshotFailed.value = false
   } finally {
     scanning.value = false
   }
@@ -97,8 +99,14 @@ async function initialize() {
   error.value = ''
   try {
     await loadTargets()
-    await snapshot()
     await loadSession()
+    try {
+      await snapshot()
+    } catch (cause) {
+      snapshotFailed.value = true
+      error.value = cause instanceof Error ? cause.message : '实时快照暂不可用'
+      if (error.value.includes('401')) emit('logout')
+    }
   } catch (cause) {
     error.value = cause instanceof Error ? cause.message : 'Radar 初始化失败'
     if (error.value.includes('401')) emit('logout')
@@ -183,7 +191,13 @@ async function addTarget() {
     resolveValue.value = ''
     customTag.value = ''
     Object.assign(draft, emptyDraft())
-    await snapshot()
+    await loadTargets()
+    try {
+      await snapshot()
+    } catch (cause) {
+      snapshotFailed.value = true
+      error.value = cause instanceof Error ? cause.message : '对象已添加，实时快照暂不可用'
+    }
   } catch (cause) {
     error.value = cause instanceof Error ? cause.message : '添加失败'
   }
@@ -288,7 +302,7 @@ onBeforeUnmount(() => {
     <section class="command-bar">
       <div class="command-state">
         <span :class="['radar-pulse', { active: scanning || session }]" />
-        <div><strong>{{ scanning ? '正在请求实时快照' : session ? '持续扫描正在运行' : '实时快照已就绪' }}</strong><small>最后刷新 {{ formatClock(lastUpdated) }}</small></div>
+        <div><strong>{{ scanning ? '正在请求实时快照' : snapshotFailed ? '实时状态暂不可用' : session ? '持续扫描正在运行' : '实时快照已就绪' }}</strong><small>最后读取 {{ formatClock(lastUpdated) }}</small></div>
       </div>
       <button class="button primary compact" :disabled="scanning || !!session" @click="startSession">{{ session ? remaining : '开启 10 分钟扫描' }}</button>
       <button class="button outline compact" @click="addOpen = !addOpen">＋ 添加对象</button>
