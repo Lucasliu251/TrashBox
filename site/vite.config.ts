@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   base: '/',
+  cacheDir: '../.run-local/ow-vite-cache',
   plugins: [vue()],
   build: { assetsDir: 'site-static' },
   server: {
@@ -12,6 +13,19 @@ export default defineConfig({
       '/login': `http://127.0.0.1:${process.env.LOCAL_AUTH_PORT || '5175'}`,
       '/account': `http://127.0.0.1:${process.env.LOCAL_AUTH_PORT || '5175'}`,
       '/auth/': `http://127.0.0.1:${process.env.LOCAL_AUTH_PORT || '5175'}`,
+      '/ow-live': {
+        target: 'https://webapi.blizzard.cn',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/ow-live/, '/ow-armory-server'),
+        configure(proxy) {
+          proxy.on('proxyReq', request => {
+            request.removeHeader('cookie')
+            request.removeHeader('authorization')
+            request.removeHeader('origin')
+            request.removeHeader('referer')
+          })
+        },
+      },
     },
   },
 })

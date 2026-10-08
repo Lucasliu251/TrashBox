@@ -1,0 +1,18 @@
+.game-switch{display:flex;align-items:center;gap:3px;padding:4px;border:1px solid #414141;border-radius:9px;background:#1e1e1e;flex-shrink:0}
+.game-switch button{display:flex;align-items:center;justify-content:center;gap:7px;border:0;background:transparent;color:#aaa;font-size:12px;font-weight:750;padding:7px 12px;border-radius:5px;white-space:nowrap;transition:background .16s,color .16s}
+.game-switch button.active{background:#39322a;color:#f8c071}
+.game-switch button:hover{color:#fff}.game-switch button:focus-visible{outline:2px solid #f59a23;outline-offset:3px}
+.game-symbol{font-size:16px;line-height:1}.cs2-symbol{font-weight:950;font-style:italic}.ow-symbol{color:#f59a23}
+.community-app.game-ow{background:#f7f7fb;color:#24283e}
+.game-ow .topbar{height:72px;padding:0 max(24px,calc((100vw - 1240px)/2));background:#fff;border-bottom:1px solid #e7e7ed;gap:24px}
+.game-ow .site-name{color:#252b43;letter-spacing:-.05em;font-size:23px;font-weight:900}
+.game-ow .game-switch{background:#f2f3f7;border-color:#e7e8ef}
+.game-ow .game-switch button{color:#6c7082}.game-ow .game-switch button:hover{color:#24283e}
+.game-ow .game-switch button.active{background:#fff;box-shadow:0 2px 6px #27294812;color:#252b43}
+.ow-header-caption{color:#84899c;font-size:11px;letter-spacing:.07em;margin-left:auto}
+.account-aware-topbar .account-entry{flex-shrink:0}.game-ow .account-entry{color:#687487;margin-left:0}
+html[data-game=ow]{background:#f7f7fb}
+@media(max-width:900px){.topbar{gap:12px;padding-left:18px;padding-right:18px}.desktop-tabs button{padding:0 10px}.game-switch button{padding:7px 9px}.game-ow .topbar{padding:0 24px}.ow-header-caption{display:none}}
+@media(max-width:700px){.topbar{height:58px}.game-switch{margin-left:auto}.game-switch button{font-size:11px;padding:6px 10px}.game-ow .topbar{height:64px;padding:0 18px;gap:12px}.game-ow .site-name{font-size:21px}.game-ow .game-switch button{padding:7px 10px}}
+@media(prefers-reduced-motion:reduce){.game-switch button{transition:none}}
+@media(max-width:700px){.account-aware-topbar{height:auto;min-height:64px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px;gap:8px}.game-ow .account-aware-topbar{height:auto;min-height:64px;padding-top:10px;padding-bottom:10px;gap:8px}.account-aware-topbar .account-entry{flex-basis:100%;margin:0;text-align:right;font-size:11px}}
