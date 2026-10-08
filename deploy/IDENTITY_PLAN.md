@@ -1,27 +1,43 @@
-# TrashBox 账号整合记录（暂不实施）
+# TrashBox 统一账号
 
-## 当前状态
+## 已实现的流程
 
-- `users.uuid` 存放微信小程序 OpenID，已绑定的 Steam ID 在 `users.steam_id`。
-- Radar 当前支持已绑定 Steam 登录，或由已登录小程序扫描 TrashBox 一次性登录码。
-- 后端只有小程序 `WX_APP_ID` / `WX_APP_SECRET`；没有微信开放平台网站应用的凭据。当前二维码不是微信开放平台网页扫码登录。
+- 主站、Radar、Music、Sniper 使用同一服务器会话，统一从 `/login` 登录，在 `/account` 管理登录方式和设备。首次成功授权自动创建内部 UUID，无密码、手机号或单独注册页面。
+- KOOK 为推荐入口，使用主机器人的 OAuth 客户端；机器人 Bot Token 与 OAuth Client Secret 分开配置。Steam 使用官方 OpenID，登录不需要 Web API Key、采集码或提前收录用户。
+- 微信网站 OAuth 仅在已审核的网站应用凭据配置后启用；小程序凭据不能替代它。保留 TrashBox 小程序扫码作为独立备用入口。原生小程序码仍需正式版页面和 `WECHAT_MINI_QR_ENABLED=1`。
+- 任何成功登录的用户都可进入四个应用；音乐推荐仍校验其 KOOK 服务器成员身份。各网站保持独立入口。
 
-## 微信扫一扫过渡方案
+## 数据归属
 
-- 使用现有小程序凭据生成 `getwxacodeunlimit` 小程序码，`scene` 只放短期随机登录票据。微信扫一扫直接打开 `pages/radar/radar`，用户在小程序内明确确认电脑登录，再由网页轮询取得短期登录结果。原有小程序内扫码保留为后备。
-- 该流程使用现有小程序 OpenID 和 `users.uuid`，不创建新账号，也不是微信开放平台的网站 OAuth。
-- 代码由 `WECHAT_MINI_QR_ENABLED=1` 启用；默认关闭，直到带有 `scene` 确认逻辑的小程序发布到正式版。生产保持 `WECHAT_MINI_QR_CHECK_PATH=1`。
+`auth_accounts.id` 是内部用户 ID；`auth_identities` 对 `(provider, namespace, subject)` 建唯一映射；`auth_sessions` 只保存随机 Cookie 的摘要，可按设备撤销；`auth_flows` 将短期一次性 OAuth state 绑定到发起浏览器。
 
-## 微信网页扫码接入前提
+旧 `users.uuid`、战绩和微信订阅接收身份保留。Steam 授权成功后精确匹配历史 SteamID，直接显示已有战绩；不从旧手填 SteamID 推断微信账号归属，也不复制旧账号权限、采集码或私密资料。新用户没有战绩时显示空状态，之后采集的数据按 SteamID 出现。
 
-1. 在微信开放平台申请并审核通过“网站应用”，取得该网站应用的 AppID 和 AppSecret，配置 `trashbox.tech` 的授权回调域。小程序 AppID 不能替代网站应用 AppID。
-2. 将网站应用和现有小程序绑定到同一个微信开放平台账号，确认能否取得同一用户的 UnionID。
-3. 服务端发起 `snsapi_login` 授权，用随机 `state` 绑定浏览器会话；回调时先校验 `state`，再用 `code` 在服务端换取微信身份。AppSecret 不进入前端。
-4. 在账号映射尚未建立时，不凭昵称、头像或未经验证的 Steam ID 自动合并或创建第二个 TrashBox 账号。提示用户先用已有方式登录并完成绑定。
+退出状态下使用未添加的第三方身份，会先创建独立账号。在个人资料页添加该身份时，验证当前账号和对方身份，然后明确确认合并。合并在事务中完成，保留旧账号别名、历史记录和审计，撤销双方原会话。不同平台同名不合并；同平台不同身份、权限不同或 Steam 采集码归属冲突时拒绝自动合并，保留原数据待人工核实。
 
-## 后续统一账号模型
+## 会话与门禁
 
-- 使用独立的内部用户 ID 作为稳定主键；增加身份映射表，唯一键为 `(provider, provider_app_id, provider_subject)`，分别容纳微信小程序、微信网站应用、Steam、KOOK 等身份。
-- 保留现有 `users.uuid` 到内部用户 ID 的映射，逐步迁移旧登录态和数据外键。Steam 与 KOOK 身份须通过各自的官方回调验证后才允许绑定。
-- 登录只查找已绑定身份；首次见到的新身份须显式注册或绑定。账号合并必须要求现有账号再次认证，禁止仅按同名资料合并。
-- 正式迁移前先盘点重复 Steam ID、微信 OpenID、缺失 UnionID 和孤立账号，再设计可回滚的数据迁移。
+- Cookie 为 `trashbox_session`，`HttpOnly`、生产 `Secure`、`SameSite=Lax`、`Path=/`，不在 localStorage 保存访问令牌。
+- 每个设备会话闲置 90 天过期，最长 365 天。前台导航/真实交互静默延长闲置期限；轮询和会话查询不续期。过期不会删除用户数据。
+- Cookie 写操作要求中央 CSRF；添加登录方式与合并要求 10 分钟内重新验证。
+- Nginx 保护应用页面/资源，FastAPI 保护业务 API，Music 与 Sniper 在服务器端检查直接 HTTP 和 WebSocket。认证不可用时拒绝访问；小程序 API 兼容有效 Bearer JWT。
+- 内部页面标记 noindex。登录门禁会阻止未登录者读取应用，已被收录的旧搜索结果不会立即消失。
+
+## 配置
+
+仅在各项目的忽略 `.env` 内保存凭据，权限设为 0600：
+
+| 项目 | 配置键 |
+| --- | --- |
+| TrashBox-Server/Backend | `KOOK_OAUTH_APP_ID`、`KOOK_OAUTH_CLIENT_ID`、`KOOK_OAUTH_CLIENT_SECRET`、`TRASHBOX_AUTH_BASE_URL`、`TRASHBOX_AUTH_ORIGINS` |
+| KBot 根目录 | `MAIN_BOT_TOKEN`、`DATA_BOT_TOKEN` |
+| KBot/MusicBot | `MUSIC_BOT_TOKEN`、`TRASHBOX_AUTH_SESSION_URL` |
+| GitBot | `MAIN_BOT_TOKEN`，兼容 `KOOK_BOT_TOKEN` |
+
+KOOK 授权链接沿用官方生成器参数，包含数字应用编号 `id`（配置为 `KOOK_OAUTH_APP_ID`），以及 `client_id`、`scope=get_user_info`、`redirect_uri` 和一次性 `state`。
+
+生产 KOOK 回调为 `https://trashbox.tech/api/v1/auth/callback/kook`。平台白名单/域名须审核允许该回调，code 交换使用完全相同的地址。当前本地回调无法审批；Mac 可测试页面和会话，完整 KOOK 授权在生产域名上测试。
+
+微信网站应用配置 `WECHAT_WEB_APP_ID` / `WECHAT_WEB_APP_SECRET`，回调为 `/api/v1/auth/callback/wechat`。不同微信应用的 OpenID 分别映射，跨应用归属通过明确身份验证/合并完成，不按昵称或未核实的 UnionID 推断。
+
+迁移由 `Backend/migrate_identity.py` 执行，记录在 `trashbox_migrations`，启动时重复执行为无操作。部署前保留数据库备份；不要在已产生新账号数据后直接删除身份表回滚。启动、停止和反向代理说明见 [README.md](README.md)。

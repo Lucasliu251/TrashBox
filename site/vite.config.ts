@@ -6,9 +6,12 @@ export default defineConfig({
   plugins: [vue()],
   build: { assetsDir: 'site-static' },
   server: {
-    port: 5174,
+    port: Number(process.env.LOCAL_SITE_PORT || 5174),
     proxy: {
-      '/api/': 'http://127.0.0.1:2026',
+      '/api/': `http://127.0.0.1:${process.env.LOCAL_API_PORT || '2026'}`,
+      '/login': `http://127.0.0.1:${process.env.LOCAL_AUTH_PORT || '5175'}`,
+      '/account': `http://127.0.0.1:${process.env.LOCAL_AUTH_PORT || '5175'}`,
+      '/auth/': `http://127.0.0.1:${process.env.LOCAL_AUTH_PORT || '5175'}`,
     },
   },
 })

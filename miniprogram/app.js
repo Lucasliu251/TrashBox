@@ -1,123 +1,118 @@
-// app.js
-App({
-  // 1. 全局数据：所有页面都能访问这里
-  globalData: {
-    userInfo: null,   // 存用户的 SteamID, 头像等
-    hasLogin: false,  // 明确的登录标记
-    accessToken: null,
-    apiBase: 'https://trashbox.tech' // 方便你以后一键改回域名 (改成你的真实IP)
-  },
+const api = require('./utils/request');
 
-  // 2. 小程序启动时执行
+App({
+  globalData: {
+    userInfo: null,
+    hasLogin: false,
+    accessToken: null,
+    actorUuid: null, // Server-resolved UUID; it may differ from the WeChat OpenID.
+    apiBase: 'https://trashbox.tech'
+  },
+  _loginPromise: null,
+  _loginGeneration: 0,
+
   onLaunch() {
     this.globalData.accessToken = wx.getStorageSync('access_token') || null;
-    this.autoLogin();
-    // 检查本地缓存有没有 UUID (OpenID)
-    // const uuid = wx.getStorageSync('user_uuid');
-    // if (uuid) {
-    //   console.log('App启动: 发现本地 UUID，正在去后端验证...', uuid);
-    //   this.fetchUserInfo(uuid);
-    // } else {
-    //   console.log('App启动: 本地无 UUID，视为未登录');
-    //   // 如果页面已经在等结果了，告诉它们“没登录”
-    //   if (this.userCallback) {
-    //     this.userCallback(null);
-    //   }
-    // }
+    this.globalData.actorUuid = wx.getStorageSync('user_uuid') || null;
+    this.autoLogin().catch(() => {});
   },
 
-  // 3. 封装一个去后端拉取资料的方法
-  fetchUserInfo(uuid) {
-    wx.request({
-      url: `${this.globalData.apiBase}/api/v1/users/me`,
-      method: 'GET',
-      data: { openid: uuid },
-      success: (res) => {
-        if (res.statusCode === 200 && res.data.code === 200) {
-          console.log('登录成功，用户信息:', res.data.data);
+  request(options) {
+    return api.request(this, options);
+  },
 
-          // A. 更新全局变量
-          this.globalData.userInfo = res.data.data;
-          this.globalData.hasLogin = true;
+  uploadFile(options) {
+    return api.uploadFile(this, options);
+  },
 
-          // B. 极其重要：如果这时候页面已经加载完了，正在等我的回调，我就执行它
-          if (this.userCallback) {
-            this.userCallback(res.data.data);
-          }
+  acceptLogin(result) {
+    if (!result || !result.access_token || !result.uuid) {
+      throw new Error('登录结果不完整，请重试');
+    }
+    // Store the token and canonical actor before any private API/profile request.
+    this.globalData.accessToken = result.access_token;
+    this.globalData.actorUuid = result.uuid;
+    wx.setStorageSync('access_token', result.access_token);
+    wx.setStorageSync('user_uuid', result.uuid);
+    const prior = this.globalData.userInfo;
+    this.globalData.userInfo = {
+      ...(prior && prior.uuid === result.uuid ? prior : {}),
+      uuid: result.uuid,
+      steam_id: result.steam_id || null
+    };
+    this.globalData.hasLogin = true;
+    return result.access_token;
+  },
 
-        } else {
-          // 比如后端数据库里把人删了，但前端还有缓存
-          console.log('登录失效，清除缓存');
-          this.logout();
-        }
-      },
-      fail: (err) => {
-        console.error('连接服务器失败', err);
-        // 这里可以做个容错，比如提示网络错误
+  ensureLogin(force = false) {
+    if (this._loginPromise) return this._loginPromise;
+    if (!force && this.globalData.accessToken) return Promise.resolve(this.globalData.accessToken);
+    const generation = this._loginGeneration;
+    let promise;
+    promise = new Promise((resolve, reject) => {
+      wx.login({
+        success: result => result.code ? resolve(result.code) : reject(new Error('微信登录未完成')),
+        fail: () => reject(new Error('微信登录未完成'))
+      });
+    }).then(code => this.request({
+      url: `${this.globalData.apiBase}/api/v1/users/login`,
+      method: 'POST',
+      data: { loginCode: code }
+    })).then(response => {
+      if (generation !== this._loginGeneration) throw new Error('登录已取消');
+      if (response.statusCode !== 200 || !response.data || response.data.code !== 200) {
+        throw new Error('登录服务暂不可用');
       }
+      return this.acceptLogin(response.data.data);
+    }).catch(error => {
+      if (generation === this._loginGeneration) {
+        this.globalData.accessToken = null;
+        this.globalData.actorUuid = null;
+        this.globalData.hasLogin = false;
+        this.globalData.userInfo = null;
+        wx.removeStorageSync('access_token');
+        wx.removeStorageSync('user_uuid');
+      }
+      throw error;
+    }).finally(() => {
+      if (this._loginPromise === promise) this._loginPromise = null;
+    });
+    this._loginPromise = promise;
+    return promise;
+  },
+
+  fetchUserInfo() {
+    return this.request({
+      url: `${this.globalData.apiBase}/api/v1/users/me`,
+      method: 'GET'
+    }).then(response => {
+      if (response.statusCode !== 200 || !response.data || response.data.code !== 200) {
+        if (response.statusCode === 401) this.logout();
+        throw new Error('无法读取账号资料');
+      }
+      this.globalData.userInfo = response.data.data;
+      this.globalData.actorUuid = response.data.data.uuid;
+      this.globalData.hasLogin = true;
+      if (this.userCallback) this.userCallback(response.data.data);
+      return response.data.data;
     });
   },
 
   autoLogin() {
-    const that = this;
-    // 1. 微信原生静默登录
-    wx.login({
-      success: res => {
-        if (res.code) {
-          // 2. 发送 code 给后端
-          wx.request({
-            url: `${that.globalData.apiBase}/api/v1/users/login`,
-            method: 'POST',
-            data: {
-              loginCode: res.code
-            },
-            success(apiRes) {
-              if (apiRes.statusCode === 200 && apiRes.data.code === 200) {
-                const result = apiRes.data.data;
-
-                if (result.is_registered) {
-                  // 【老用户归来】
-                  console.log('App: 自动登录成功', result.steam_id);
-
-                  // 存入全局变量
-                  that.fetchUserInfo(result.uuid);
-                  that.globalData.hasLogin = true;
-                  if (result.access_token) {
-                    that.globalData.accessToken = result.access_token;
-                    wx.setStorageSync('access_token', result.access_token);
-                  }
-
-                  // 3. 执行回调（通知首页或Stats页更新UI）
-                  if (that.userCallback) {
-                    that.userCallback(that.globalData.userInfo);
-                  }
-
-                } else {
-                  // 【新用户】
-                  console.log('App: 未注册，需要去绑定');
-                  that.globalData.hasLogin = false;
-                  // 这里不主动跳转，让用户在 Stats 页点击“去绑定”
-                  if (that.userCallback) {
-                    that.userCallback(null);
-                  }
-                }
-              }
-            },
-            fail(err) {
-              console.error('登录接口请求失败', err);
-            }
-          })
-        }
-      }
-    })
+    return this.ensureLogin(true).then(() => this.fetchUserInfo()).catch(error => {
+      if (!this.globalData.accessToken && this.userCallback) this.userCallback(null);
+      throw error;
+    });
   },
 
-  // 4. 提供一个退出登录的方法
   logout() {
+    this._loginGeneration += 1;
+    this._loginPromise = null;
     wx.removeStorageSync('user_uuid');
     wx.removeStorageSync('access_token');
     this.globalData.userInfo = null;
     this.globalData.hasLogin = false;
     this.globalData.accessToken = null;
+    this.globalData.actorUuid = null;
   }
-})
+});

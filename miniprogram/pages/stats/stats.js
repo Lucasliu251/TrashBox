@@ -79,7 +79,7 @@ Page({
 
   fetchPlayerData(steamId) {
     wx.showLoading({ title: '加载数据...' });
-    wx.request({
+    app.request({
       url: `${app.globalData.apiBase}/api/v1/players/${steamId}/history`,
       method: 'GET',
       data: { days: 30 },
@@ -179,7 +179,7 @@ Page({
 
   uploadAvatar(filePath) {
     wx.showLoading({ title: '上传中...' });
-    wx.uploadFile({
+    app.uploadFile({
       url: `${app.globalData.apiBase}/api/v1/users/avatar`,
       filePath: filePath,
       name: 'file',
@@ -196,10 +196,10 @@ Page({
   updateUserProfile(data) {
     const openid = (app.globalData.userInfo && app.globalData.userInfo.uuid) ? app.globalData.userInfo.uuid : null;
     if (!openid) return;
-    wx.request({
+    app.request({
       url: `${app.globalData.apiBase}/api/v1/users/update`,
       method: 'PUT',
-      data: { openid, ...data },
+      data: () => ({ openid: app.globalData.actorUuid, ...data }),
       success: (res) => {
         if (res.statusCode === 200 && res.data.code === 200) {
           wx.showToast({ title: '保存成功', icon: 'success' });

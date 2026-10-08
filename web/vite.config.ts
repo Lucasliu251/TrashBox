@@ -18,9 +18,12 @@ export default defineConfig({
   base: viteBasePath(process.env.BASE_PATH),
   plugins: [vue()],
   server: {
-    port: 5173,
+    port: Number(process.env.LOCAL_RADAR_PORT || 5173),
     proxy: {
-      '/api/': 'http://127.0.0.1:2026',
+      '/api/': `http://127.0.0.1:${process.env.LOCAL_API_PORT || '2026'}`,
+      '/login': `http://127.0.0.1:${process.env.LOCAL_AUTH_PORT || '5175'}`,
+      '/account': `http://127.0.0.1:${process.env.LOCAL_AUTH_PORT || '5175'}`,
+      '/auth/': `http://127.0.0.1:${process.env.LOCAL_AUTH_PORT || '5175'}`,
     },
   },
 })

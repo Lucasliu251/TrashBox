@@ -3,6 +3,7 @@ import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, reactive, r
 import type { RoomSnapshot, ScoreEntry, ServerMessage } from '@trashbox/sniper-shared'
 import { GameConnection, type ConnectionStatus } from './network'
 import { readSettings, saveSettings, sensitivitySummary } from './settings'
+import { getAuthSession, redirectToLogin, startGameSessionActivity } from './auth'
 
 const GameCanvas = defineAsyncComponent(() => import('./components/GameCanvas.vue'))
 
@@ -28,16 +29,29 @@ const compatibility = detectCompatibility()
 
 let offMessage: () => void = () => undefined
 let offStatus: () => void = () => undefined
+let offActivity: () => void = () => undefined
 
-onMounted(() => {
+function sessionExpired() {
+  connection.close()
+  redirectToLogin()
+}
+
+onMounted(async () => {
   offMessage = connection.onMessage(receive)
   offStatus = connection.onStatus(next => { status.value = next })
-  connection.connect()
+  try {
+    if (!await getAuthSession()) { sessionExpired(); return }
+    offActivity = startGameSessionActivity(sessionExpired)
+    connection.connect()
+  } catch {
+    error.value = '登录服务暂时不可用，请刷新重试'
+  }
 })
 
 onBeforeUnmount(() => {
   offMessage()
   offStatus()
+  offActivity()
   connection.close()
 })
 

@@ -67,7 +67,7 @@ Page({
   },
 
   postToBackend(loginCode) {
-    wx.request({
+    app.request({
       url: `${app.globalData.apiBase}/api/v1/users/onboarding`,
       method: 'POST',
       data: {
@@ -85,19 +85,17 @@ Page({
 
           const responseData = res.data.data;
 
+          app.acceptLogin(responseData);
+
           // 1. 存入全局变量
           app.globalData.userInfo = {
-            uuid: responseData.uuid,          // OpenID
+            uuid: responseData.uuid,          // 服务端解析后的账号 UUID
             steam_id: responseData.steam_id,  // 解析后的 17位 ID
             // 其他初始默认值
             nickname: responseData.steam_id,
             avatar: null
           };
           app.globalData.hasLogin = true;
-          if (responseData.access_token) {
-            app.globalData.accessToken = responseData.access_token;
-            wx.setStorageSync('access_token', responseData.access_token);
-          }
           setTimeout(() => { wx.navigateBack() }, 1500);
         } else {
           // 处理 FastAPI 抛出的 HTTPException

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { api } from '../api'
+import { accountUrl } from '../../../shared/auth'
 import type { RadarSession, RadarStatus, RadarTarget, ResolvedTarget } from '../types'
 
-const props = defineProps<{ token: string }>()
 const emit = defineEmits<{ logout: [] }>()
 /** 品牌回首页地址，跟随 Vite base（生产为 /radar/） */
 const homeHref = import.meta.env.BASE_URL
@@ -73,18 +73,18 @@ const remaining = computed(() => {
 })
 
 async function loadTargets() {
-  targets.value = await api.targets(props.token)
+  targets.value = await api.targets()
   lastUpdated.value = new Date()
 }
 
 async function loadSession() {
-  session.value = await api.session(props.token)
+  session.value = await api.session()
 }
 
 async function snapshot() {
   scanning.value = true
   try {
-    const result = await api.snapshot(props.token)
+    const result = await api.snapshot()
     targets.value = result.targets
     session.value = result.session
     lastUpdated.value = new Date()
@@ -105,11 +105,9 @@ async function initialize() {
     } catch (cause) {
       snapshotFailed.value = true
       error.value = cause instanceof Error ? cause.message : '实时快照暂不可用'
-      if (error.value.includes('401')) emit('logout')
     }
   } catch (cause) {
     error.value = cause instanceof Error ? cause.message : 'Radar 初始化失败'
-    if (error.value.includes('401')) emit('logout')
   } finally {
     loading.value = false
   }
@@ -119,7 +117,7 @@ async function startSession() {
   scanning.value = true
   error.value = ''
   try {
-    session.value = await api.startSession(props.token)
+    session.value = await api.startSession()
   } catch (cause) {
     error.value = cause instanceof Error ? cause.message : '无法启动扫描'
   } finally {
@@ -132,7 +130,7 @@ async function resolveTarget() {
   scanning.value = true
   error.value = ''
   try {
-    preview.value = await api.resolve(props.token, resolveValue.value.trim())
+    preview.value = await api.resolve(resolveValue.value.trim())
     draft.alias = preview.value.personaname
   } catch (cause) {
     error.value = cause instanceof Error ? cause.message : '无法解析 Steam 用户'
@@ -178,7 +176,7 @@ async function readClipboard() {
 async function addTarget() {
   if (!preview.value) return
   try {
-    await api.addTarget(props.token, {
+    await api.addTarget({
       steam_id: preview.value.steam_id,
       alias: draft.alias || null,
       tags: draft.tags,
@@ -205,7 +203,7 @@ async function addTarget() {
 
 async function removeTarget(target: RadarTarget) {
   if (!window.confirm(`确认将 ${target.alias || target.personaname || target.steam_id} 移出共享 Radar？`)) return
-  await api.removeTarget(props.token, target.id)
+  await api.removeTarget(target.id)
   await loadTargets()
 }
 
@@ -232,7 +230,7 @@ async function saveEditTarget() {
   editSaving.value = true
   error.value = ''
   try {
-    await api.updateTarget(props.token, editingTarget.value.id, {
+    await api.updateTarget(editingTarget.value.id, {
       alias: editDraft.alias.trim() || null,
       tags: editDraft.tags,
       manual_cs_level: editDraft.manual_cs_level === '' ? null : Number(editDraft.manual_cs_level),
@@ -283,7 +281,7 @@ onBeforeUnmount(() => {
     <header class="topbar">
       <a class="brand" :href="homeHref"><span class="brand-mark">TB</span><span>TRASHBOX</span></a>
       <div class="top-status"><span :class="['live-dot', { active: scanning || session }]" />{{ session ? `扫描中 ${remaining}` : 'RADAR STANDBY' }}</div>
-      <button class="text-button" @click="emit('logout')">退出</button>
+      <div class="account-actions"><a class="text-button" :href="accountUrl()">我的账号</a><button class="text-button" @click="emit('logout')">退出</button></div>
     </header>
 
     <section class="radar-hero">

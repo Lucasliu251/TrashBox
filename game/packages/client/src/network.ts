@@ -1,4 +1,5 @@
 import type { ClientMessage, RoomSnapshot, ServerMessage } from '@trashbox/sniper-shared'
+import { getAuthSession, redirectToLogin } from './auth'
 
 type MessageListener = (message: ServerMessage) => void
 type StatusListener = (status: ConnectionStatus) => void
@@ -61,12 +62,23 @@ export class GameConnection {
       this.pingTimer = window.setInterval(() => this.send({ type: 'ping', payload: { clientTime: performance.timeOrigin + performance.now() } }), 2000)
     })
     socket.addEventListener('message', event => this.receive(event.data))
-    socket.addEventListener('close', () => {
+    socket.addEventListener('close', event => {
       window.clearInterval(this.pingTimer)
       this.setStatus('closed')
+      if (event.code === 4401) {
+        this.close()
+        this.clearSession()
+        redirectToLogin()
+        return
+      }
       if (!this.intentionalClose) this.reconnectTimer = window.setTimeout(() => this.connect(), 900)
     })
-    socket.addEventListener('error', () => this.setStatus('error'))
+    socket.addEventListener('error', () => {
+      this.setStatus('error')
+      void getAuthSession().then(session => {
+        if (!session) { this.close(); this.clearSession(); redirectToLogin() }
+      }).catch(() => {})
+    })
   }
 
   close() {

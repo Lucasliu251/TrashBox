@@ -22,7 +22,7 @@ Page({
 
         this.setData({ isLoading: true });
 
-        wx.request({
+        app.request({
             url: `${app.globalData.apiBase}/api/v1/posts`,
             method: 'GET',
             data: {

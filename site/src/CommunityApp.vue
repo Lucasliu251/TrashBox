@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import RichContent from './RichContent'
+import { accountUrl, API_BASE, AuthRequestError, redirectToLogin } from '../../shared/auth'
+
+const props = defineProps<{ accountDisplayName: string; steamId: string | null }>()
 
 type View = 'home' | 'posts' | 'post' | 'rank' | 'stats' | 'reaction'
 type Post = { id: number; title: string; content?: string; summary?: string; tag?: string; views?: number; date?: string; created_at?: string; author?: string; nickname?: string; avatar?: string; cover?: string }
@@ -84,8 +87,10 @@ function number(value: number | undefined, digits = 1) {
 }
 
 async function request<T>(path: string): Promise<T> {
-  const response = await fetch(path, { headers: { Accept: 'application/json' } })
+  // Community endpoints include pagination or rankings alongside their data.
+  const response = await fetch(`${API_BASE}${path}`, { credentials: 'include', headers: { Accept: 'application/json' } })
   const body = await response.json().catch(() => null)
+  if (response.status === 401) { redirectToLogin(); throw new AuthRequestError(401, '登录已过期') }
   if (!response.ok) throw new Error(response.status === 502 ? '数据服务暂不可用' : `请求失败 (${response.status})`)
   if (body?.code && body.code !== 200) throw new Error(body.message || '数据加载失败')
   return body as T
@@ -159,7 +164,10 @@ function loadView() {
   if (view.value === 'posts') void fetchPosts(true)
   if (view.value === 'rank') void fetchRank()
   if (view.value === 'post') void fetchArticle()
-  if (view.value === 'stats' && selectedId.value) void fetchPlayer()
+  if (view.value === 'stats') {
+    if (!selectedId.value && props.steamId) selectedId.value = props.steamId
+    if (selectedId.value) void fetchPlayer()
+  }
 }
 
 function navigate(target: View, id = '') {
@@ -269,6 +277,7 @@ onBeforeUnmount(() => {
         <button :class="{ selected: view === 'rank' }" @click="navigate('rank')">排行</button>
         <button :class="{ selected: view === 'stats' }" @click="navigate('stats')">数据</button>
       </nav>
+      <a class="account-entry" :href="accountUrl()" :title="props.accountDisplayName">我的账号</a>
     </header>
 
     <main class="page-shell" :class="{ 'reaction-page': view === 'reaction' }">
@@ -309,7 +318,7 @@ onBeforeUnmount(() => {
       <template v-else-if="view === 'post'">
         <div class="subpage-header"><button @click="navigate('posts')">‹ 返回</button><h1>动态详情</h1></div><p v-if="pageError" class="section-message">{{ pageError }}</p>
         <article v-if="article" class="post-detail"><h2>{{ article.title }}</h2><div class="author-info"><img :src="avatar(article.avatar)" alt="" /><span>{{ article.nickname || article.author || '神秘玩家' }}<small>{{ article.date || article.created_at }} · {{ article.views || 0 }} 阅读</small></span></div><RichContent :html="article.content || ''" /><div class="comments"><h3>全部评论 ({{ comments.length }})</h3><p v-if="!comments.length" class="section-message">暂无评论</p><div v-for="(comment, index) in comments" :key="index" class="comment"><img :src="avatar(comment.avatar)" alt="" /><div><small>{{ comment.nickname || '玩家' }}　{{ comment.created_at || '' }}</small><p>{{ comment.content }}</p></div></div></div></article>
-        <div class="comment-bar"><span>发表评论需要完成网页身份绑定</span></div>
+        <div class="comment-bar"><span>网页暂不支持发表评论</span></div>
       </template>
 
       <template v-else-if="view === 'rank'">
@@ -322,7 +331,7 @@ onBeforeUnmount(() => {
 
       <template v-else-if="view === 'stats'">
         <div class="subpage-header"><button v-if="selectedId" @click="navigate('home')">‹ 返回</button><h1>数据</h1></div>
-        <div v-if="!selectedId" class="empty-stats"><img src="/icons/cs-logo-grey.avif" alt="" /><h2>绑定 Steam 账号开启数据分析</h2><p>查看您的 Rating、ADR 及比赛走势</p><form @submit.prevent="searchPlayer"><input v-model="searchText" aria-label="Steam ID 或玩家昵称" placeholder="输入 Steam ID 或玩家昵称" /><button type="submit">查找玩家</button></form><p v-if="searchError" class="form-error">{{ searchError }}</p><div v-if="results.length > 1" class="search-results"><button v-for="user in results" :key="user.steam_id" @click="navigate('stats', user.steam_id)">{{ user.nickname || user.steam_id }}</button></div></div>
+        <div v-if="!selectedId" class="empty-stats"><img src="/icons/cs-logo-grey.avif" alt="" /><h2>绑定 Steam 账号开启数据分析</h2><p>查看您的 Rating、ADR 及比赛走势</p><a class="stats-bind-account" :href="accountUrl()">绑定 Steam</a><form @submit.prevent="searchPlayer"><input v-model="searchText" aria-label="Steam ID 或玩家昵称" placeholder="输入 Steam ID 或玩家昵称" /><button type="submit">查找玩家</button></form><p v-if="searchError" class="form-error">{{ searchError }}</p><div v-if="results.length > 1" class="search-results"><button v-for="user in results" :key="user.steam_id" @click="navigate('stats', user.steam_id)">{{ user.nickname || user.steam_id }}</button></div></div>
         <p v-if="pageError" class="section-message">{{ pageError }}</p>
         <div v-if="player" class="stats-dashboard"><div class="profile-card"><div class="playtime-tag"><small>游戏时长</small>{{ number((player.summary.time_played || 0) / 3600) }}h</div><div class="style-badge"><small>STYLE</small>{{ player.style_tag || '凡' }}</div><div class="profile-info"><img :src="avatar(player.avatar)" alt="" /><div><strong>{{ player.nickname || player.steam_id }}</strong><small>ID: {{ player.steam_id }}</small></div></div></div><div class="stats-grid"><div><small>Avg K/D (30d)</small><strong :class="{ gold: player.summary.avg_kd >= 1.2 }">{{ number(player.summary.avg_kd, 2) }}</strong></div><div><small>★StarTrack™️</small><strong>{{ player.summary.period_kills || 0 }}</strong></div><div><small>ADR</small><strong>{{ number(player.summary.avg_ADR, 2) }}</strong></div><div><small>Win Rate</small><strong>{{ number(player.summary.avg_WR) }}%</strong></div></div><h2 class="data-heading">能力模型 (Capability)</h2><div class="chart-container radar-chart"><svg viewBox="0 0 300 300" aria-label="六项能力雷达图"><polygon v-for="points in chartGrid" :key="points" :points="points" class="grid-polygon" /><line v-for="(_, index) in axes" :key="index" x1="150" y1="150" :x2="polar(index, 1).split(',')[0]" :y2="polar(index, 1).split(',')[1]" class="grid-line" /><polygon :points="chartPoints" class="data-polygon" /><text v-for="(axis, index) in axes" :key="axis.key" :x="Number(polar(index, 1).split(',')[0])" :y="Number(polar(index, 1).split(',')[1])" text-anchor="middle" class="chart-label">{{ axis.label }}</text></svg></div><h2 class="data-heading">近期状态 (KD Trend)</h2><div class="chart-container trend-chart"><svg v-if="trendDays.length" viewBox="0 0 350 180" aria-label="近期 KD 趋势"><line x1="25" y1="90" x2="325" y2="90" class="grid-line" stroke-dasharray="4 4" /><polyline :points="trendPoints" fill="none" stroke="#de9b35" stroke-width="3" stroke-linejoin="round" /><circle v-for="(day, index) in trendDays" :key="day.date" :cx="25 + index * (300 / Math.max(1, trendDays.length - 1))" :cy="Number(trendPoints.split(' ')[index]?.split(',')[1] || 0)" r="4" fill="#de9b35" /></svg><p v-else>暂无趋势数据</p></div><h2 class="data-heading">每日战报 (Daily Log)</h2><p v-if="!player.history.length" class="section-message">暂无比赛记录</p><div v-for="day in [...player.history].reverse()" :key="day.date" class="match-item"><div class="match-left"><strong>{{ day.date.slice(5) }}</strong><small>{{ day.rounds_played }} Rnds</small></div><div class="match-score"><strong>{{ day.kills }} / {{ day.deaths }}</strong><small :class="day.Rating >= 1 ? 'positive' : 'negative'">{{ number(day.Rating, 2) }} Rating</small></div><div class="match-data"><span>ADR: <b>{{ number(day.adr) }}</b></span><span>MVP: <b>{{ day.mvp }}</b></span><span>HS%: <b>{{ number(day.hsr) }}</b></span><span>DMG: <b>{{ day.dmg }}</b></span></div></div></div>
       </template>

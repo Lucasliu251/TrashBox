@@ -12,3 +12,5 @@
 .post-body{white-space:normal}
 .post-body img{max-width:100%;height:auto;display:block;margin:18px 0;border-radius:5px}
 .post-body a{color:#79aaff}
+.account-entry{margin-left:20px;color:#aaa;font-size:12px;white-space:nowrap;text-decoration:none}.account-entry:hover{color:#de9b35}.session-gate{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#888;font-size:13px}.session-gate strong{font-size:24px;color:#de9b35}.session-gate button{border:1px solid #555;background:#2b2d31;color:#ddd;border-radius:5px;padding:8px 24px}.stats-bind-account{display:block;margin:0 0 24px;padding:10px 24px;border-radius:5px;background:#de9b35;color:#1d1d1d;text-decoration:none;font-size:13px}
+@media(max-width:700px){.account-entry{margin-left:auto}}

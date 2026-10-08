@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import { fileURLToPath } from 'node:url'
 
 /**
  * 将 BASE_PATH 转成 Vite `base`（必须以 / 开头和结尾）。
@@ -21,7 +22,12 @@ export default defineConfig({
   base,
   plugins: [vue()],
   server: {
+    fs: { allow: [fileURLToPath(new URL('../../..', import.meta.url))] },
     proxy: {
+      '/api/': { target: `http://127.0.0.1:${process.env.LOCAL_API_PORT || '2026'}` },
+      '/login': { target: `http://127.0.0.1:${process.env.LOCAL_AUTH_PORT || '5175'}` },
+      '/account': { target: `http://127.0.0.1:${process.env.LOCAL_AUTH_PORT || '5175'}` },
+      '/auth/': { target: `http://127.0.0.1:${process.env.LOCAL_AUTH_PORT || '5175'}` },
       [`${prefix}/ws`]: { target: 'ws://127.0.0.1:8080', ws: true },
       [`${prefix}/healthz`]: { target: 'http://127.0.0.1:8080' },
     },

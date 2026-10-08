@@ -139,7 +139,7 @@ Page({
     // 假设你有 app.globalData.userInfo.steam_id
     const steamId = app.globalData.userInfo ? app.globalData.userInfo.steam_id : 'guest';
 
-    wx.request({
+    app.request({
       url: `${app.globalData.apiBase}/api/v1/reaction/submit`, // 预留的后端接口
       method: 'POST',
       data: {

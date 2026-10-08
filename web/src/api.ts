@@ -1,53 +1,33 @@
+import { authRequest, AuthRequestError, redirectToLogin } from '../../shared/auth'
 import type { RadarSession, RadarTarget, ResolvedTarget } from './types'
 
-export const API_BASE = (import.meta.env.VITE_API_BASE || window.location.origin).replace(/\/$/, '')
-
-interface ApiEnvelope<T> {
-  code: number
-  data: T
-  message?: string
-}
-
-async function request<T>(path: string, token?: string, init: RequestInit = {}): Promise<T> {
-  const response = await fetch(`${API_BASE}${path}`, {
-    ...init,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...init.headers,
-    },
-  })
-  const body = await response.json().catch(() => ({}))
-  if (!response.ok) throw new Error(`${response.status}: ${body.detail || '请求失败'}`)
-  return body.data as T
+async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+  try { return await authRequest<T>(path, init) }
+  catch (cause) {
+    if (cause instanceof AuthRequestError && cause.status === 401) redirectToLogin()
+    throw cause
+  }
 }
 
 export const api = {
-  createChallenge: () => request<{ challenge_token: string; qr_payload: string; mini_program_qr?: string | null; expires_at: string }>(
-    '/api/v1/web-auth/challenges', undefined, { method: 'POST' },
+  targets: () => request<RadarTarget[]>('/api/v1/radar/targets'),
+  snapshot: () => request<{ targets: RadarTarget[]; session: RadarSession | null }>(
+    '/api/v1/radar/snapshot', { method: 'POST' },
   ),
-  pollChallenge: (code: string) => request<{ status: string; access_token?: string }>(
-    `/api/v1/web-auth/challenges/${encodeURIComponent(code)}`,
+  session: () => request<RadarSession | null>('/api/v1/radar/sessions'),
+  startSession: () => request<RadarSession>(
+    '/api/v1/radar/sessions', { method: 'POST', body: JSON.stringify({ duration_seconds: 600 }) },
   ),
-  steamLoginUrl: `${API_BASE}/api/v1/web-auth/steam/login`,
-  targets: (token: string) => request<RadarTarget[]>('/api/v1/radar/targets', token),
-  snapshot: (token: string) => request<{ targets: RadarTarget[]; session: RadarSession | null }>(
-    '/api/v1/radar/snapshot', token, { method: 'POST' },
+  resolve: (value: string) => request<ResolvedTarget>(
+    '/api/v1/radar/resolve', { method: 'POST', body: JSON.stringify({ value }) },
   ),
-  session: (token: string) => request<RadarSession | null>('/api/v1/radar/sessions', token),
-  startSession: (token: string) => request<RadarSession>(
-    '/api/v1/radar/sessions', token, { method: 'POST', body: JSON.stringify({ duration_seconds: 600 }) },
+  addTarget: (payload: object) => request<never>(
+    '/api/v1/radar/targets', { method: 'POST', body: JSON.stringify(payload) },
   ),
-  resolve: (token: string, value: string) => request<ResolvedTarget>(
-    '/api/v1/radar/resolve', token, { method: 'POST', body: JSON.stringify({ value }) },
+  updateTarget: (id: number, payload: object) => request<never>(
+    `/api/v1/radar/targets/${id}`, { method: 'PATCH', body: JSON.stringify(payload) },
   ),
-  addTarget: (token: string, payload: object) => request<never>(
-    '/api/v1/radar/targets', token, { method: 'POST', body: JSON.stringify(payload) },
-  ),
-  updateTarget: (token: string, id: number, payload: object) => request<never>(
-    `/api/v1/radar/targets/${id}`, token, { method: 'PATCH', body: JSON.stringify(payload) },
-  ),
-  removeTarget: (token: string, id: number) => request<never>(
-    `/api/v1/radar/targets/${id}`, token, { method: 'DELETE' },
+  removeTarget: (id: number) => request<never>(
+    `/api/v1/radar/targets/${id}`, { method: 'DELETE' },
   ),
 }

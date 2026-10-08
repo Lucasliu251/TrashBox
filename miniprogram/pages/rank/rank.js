@@ -45,7 +45,7 @@ Page({
         this.setData({ isLoading: true })
         wx.showNavigationBarLoading()
 
-        wx.request({
+        app.request({
             url: `${app.globalData.apiBase}/api/v1/rankings/daily`,
             data: { date: date },
             success: (res) => {
@@ -121,13 +121,13 @@ Page({
   reportSubscription() {
     if (!app.globalData.userInfo) return;
     
-    wx.request({
+    app.request({
         url: `${app.globalData.apiBase}/api/v1/notifications/subscribe`,
         method: 'POST',
-        data: {
-            openid: app.globalData.userInfo.uuid,
+        data: () => ({
+            openid: app.globalData.actorUuid,
             template_id: TEMPLATE_ID
-        }
+        })
     });
   }
 })

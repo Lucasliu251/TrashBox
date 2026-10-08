@@ -20,7 +20,7 @@ Page({
     getPostDetail: function (id) {
         wx.showLoading({ title: '加载中...' });
 
-        wx.request({
+        app.request({
             url: `${app.globalData.apiBase}/api/v1/posts/${id}`,
             method: 'GET',
             success: (res) => {
@@ -62,13 +62,13 @@ Page({
 
         wx.showLoading({ title: '发送中' });
 
-        wx.request({
+        app.request({
             url: `${app.globalData.apiBase}/api/v1/posts/${this.data.id}/comment`,
             method: 'POST',
-            data: {
-                uuid: app.globalData.userInfo.uuid,
+            data: () => ({
+                uuid: app.globalData.actorUuid,
                 content: content
-            },
+            }),
             success: (res) => {
                 if (res.data.code === 200) {
                     wx.showToast({ title: '评论成功' });

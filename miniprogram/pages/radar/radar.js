@@ -65,33 +65,15 @@ Page({
     this.loadTargets().finally(() => wx.stopPullDownRefresh());
   },
 
-  waitForToken(attempt = 0) {
-    return new Promise((resolve, reject) => {
-      const token = app.globalData.accessToken || wx.getStorageSync('access_token');
-      if (token) return resolve(token);
-      if (attempt >= 40) return reject(new Error('请先完成 TrashBox 登录'));
-      setTimeout(() => this.waitForToken(attempt + 1).then(resolve).catch(reject), 250);
-    });
-  },
-
   async request(path, options = {}) {
-    const token = await this.waitForToken();
-    return new Promise((resolve, reject) => {
-      wx.request({
-        url: `${app.globalData.apiBase}${path}`,
-        method: options.method || 'GET',
-        data: options.data,
-        header: {
-          'content-type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        success: (res) => {
-          if (res.statusCode >= 200 && res.statusCode < 300) resolve(res.data);
-          else reject(new Error((res.data && res.data.detail) || `请求失败 (${res.statusCode})`));
-        },
-        fail: () => reject(new Error('网络连接失败'))
-      });
+    const response = await app.request({
+      url: `${app.globalData.apiBase}${path}`,
+      method: options.method || 'GET',
+      data: options.data,
+      header: { 'content-type': 'application/json' }
     });
+    if (response.statusCode >= 200 && response.statusCode < 300) return response.data;
+    throw new Error((response.data && response.data.detail) || `请求失败 (${response.statusCode})`);
   },
 
   async initializeRadar() {

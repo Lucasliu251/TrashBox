@@ -50,7 +50,7 @@ Page({
     // 纯数据获取，不检查登录
     fetchPlayerData(steamId) {
         wx.showLoading({ title: '加载战绩...' });
-        wx.request({
+        app.request({
             url: `${app.globalData.apiBase}/api/v1/players/${steamId}/history`,
             method: 'GET',
             data: { days: 30 },

@@ -55,7 +55,7 @@ Page({
         });
     },
     getRecentPosts: function () {
-        wx.request({
+        app.request({
             // 假设你的后端支持 limit 参数，如果不支持，我们在 success 里截取
             url: `${app.globalData.apiBase}/api/v1/posts?limit=4`,
             method: 'GET',
@@ -94,7 +94,7 @@ Page({
         const d = date.getDate().toString().padStart(2, '0');
         const dateStr = `${y}-${m}-${d}`;
 
-        wx.request({
+        app.request({
             url: `${app.globalData.apiBase}/api/v1/rankings/daily`,
             data: { date: dateStr },
             success: (res) => {
@@ -151,7 +151,7 @@ Page({
 
         wx.showLoading({ title: '搜索中...' });
 
-        wx.request({
+        app.request({
             url: `${app.globalData.apiBase}/api/v1/users/search`,
             method: 'GET',
             data: { q: query },
