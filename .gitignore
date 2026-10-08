@@ -51,6 +51,7 @@ web/vite.config.d.ts
 .serve-public.paused-*/
 .local-venv/
 .run-local/
+.ow-releases/
 .env
 game/.run/
 game/.env

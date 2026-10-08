@@ -1,0 +1,695 @@
+{
+  "schemaVersion": 1,
+  "fetchedAt": "2026-10-08T10:30:52.547Z",
+  "sourceUrl": "https://webapi.blizzard.cn/ow-armory-server/index",
+  "heroSourceUrl": "https://ld5.res.netease.com/pc/zt/20241115153332/static/heroConfigs.json",
+  "heroes": [
+    {
+      "id": "doctrine",
+      "name": "血律",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260930/1790752017353_29beb11aa6.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260928/1790582017558_9aad361370.png",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": true
+    },
+    {
+      "id": "dmon",
+      "name": "D.Mon",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260806/1786022282273_a597b92ce5.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260806/1786022284609_87781d4c2c.png",
+      "description": "",
+      "catalogRole": "2",
+      "isNew": false
+    },
+    {
+      "id": "shion",
+      "name": "死怨",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260612/1781246423382_b7df5f662a.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260612/1781246172375_d3f933a70b.png",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "sierra",
+      "name": "西拉",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260414/1776168411922_fcd14bee26.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260410/1775811792545_6349a5db7f.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "anran",
+      "name": "安燃",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260415/1776235043486_7600582524.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260410/1775812625498_7154056469.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "emre",
+      "name": "埃姆雷",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260227/1772161166550_8d155e68a4.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260209/1770631708607_f784c013a0.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "jetpackcat",
+      "name": "飞天猫",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260227/1772161166572_520bd4f944.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260209/1770631720018_da5572a824.jpg",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": false
+    },
+    {
+      "id": "mizuki",
+      "name": "瑞稀",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260227/1772161166513_c40437c565.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260209/1770631731443_50aaa03eed.jpg",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": false
+    },
+    {
+      "id": "domina",
+      "name": "金驭",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260227/1772161166536_5e611d4fb0.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260209/1770631803802_04a6b669e4.jpg",
+      "description": "",
+      "catalogRole": "2",
+      "isNew": false
+    },
+    {
+      "id": "vendetta",
+      "name": "斩仇",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770343474061_811025e090.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770343474723_cf09c163de.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "wuyang",
+      "name": "无漾",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770343573582_31ebd32f84.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770343574752_95129ac545.png",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": false
+    },
+    {
+      "id": "freja",
+      "name": "弗蕾娅",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770343601631_494945c57e.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770343602034_cc7e1cb576.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "ashe",
+      "name": "艾什",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770343684623_511e9831c9.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770343685073_f43337d053.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "ana",
+      "name": "安娜",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770343745482_5dbfa340a7.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770343745877_bfe4ba7f05.jpg",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": false
+    },
+    {
+      "id": "orisa",
+      "name": "奥丽莎",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770343784176_7bb7b4361b.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770343784697_d349976e7c.jpg",
+      "description": "",
+      "catalogRole": "2",
+      "isNew": false
+    },
+    {
+      "id": "baptiste",
+      "name": "巴蒂斯特",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770343853300_2996f20a85.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770343853836_51181311e6.jpg",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": false
+    },
+    {
+      "id": "hanzo",
+      "name": "半藏",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770343861928_8e06207e8c.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770343862429_3dd4c02fe9.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "bastion",
+      "name": "堡垒",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770343871550_ed901efbf9.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770343871957_136cd0367e.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "brigitte",
+      "name": "布丽吉塔",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770343880840_118a29132b.png",
+      "artUrl": "https://ld5.res.netease.com/images/20241107/1730973913592_0309af43b9.jpg",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": false
+    },
+    {
+      "id": "zarya",
+      "name": "查莉娅",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344000592_a122b6548c.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344001031_901d6d736f.jpg",
+      "description": "",
+      "catalogRole": "2",
+      "isNew": false
+    },
+    {
+      "id": "zenyatta",
+      "name": "禅雅塔",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344038417_8e127ae379.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344038849_031cb2f9cd.jpg",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": false
+    },
+    {
+      "id": "dva",
+      "name": "D.VA",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344106986_1e81a16aa9.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344107514_ede2ed3cdd.jpg",
+      "description": "",
+      "catalogRole": "2",
+      "isNew": false
+    },
+    {
+      "id": "pharah",
+      "name": "法老之鹰",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344234870_aeffaf7b79.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344235306_948ee4c78d.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "widowmaker",
+      "name": "黑百合",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344265598_9d3c296b05.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344266480_6af4f1aca5.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "sombra",
+      "name": "黑影",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344279611_1ec099c6b9.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344280095_833cb68fdf.jpg",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": false
+    },
+    {
+      "id": "hazard",
+      "name": "骇灾",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344361158_af8f9502b5.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344361694_7ea31360eb.jpg",
+      "description": "",
+      "catalogRole": "2",
+      "isNew": false
+    },
+    {
+      "id": "echo",
+      "name": "回声",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344410244_9d7a9f01b9.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344411199_801bc17e94.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "cassidy",
+      "name": "卡西迪",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344420636_f5b9d814cb.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344421148_f061b9cdb9.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "junkrat",
+      "name": "狂鼠",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344518471_6694640983.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344519008_251027bee6.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "ramattra",
+      "name": "拉玛刹",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344559514_30c8544a58.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344560027_154ca0dd5e.jpg",
+      "description": "",
+      "catalogRole": "2",
+      "isNew": false
+    },
+    {
+      "id": "reinhardt",
+      "name": "莱因哈特",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344568581_13339bc21d.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344568937_2f35217d55.jpg",
+      "description": "",
+      "catalogRole": "2",
+      "isNew": false
+    },
+    {
+      "id": "tracer",
+      "name": "猎空",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344756601_230a35bbfe.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344757179_9d34ae1a34.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "lucio",
+      "name": "卢西奥",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344795972_a27d8b1835.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344796656_e727a92249.jpg",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": false
+    },
+    {
+      "id": "roadhog",
+      "name": "路霸",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344835007_e476db0de0.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344835545_7f2625df7f.jpg",
+      "description": "",
+      "catalogRole": "2",
+      "isNew": false
+    },
+    {
+      "id": "mauga",
+      "name": "毛加",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344848735_c1b6e8680d.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344849359_9826f0c0bb.jpg",
+      "description": "",
+      "catalogRole": "2",
+      "isNew": false
+    },
+    {
+      "id": "mei",
+      "name": "美",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344861505_65a04d4ba8.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344861947_7ec83104d6.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "doomfist",
+      "name": "末日铁拳",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344956007_530e01e386.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344956541_d5f41a003e.jpg",
+      "description": "",
+      "catalogRole": "2",
+      "isNew": false
+    },
+    {
+      "id": "moira",
+      "name": "莫伊拉",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770344990351_7b059cede4.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770344990904_3a92271a5d.jpg",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": false
+    },
+    {
+      "id": "wrecking-ball",
+      "name": "破坏球",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345057916_a09a61f8c4.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345058422_b44563ca79.jpg",
+      "description": "",
+      "catalogRole": "2",
+      "isNew": false
+    },
+    {
+      "id": "lifeweaver",
+      "name": "生命之梭",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345065664_ef5a73e847.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345066155_2c2286e872.jpg",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": false
+    },
+    {
+      "id": "soldier-76",
+      "name": "士兵：76",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345086338_589415f7c4.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345086930_55d68ef2b2.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "reaper",
+      "name": "死神",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345147228_7d7063ea61.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345147701_ba98159cd7.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "sojourn",
+      "name": "索杰恩",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345212218_19a8ef85cc.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345212732_9a2b56ca61.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "venture",
+      "name": "探奇",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345321595_01c8267e25.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345322098_2f137e4119.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "mercy",
+      "name": "天使",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345331108_df768a20f2.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345331671_98c13df435.jpg",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": false
+    },
+    {
+      "id": "torbjorn",
+      "name": "托比昂",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345516431_b4e4a3db29.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345516948_0772fd04a6.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "winston",
+      "name": "温斯顿",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345555277_72d8324dc1.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345555852_7ee44a8b2a.jpg",
+      "description": "",
+      "catalogRole": "2",
+      "isNew": false
+    },
+    {
+      "id": "kiriko",
+      "name": "雾子",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345609610_ac79cb89fb.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345610164_9ba63b8102.jpg",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": false
+    },
+    {
+      "id": "sigma",
+      "name": "西格玛",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345683902_9072d3014c.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345684503_025b4a42b0.jpg",
+      "description": "",
+      "catalogRole": "2",
+      "isNew": false
+    },
+    {
+      "id": "illari",
+      "name": "伊拉锐",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345720108_25aa5687e0.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345720537_cfebcb4c63.jpg",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": false
+    },
+    {
+      "id": "genji",
+      "name": "源氏",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345730149_8a4eb79474.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345730873_65c6f54f66.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "junker-queen",
+      "name": "渣客女王",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345799934_839573accf.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345800321_0f2634a643.jpg",
+      "description": "",
+      "catalogRole": "2",
+      "isNew": false
+    },
+    {
+      "id": "symmetra",
+      "name": "秩序之光",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345867640_419b4c28b6.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345868208_ea903e3934.jpg",
+      "description": "",
+      "catalogRole": "1",
+      "isNew": false
+    },
+    {
+      "id": "juno",
+      "name": "朱诺",
+      "avatarUrl": "https://ld5.res.netease.com/images/20260206/1770345880148_104d05c5ac.png",
+      "artUrl": "https://ld5.res.netease.com/images/20260206/1770345880728_7f84f21d84.jpg",
+      "description": "",
+      "catalogRole": "3",
+      "isNew": false
+    }
+  ],
+  "patch": {
+    "date": "2026/7/15",
+    "enhances": [
+      "ramattra",
+      "freja",
+      "reaper",
+      "sierra",
+      "vendetta",
+      "venture",
+      "ana",
+      "lucio"
+    ],
+    "weakens": [
+      "doomfist",
+      "junker-queen",
+      "cassidy",
+      "sigma",
+      "kiriko"
+    ],
+    "adjusts": [
+      "mauga",
+      "sigma",
+      "shion",
+      "brigitte"
+    ]
+  },
+  "seasons": [
+    {
+      "id": "5",
+      "name": "第5赛季",
+      "description": "[2026-10-07,2026-12-08]"
+    },
+    {
+      "id": "4",
+      "name": "第4赛季",
+      "description": "[2026-08-12,2026-10-06]"
+    }
+  ],
+  "currentSeasonId": "5",
+  "modes": [
+    {
+      "id": "jingji",
+      "name": "竞技比赛"
+    },
+    {
+      "id": "kuaisu",
+      "name": "快速比赛"
+    }
+  ],
+  "ranks": [
+    {
+      "id": "-127",
+      "name": "全部段位"
+    },
+    {
+      "id": "Bronze",
+      "name": "青铜"
+    },
+    {
+      "id": "Silver",
+      "name": "白银"
+    },
+    {
+      "id": "Gold",
+      "name": "黄金"
+    },
+    {
+      "id": "Platinum",
+      "name": "白金"
+    },
+    {
+      "id": "Emerald",
+      "name": "翡翠"
+    },
+    {
+      "id": "Diamond",
+      "name": "钻石"
+    },
+    {
+      "id": "Master",
+      "name": "大师"
+    },
+    {
+      "id": "Grandmaster",
+      "name": "宗师"
+    },
+    {
+      "id": "Champion",
+      "name": "英杰"
+    }
+  ],
+  "available": [
+    {
+      "mode": "jingji",
+      "seasonId": "5",
+      "rankId": "-127",
+      "file": "jingji-5-all.json",
+      "date": "2026-10-07",
+      "fetchedAt": "2026-10-08T10:30:52.573Z"
+    },
+    {
+      "mode": "jingji",
+      "seasonId": "5",
+      "rankId": "Bronze",
+      "file": "jingji-5-Bronze.json",
+      "date": "2026-10-07",
+      "fetchedAt": "2026-10-08T10:30:52.806Z"
+    },
+    {
+      "mode": "jingji",
+      "seasonId": "5",
+      "rankId": "Silver",
+      "file": "jingji-5-Silver.json",
+      "date": "2026-10-07",
+      "fetchedAt": "2026-10-08T10:30:53.046Z"
+    },
+    {
+      "mode": "jingji",
+      "seasonId": "5",
+      "rankId": "Gold",
+      "file": "jingji-5-Gold.json",
+      "date": "2026-10-07",
+      "fetchedAt": "2026-10-08T10:30:53.327Z"
+    },
+    {
+      "mode": "jingji",
+      "seasonId": "5",
+      "rankId": "Platinum",
+      "file": "jingji-5-Platinum.json",
+      "date": "2026-10-07",
+      "fetchedAt": "2026-10-08T10:30:53.561Z"
+    },
+    {
+      "mode": "jingji",
+      "seasonId": "5",
+      "rankId": "Diamond",
+      "file": "jingji-5-Diamond.json",
+      "date": "2026-10-07",
+      "fetchedAt": "2026-10-08T10:30:54.075Z"
+    },
+    {
+      "mode": "jingji",
+      "seasonId": "5",
+      "rankId": "Master",
+      "file": "jingji-5-Master.json",
+      "date": "2026-10-07",
+      "fetchedAt": "2026-10-08T10:30:54.376Z"
+    },
+    {
+      "mode": "jingji",
+      "seasonId": "5",
+      "rankId": "Grandmaster",
+      "file": "jingji-5-Grandmaster.json",
+      "date": "2026-10-07",
+      "fetchedAt": "2026-10-08T10:30:54.598Z"
+    },
+    {
+      "mode": "kuaisu",
+      "seasonId": "5",
+      "rankId": "-127",
+      "file": "kuaisu-5-all.json",
+      "date": "2026-10-07",
+      "fetchedAt": "2026-10-08T10:30:55.111Z"
+    },
+    {
+      "mode": "jingji",
+      "seasonId": "4",
+      "rankId": "-127",
+      "file": "jingji-4-all.json",
+      "date": "2026-10-06",
+      "fetchedAt": "2026-10-08T10:30:55.428Z"
+    },
+    {
+      "mode": "kuaisu",
+      "seasonId": "4",
+      "rankId": "-127",
+      "file": "kuaisu-4-all.json",
+      "date": "2026-10-06",
+      "fetchedAt": "2026-10-08T10:30:55.673Z"
+    }
+  ],
+  "qualityIssues": [
+    {
+      "heroId": "sombra",
+      "catalogRole": "3",
+      "statsRole": "1"
+    }
+  ],
+  "assets": {
+    "masthead": "https://ld5.res.netease.com/pc/zt/20250326092201/assets/kv-2560_6027b981.jpg",
+    "roleIcons": {
+      "1": "https://ld5.res.netease.com/pc/zt/20250326092201/assets/icon-sc_5cba6026.png",
+      "2": "https://ld5.res.netease.com/pc/zt/20250326092201/assets/icon-zz_5a3502eb.png",
+      "3": "https://ld5.res.netease.com/pc/zt/20250326092201/assets/icon-zy_1f3c3d2a.png"
+    },
+    "patchIcons": {
+      "enhances": "https://ld5.res.netease.com/pc/zt/20250326092201/assets/icon-jqzq_86bd6ec2.png",
+      "weakens": "https://ld5.res.netease.com/pc/zt/20250326092201/assets/icon-jqxr_d6e51b7e.png",
+      "adjusts": "https://ld5.res.netease.com/pc/zt/20250326092201/assets/icon-jqtz_d411a3e2.png"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import RichContent from './RichContent'
+import OwHome from './features/ow/OwHome.vue'
 
 type View = 'home' | 'posts' | 'post' | 'rank' | 'stats' | 'reaction'
 type Post = { id: number; title: string; content?: string; summary?: string; tag?: string; views?: number; date?: string; created_at?: string; author?: string; nickname?: string; avatar?: string; cover?: string }
@@ -13,6 +14,14 @@ type ReactionState = 'idle' | 'waiting' | 'ready' | 'early' | 'done'
 
 const allowed: View[] = ['home', 'posts', 'post', 'rank', 'stats', 'reaction']
 const query = new URLSearchParams(location.search)
+const game = ref<'cs2' | 'ow'>(query.get('game') === 'ow' ? 'ow' : 'cs2')
+let lastCs2Url = game.value === 'cs2' ? `${location.pathname}${location.search}` : '/?game=cs2'
+let lastOwUrl = game.value === 'ow' ? `${location.pathname}${location.search}` : '/?game=ow&view=heroes'
+const originalTitle = document.title
+watch(game, value => {
+  document.documentElement.dataset.game = value
+  document.title = value === 'ow' ? '守望先锋 · 国服英雄观察 — TrashBox' : originalTitle
+}, { immediate: true })
 const initial = query.get('view') as View | null
 const view = ref<View>(initial && allowed.includes(initial) ? initial : 'home')
 const selectedId = ref(query.get('id') || '')
@@ -155,6 +164,7 @@ async function searchPlayer() {
 }
 
 function loadView() {
+  if (game.value === 'ow') return
   if (view.value === 'home') { void fetchPosts(true); void fetchRank() }
   if (view.value === 'posts') void fetchPosts(true)
   if (view.value === 'rank') void fetchRank()
@@ -163,6 +173,8 @@ function loadView() {
 }
 
 function navigate(target: View, id = '') {
+  if (game.value === 'ow') lastOwUrl = `${location.pathname}${location.search}`
+  game.value = 'cs2'
   view.value = target
   selectedId.value = id
   pageError.value = ''
@@ -174,8 +186,18 @@ function navigate(target: View, id = '') {
   loadView()
 }
 
+function switchGame(target: 'cs2' | 'ow') {
+  if (game.value === target) return
+  if (game.value === 'ow') lastOwUrl = `${location.pathname}${location.search}`
+  else lastCs2Url = `${location.pathname}${location.search}`
+  history.pushState({}, '', target === 'ow' ? lastOwUrl : lastCs2Url)
+  onPopState()
+  window.scrollTo({ top: 0, behavior: 'instant' })
+}
+
 function onPopState() {
   const query = new URLSearchParams(location.search)
+  game.value = query.get('game') === 'ow' ? 'ow' : 'cs2'
   const next = query.get('view') as View | null
   view.value = next && allowed.includes(next) ? next : 'home'
   selectedId.value = query.get('id') || ''
@@ -260,18 +282,24 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="community-app">
+  <div class="community-app" :class="{ 'game-ow': game === 'ow' }">
     <header class="topbar">
       <button class="site-name" @click="navigate('home')">TrashBox</button>
-      <nav class="desktop-tabs" aria-label="主站导航">
+      <div class="game-switch" role="group" aria-label="切换游戏板块">
+        <button :class="{ active: game === 'cs2' }" :aria-pressed="game === 'cs2'" @click="switchGame('cs2')"><span class="game-symbol cs2-symbol" aria-hidden="true">Ⅱ</span> CS2</button>
+        <button :class="{ active: game === 'ow' }" :aria-pressed="game === 'ow'" @click="switchGame('ow')"><span class="game-symbol ow-symbol" aria-hidden="true">◈</span> 守望先锋</button>
+      </div>
+      <nav v-if="game === 'cs2'" class="desktop-tabs" aria-label="CS2 与社区导航">
         <button :class="{ selected: ['home', 'posts', 'post'].includes(view) }" @click="navigate('home')">社区</button>
         <button :class="{ selected: view === 'reaction' }" @click="navigate('reaction')">反应测试</button>
         <button :class="{ selected: view === 'rank' }" @click="navigate('rank')">排行</button>
         <button :class="{ selected: view === 'stats' }" @click="navigate('stats')">数据</button>
       </nav>
+      <span v-else class="ow-header-caption">英雄集结 · 国服数据观察</span>
     </header>
 
-    <main class="page-shell" :class="{ 'reaction-page': view === 'reaction' }">
+    <OwHome v-if="game === 'ow'" @switch-cs2="switchGame('cs2')" />
+    <main v-else class="page-shell" :class="{ 'reaction-page': view === 'reaction' }">
       <template v-if="view === 'home'">
         <form class="search-section" @submit.prevent="searchPlayer">
           <div class="search-capsule"><span class="search-symbol">⌕</span><input v-model="searchText" aria-label="搜索玩家" placeholder="搜索玩家 / 比赛 ID" /><button type="submit">搜索</button></div>
@@ -330,6 +358,6 @@ onBeforeUnmount(() => {
       <template v-else-if="view === 'reaction'"><button class="reaction-screen" :class="reactionState" @click="handleReaction"><img v-if="reactionState === 'idle' || reactionState === 'done'" src="/icons/cs-logo-grey.avif" alt="" /><strong>{{ reactionMessage }}</strong><span>{{ reactionSub }}</span><div v-if="reactionScores.length && reactionState !== 'done'" class="reaction-history">测试进度 ({{ reactionScores.length }}/5)<p>{{ reactionScores.join(' ms　') }} ms</p></div></button><div v-if="reactionState === 'done'" class="reaction-result"><div><small>平均反应时间</small><strong>{{ reactionAverage }} <span>ms</span></strong></div><p>{{ reactionEvaluation }}</p><button @click="resetReaction">再测一次</button><small>成绩保存功能待账号体系接入</small></div></template>
     </main>
 
-    <nav class="tabbar" aria-label="页面导航"><button :class="{ selected: ['home', 'posts', 'post'].includes(view) }" @click="navigate('home')"><img :src="['home', 'posts', 'post'].includes(view) ? '/icons/home-active.png' : '/icons/home.png'" alt="" />社区</button><button :class="{ selected: view === 'reaction' }" @click="navigate('reaction')"><img :src="view === 'reaction' ? '/icons/Flash-active.png' : '/icons/Flash.png'" alt="" />反应测试</button><button :class="{ selected: view === 'rank' }" @click="navigate('rank')"><span class="rank-tab-icon">▥</span>排行</button><button :class="{ selected: view === 'stats' }" @click="navigate('stats')"><img :src="view === 'stats' ? '/icons/chart-active.png' : '/icons/chart.png'" alt="" />数据</button></nav>
+    <nav v-if="game === 'cs2'" class="tabbar" aria-label="页面导航"><button :class="{ selected: ['home', 'posts', 'post'].includes(view) }" @click="navigate('home')"><img :src="['home', 'posts', 'post'].includes(view) ? '/icons/home-active.png' : '/icons/home.png'" alt="" />社区</button><button :class="{ selected: view === 'reaction' }" @click="navigate('reaction')"><img :src="view === 'reaction' ? '/icons/Flash-active.png' : '/icons/Flash.png'" alt="" />反应测试</button><button :class="{ selected: view === 'rank' }" @click="navigate('rank')"><span class="rank-tab-icon">▥</span>排行</button><button :class="{ selected: view === 'stats' }" @click="navigate('stats')"><img :src="view === 'stats' ? '/icons/chart-active.png' : '/icons/chart.png'" alt="" />数据</button></nav>
   </div>
 </template>
