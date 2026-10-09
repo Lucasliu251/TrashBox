@@ -1,0 +1,11 @@
+[Unit]
+Description=Check the authorized Overwatch sync queue
+
+[Timer]
+OnCalendar=*-*-* *:00/5:00
+Persistent=true
+RandomizedDelaySec=20
+Unit=trashbox-ow-collection.service
+
+[Install]
+WantedBy=timers.target

@@ -47,8 +47,8 @@ let qrExpiryTimer: number | undefined
 let qrPolling = false
 let stopActivity: (() => void) | undefined
 
-const providerNames: Record<string, string> = { kook: 'KOOK', steam: 'Steam', wechat: '微信' }
-const visibleProviders = computed(() => ['kook', 'steam', 'wechat'].map(id =>
+const providerNames: Record<string, string> = { kook: 'KOOK', steam: 'Steam', wechat: '微信', battlenet: '战网（国服）' }
+const visibleProviders = computed(() => ['kook', 'steam', 'wechat', 'battlenet'].map(id =>
   providers.value.find(provider => provider.id === id) || { id, label: providerNames[id]!, enabled: false },
 ))
 const displayName = computed(() => session.value?.user.display_name || 'TrashBox 玩家')
@@ -289,10 +289,10 @@ onBeforeUnmount(() => { stopActivity?.(); stopQr() })
         <template v-if="providers.length">
           <template v-for="provider in visibleProviders" :key="provider.id">
             <a v-if="provider.enabled" class="provider-button" :class="{ recommended: provider.id === 'kook' }" :href="providerUrl(provider.id, 'login', returnTo)">
-              <span class="provider-icon" :class="provider.id">{{ provider.id === 'kook' ? 'K' : provider.id === 'steam' ? 'S' : '微' }}</span>
+              <span class="provider-icon" :class="provider.id">{{ provider.id === 'kook' ? 'K' : provider.id === 'steam' ? 'S' : provider.id === 'battlenet' ? 'B' : '微' }}</span>
               <span>通过 {{ provider.label }} 继续</span><small v-if="provider.id === 'kook'">推荐</small><span class="arrow">→</span>
             </a>
-            <button v-else class="provider-button disabled" disabled><span class="provider-icon" :class="provider.id">{{ provider.id === 'kook' ? 'K' : provider.id === 'steam' ? 'S' : '微' }}</span><span>{{ provider.label }}</span><small>{{ provider.disabled_reason || '尚未配置' }}</small></button>
+            <button v-else class="provider-button disabled" disabled><span class="provider-icon" :class="provider.id">{{ provider.id === 'kook' ? 'K' : provider.id === 'steam' ? 'S' : provider.id === 'battlenet' ? 'B' : '微' }}</span><span>{{ provider.label }}</span><small>{{ provider.disabled_reason || '尚未配置' }}</small></button>
           </template>
         </template>
         <button v-else class="button primary" @click="initialize">重新连接登录服务</button>
@@ -335,7 +335,7 @@ onBeforeUnmount(() => { stopActivity?.(); stopQr() })
       <section class="section-card" aria-labelledby="identities-title">
         <div class="section-heading"><div><h2 id="identities-title">登录方式</h2><p>绑定为可选项。已绑定方式都可登录这个账号。</p></div></div>
         <div v-for="provider in visibleProviders" :key="provider.id" class="identity-row">
-          <span class="provider-icon" :class="provider.id">{{ provider.id === 'kook' ? 'K' : provider.id === 'steam' ? 'S' : '微' }}</span>
+          <span class="provider-icon" :class="provider.id">{{ provider.id === 'kook' ? 'K' : provider.id === 'steam' ? 'S' : provider.id === 'battlenet' ? 'B' : '微' }}</span>
           <div class="identity-copy"><strong>{{ provider.label }}</strong><span>{{ identityFor(provider.id)?.label || (identityFor(provider.id) ? '已绑定' : provider.enabled ? '未绑定' : '尚未配置') }}</span><code v-if="identityFor(provider.id)">{{ identityFor(provider.id)?.subject }}</code></div>
           <span v-if="identityFor(provider.id)" class="bound-badge">已绑定</span>
           <a v-else-if="provider.enabled" class="button secondary compact" :href="providerUrl(provider.id, 'link', accountReturn)">绑定</a>

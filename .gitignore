@@ -57,3 +57,6 @@ web/vite.config.d.ts
 game/.run/
 game/.env
 web/.env
+
+# Python runtime cache from public-data / private adapter tools
+__pycache__/

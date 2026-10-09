@@ -1,0 +1,17 @@
+[Unit]
+Description=Sync only consenting registered TrashBox Overwatch users
+After=network-online.target trashbox-overstats-bridge.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+Environment=PYTHONDONTWRITEBYTECODE=1
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/TrashBox-Server/Backend
+ExecStart=/usr/bin/flock -n /home/ubuntu/TrashBox/.run-local/ow-collection.lock /home/ubuntu/TrashBox-Server/Backend/.venv/bin/python collect_ow.py --max-jobs 20
+TimeoutStartSec=900
+NoNewPrivileges=true
+PrivateTmp=true
+MemoryMax=256M
+UMask=0077

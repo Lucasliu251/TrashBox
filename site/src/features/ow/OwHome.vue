@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { loadOwHomeDataCached, loadOwStats, loadOwBalancePatch } from './api'
+import { computed, onBeforeUnmount, onMounted, ref, nextTick } from 'vue'
+import { loadOwHomeDataCached, loadOwStats, loadOwBalancePatch, loadOwCatalog } from './api'
 import type { OwCatalog, OwHero, OwHeroStat, OwPatchTag, OwRole, OwBalancePatch } from './types'
 import OwIcon from './OwIcon.vue'
 import OwPortrait from './OwPortrait.vue'
 import OwTactics from './OwTactics.vue'
+import OwMyMatches from './OwMyMatches.vue'
 import './ow.css'
 
 type Metric = 'winRate' | 'pickRate' | 'banRate'
@@ -19,6 +20,7 @@ const checkedAt = ref('')
 const balancePatch = ref<OwBalancePatch | null>(null)
 const patchError = ref('')
 const activeBanner = ref(0)
+const privateMode = ref(new URLSearchParams(location.search).get('view') === 'matches')
 const lifecycleController = new AbortController()
 let disposed = false
 let inFlight: Promise<void> | null = null
@@ -76,6 +78,17 @@ function displayTime(value: string | undefined) {
 function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })
 }
+async function showPublic(id = 'ow-top') {
+  privateMode.value = false
+  const url = new URL(location.href);url.searchParams.set('view','heroes');history.replaceState(history.state,'',url)
+  if (!stats.value) await boot()
+  await nextTick();scrollToSection(id)
+}
+function showPrivate() {
+  privateMode.value = true
+  const url = new URL(location.href);url.searchParams.set('view','matches');history.replaceState(history.state,'',url)
+  window.scrollTo({top:0,behavior:'auto'})
+}
 function cleanOldQuery() {
   if (disposed || new URLSearchParams(location.search).get('game') !== 'ow') return
   const url = new URL(location.href)
@@ -113,7 +126,7 @@ function boot(forceRefresh = false): Promise<void> {
   inFlight = refreshData(forceRefresh).finally(() => { inFlight = null })
   return inFlight
 }
-onMounted(() => { void boot() })
+onMounted(() => { if (!privateMode.value) void boot(); else { loading.value = false; void loadOwCatalog(lifecycleController.signal, {preferLive:false}).then(value => { if (!disposed) catalog.value=value }).catch(() => {}) } })
 onBeforeUnmount(() => {
   disposed = true
   lifecycleController.abort()
@@ -125,14 +138,15 @@ onBeforeUnmount(() => {
     <nav class="ow-subnav ow-container" aria-label="守望先锋板块导航">
       <span class="ow-subnav-identity"><OwIcon name="mark" :size="25" /><strong>守望先锋</strong><span>国服观察站</span></span>
       <div class="ow-subnav-links">
-        <button class="is-active" @click="scrollToSection('ow-top')">首页</button>
-        <button @click="scrollToSection('ow-changes')">近期调整</button>
-        <button @click="scrollToSection('ow-tactics')">克制 / 阵容</button><button @click="scrollToSection('ow-source')">数据来源</button>
-      </div>
-      <span class="ow-public-pill"><i />公开英雄数据</span>
+        <button :class="{ 'is-active': !privateMode }" @click="showPublic('ow-top')">首页</button>
+        <button @click="showPublic('ow-changes')">近期调整</button>
+        <button @click="showPublic('ow-tactics')">克制 / 阵容</button><button @click="showPublic('ow-source')">数据来源</button>
+      <button :class="{ 'is-active': privateMode }" @click="showPrivate">我的对局</button></div>
+      <span class="ow-public-pill"><i />{{ privateMode ? '仅本人可见' : '公开英雄数据' }}</span>
     </nav>
 
-    <main class="ow-container ow-main">
+    <main v-if="privateMode" class="ow-container ow-main"><OwMyMatches :heroes="catalog?.heroes || []" /></main>
+    <main v-else class="ow-container ow-main">
       <section id="ow-top" class="ow-masthead" aria-labelledby="ow-title">
         <div class="ow-masthead-art" :class="{ 'is-empty': !bannerHero }">
           <img v-if="bannerHero" :key="bannerHero.id" :src="bannerHero.artUrl" :alt="bannerHero.name + '官方英雄示意配图'" fetchpriority="high" @error="($event.target as HTMLImageElement).style.visibility = 'hidden'" />

@@ -1,0 +1,23 @@
+[Unit]
+Description=Private registered-user Overstats JSON adapter
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Environment=PYTHONDONTWRITEBYTECODE=1
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/TrashBox
+EnvironmentFile=/home/ubuntu/.config/trashbox/overstats.env
+ExecStart=/home/ubuntu/.local/share/trashbox-overstats/venv/bin/python /home/ubuntu/TrashBox/deploy/overstats_bridge.py
+Restart=on-failure
+RestartSec=30
+NoNewPrivileges=true
+PrivateTmp=true
+UMask=0077
+MemoryMax=512M
+CPUQuota=100%
+
+[Install]
+WantedBy=multi-user.target
