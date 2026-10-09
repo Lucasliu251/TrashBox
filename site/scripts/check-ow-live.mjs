@@ -182,6 +182,35 @@ try {
   assert.equal((await api.loadOwHomeData()).catalog.source, 'snapshot')
   assert(calls.every(call => call.url.startsWith('/ow-data/')), 'Adapter config must not become an arbitrary URL proxy')
 
+  // Revisits reuse only validated public data; manual refresh and expiration read API again.
+  const originalStorage = globalThis.localStorage
+  const saved = new Map()
+  globalThis.localStorage = { getItem: key => saved.get(key) ?? null, setItem: (key,value) => saved.set(key,value), removeItem: key => saved.delete(key) }
+  try {
+    calls = fixture({ '/ow-live/index': sameSeasonIndex, [heroSourceUrl]: rawHeroes, [currentUrl]: { code:0,data:rawRows } })
+    api = await moduleFor()
+    const cachedFirst = await api.loadOwHomeDataCached()
+    const requests = calls.length
+    const cachedAgain = await api.loadOwHomeDataCached()
+    assert.equal(calls.length,requests,'Switching sections must not re-read upstream')
+    assert.equal(cachedAgain.checkedAt,cachedFirst.checkedAt)
+    api = await moduleFor()
+    assert.equal((await api.loadOwHomeDataCached()).stats.date,cachedFirst.stats.date)
+    assert.equal(calls.length,requests,'Reload must reuse the persistent public cache')
+    await api.loadOwHomeDataCached({forceRefresh:true})
+    assert(calls.length>requests,'Manual refresh must bypass client cache')
+    for (const [key,value] of saved) { const record=JSON.parse(value);record.expiresAt=Date.now()-1;saved.set(key,JSON.stringify(record)) }
+    api = await moduleFor()
+    const before=calls.length
+    await api.loadOwHomeDataCached()
+    assert(calls.length>before,'Expired cache must load API')
+    for (const [key,value] of saved) { const record=JSON.parse(value);record.data.stats.selection.seasonId='999';saved.set(key,JSON.stringify(record)) }
+    api = await moduleFor()
+    const invalidBefore=calls.length
+    await api.loadOwHomeDataCached()
+    assert(calls.length>invalidBefore,'Mismatched cached seasons must be rejected')
+  } finally { globalThis.localStorage = originalStorage }
+
   // A timed-out request gets bounded fallback, while caller cancellation propagates.
   globalThis.setTimeout = (callback, delay, ...args) => originalSetTimeout(callback, delay === 8000 ? 15 : delay, ...args)
   fixture({

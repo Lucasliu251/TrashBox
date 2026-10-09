@@ -93,6 +93,53 @@ export interface OwIndex {
   seasons: OwCatalog['seasons']
 }
 
+export interface OwBalancePatch {
+  schemaVersion: 1
+  date: string
+  publishedDate: string
+  title: string
+  region: 'cn' | 'global'
+  language: 'zh-CN' | 'zh-TW'
+  sourceUrl: string
+  fetchedAt: string
+  checkedAt: string
+  refreshStatus: 'ok' | 'retained'
+  groups: Record<OwPatchTag, string[]>
+  heroes: { id: string; sourceName: string }[]
+  unmappedNames: string[]
+}
+
+export function parseOwBalancePatch(value: unknown): OwBalancePatch {
+  const data = object(value, '官方中文补丁')
+  if (data.schemaVersion !== 1 || !['cn', 'global'].includes(String(data.region))) throw new Error('补丁版本或来源异常')
+  const region = data.region as 'cn' | 'global'
+  const language = region === 'cn' ? 'zh-CN' : 'zh-TW'
+  if (data.language !== language) throw new Error('补丁不是已核对的官方中文来源')
+  const url = new URL(string(data.sourceUrl, '补丁链接'))
+  const origin = region === 'cn' ? 'https://ow.blizzard.cn' : 'https://overwatch.blizzard.com'
+  const prefix = region === 'cn' ? '/news/patch-notes/live/' : '/zh-tw/news/patch-notes/live/'
+  if (url.origin !== origin || !new RegExp('^' + prefix + '\\d{4}/\\d{2}/$').test(url.pathname) || url.search || (url.hash && !/^#patch-\d{4}-\d{2}-\d{2}$/.test(url.hash))) throw new Error('补丁链接异常')
+  const heroes = list(data.heroes, '补丁英雄').map(value => {
+    const hero = object(value, '补丁英雄')
+    const id = string(hero.id, '补丁英雄 ID')
+    if (!/^[a-z][a-z0-9-]{0,50}$/.test(id)) throw new Error('补丁英雄 ID 异常')
+    return { id, sourceName: string(hero.sourceName, '官方英雄名称') }
+  })
+  unique(heroes.map(hero => hero.id), '补丁英雄')
+  const rawGroups = object(data.groups, '补丁分类')
+  const groups = {} as Record<OwPatchTag, string[]>
+  for (const key of ['enhances', 'weakens', 'adjusts'] as OwPatchTag[]) {
+    groups[key] = list(rawGroups[key], '补丁分类').map(value => string(value, '补丁英雄 ID'))
+    unique(groups[key], '补丁分类')
+    if (groups[key].some(id => !heroes.some(hero => hero.id === id))) throw new Error('补丁分类缺少对应英雄')
+  }
+  if (heroes.some(hero => !Object.values(groups).some(ids => ids.includes(hero.id)))) throw new Error('补丁英雄缺少分类')
+  if (data.refreshStatus !== 'ok' && data.refreshStatus !== 'retained') throw new Error('补丁读取状态异常')
+  return { schemaVersion: 1, date: date(data.date), publishedDate: date(data.publishedDate), title: string(data.title, '补丁标题'), region, language, sourceUrl: url.href,
+    fetchedAt: timestamp(data.fetchedAt), checkedAt: timestamp(data.checkedAt), refreshStatus: data.refreshStatus, groups, heroes,
+    unmappedNames: list(data.unmappedNames, '待匹配英雄').map(value => string(value, '官方英雄名称')) }
+}
+
 function object(value: unknown, name: string): Record<string, unknown> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error(`${name} 结构异常`)
   return value as Record<string, unknown>
@@ -257,7 +304,7 @@ export function parseOwStatsSnapshot(value: unknown): OwStatsSnapshot {
   return { schemaVersion: 1, fetchedAt: timestamp(data.fetchedAt), sourceUrl, selection: selected, date: batchDate, rows }
 }
 
-export function parseOwCatalog(value: unknown): OwCatalog {
+export function parseOwCatalog(value: unknown, options: { allowNoSnapshot?: boolean } = {}): OwCatalog {
   const data = object(value, 'OW 目录')
   if (data.schemaVersion !== 1) throw new Error('目录版本异常')
   const heroes = list(data.heroes, '英雄目录').map(value => {
@@ -298,7 +345,7 @@ export function parseOwCatalog(value: unknown): OwCatalog {
     if (!/^[a-zA-Z0-9_-]+\.json$/.test(file)) throw new Error('快照路径异常')
     return { ...selected, file, date: date(item.date), fetchedAt: timestamp(item.fetchedAt) }
   })
-  if (!available.length) throw new Error('没有可用的公开榜单')
+  if (!available.length && !options.allowNoSnapshot) throw new Error('没有可用的公开榜单')
   unique(available.map(item => `${item.mode}/${item.seasonId}/${item.rankId}`), '快照选项')
   const patch = object(data.patch, '调整标签')
   const patchIds = (tag: OwPatchTag) => {

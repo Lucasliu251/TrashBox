@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "fetchedAt": "2026-10-08T10:30:52.547Z",
+  "fetchedAt": "2026-10-09T03:36:26.433Z",
   "sourceUrl": "https://webapi.blizzard.cn/ow-armory-server/index",
   "heroSourceUrl": "https://ld5.res.netease.com/pc/zt/20241115153332/static/heroConfigs.json",
   "heroes": [
@@ -588,72 +588,72 @@
       "seasonId": "5",
       "rankId": "-127",
       "file": "jingji-5-all.json",
-      "date": "2026-10-07",
-      "fetchedAt": "2026-10-08T10:30:52.573Z"
+      "date": "2026-10-08",
+      "fetchedAt": "2026-10-09T03:36:26.453Z"
     },
     {
       "mode": "jingji",
       "seasonId": "5",
       "rankId": "Bronze",
       "file": "jingji-5-Bronze.json",
-      "date": "2026-10-07",
-      "fetchedAt": "2026-10-08T10:30:52.806Z"
+      "date": "2026-10-08",
+      "fetchedAt": "2026-10-09T03:36:26.672Z"
     },
     {
       "mode": "jingji",
       "seasonId": "5",
       "rankId": "Silver",
       "file": "jingji-5-Silver.json",
-      "date": "2026-10-07",
-      "fetchedAt": "2026-10-08T10:30:53.046Z"
+      "date": "2026-10-08",
+      "fetchedAt": "2026-10-09T03:36:26.889Z"
     },
     {
       "mode": "jingji",
       "seasonId": "5",
       "rankId": "Gold",
       "file": "jingji-5-Gold.json",
-      "date": "2026-10-07",
-      "fetchedAt": "2026-10-08T10:30:53.327Z"
+      "date": "2026-10-08",
+      "fetchedAt": "2026-10-09T03:36:27.107Z"
     },
     {
       "mode": "jingji",
       "seasonId": "5",
       "rankId": "Platinum",
       "file": "jingji-5-Platinum.json",
-      "date": "2026-10-07",
-      "fetchedAt": "2026-10-08T10:30:53.561Z"
+      "date": "2026-10-08",
+      "fetchedAt": "2026-10-09T03:36:27.325Z"
     },
     {
       "mode": "jingji",
       "seasonId": "5",
       "rankId": "Diamond",
       "file": "jingji-5-Diamond.json",
-      "date": "2026-10-07",
-      "fetchedAt": "2026-10-08T10:30:54.075Z"
+      "date": "2026-10-08",
+      "fetchedAt": "2026-10-09T03:36:27.758Z"
     },
     {
       "mode": "jingji",
       "seasonId": "5",
       "rankId": "Master",
       "file": "jingji-5-Master.json",
-      "date": "2026-10-07",
-      "fetchedAt": "2026-10-08T10:30:54.376Z"
+      "date": "2026-10-08",
+      "fetchedAt": "2026-10-09T03:36:27.975Z"
     },
     {
       "mode": "jingji",
       "seasonId": "5",
       "rankId": "Grandmaster",
       "file": "jingji-5-Grandmaster.json",
-      "date": "2026-10-07",
-      "fetchedAt": "2026-10-08T10:30:54.598Z"
+      "date": "2026-10-08",
+      "fetchedAt": "2026-10-09T03:36:28.191Z"
     },
     {
       "mode": "kuaisu",
       "seasonId": "5",
       "rankId": "-127",
       "file": "kuaisu-5-all.json",
-      "date": "2026-10-07",
-      "fetchedAt": "2026-10-08T10:30:55.111Z"
+      "date": "2026-10-08",
+      "fetchedAt": "2026-10-09T03:36:28.624Z"
     },
     {
       "mode": "jingji",
@@ -661,7 +661,7 @@
       "rankId": "-127",
       "file": "jingji-4-all.json",
       "date": "2026-10-06",
-      "fetchedAt": "2026-10-08T10:30:55.428Z"
+      "fetchedAt": "2026-10-09T03:36:28.841Z"
     },
     {
       "mode": "kuaisu",
@@ -669,7 +669,7 @@
       "rankId": "-127",
       "file": "kuaisu-4-all.json",
       "date": "2026-10-06",
-      "fetchedAt": "2026-10-08T10:30:55.673Z"
+      "fetchedAt": "2026-10-09T03:36:29.059Z"
     }
   ],
   "qualityIssues": [

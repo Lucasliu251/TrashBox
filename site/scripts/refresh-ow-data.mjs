@@ -8,7 +8,7 @@ const API = 'https://webapi.blizzard.cn/ow-armory-server/'
 const PAGE = 'https://ow.blizzard.cn/herolist/'
 const CLIENT = 'https://ld5.res.netease.com/pc/zt/20250326092201/js/index_a9b2cfaa.js'
 const ASSETS = 'https://ld5.res.netease.com/pc/zt/20250326092201/assets/'
-const destination = fileURLToPath(new URL('../public/ow-data/', import.meta.url))
+const destination = path.resolve(fileURLToPath(new URL('../public/ow-data/', import.meta.url)))
 const staging = path.join(path.dirname(destination), `.ow-data-${process.pid}`)
 const modes = [{ id: 'jingji', name: '竞技比赛' }, { id: 'kuaisu', name: '快速比赛' }]
 // Names/keys match the official public leaderboard client, not overseas tiers.

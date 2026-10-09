@@ -1,76 +1,85 @@
 {
   "schemaVersion": 1,
-  "fetchedAt": "2026-10-08T10:30:54.598Z",
+  "fetchedAt": "2026-10-09T03:36:28.191Z",
   "sourceUrl": "https://webapi.blizzard.cn/ow-armory-server/hero_leaderboard?game_mode=jingji&season=5&mmr=Grandmaster",
   "selection": {
     "mode": "jingji",
     "seasonId": "5",
     "rankId": "Grandmaster"
   },
-  "date": "2026-10-07",
+  "date": "2026-10-08",
   "rows": [
     {
       "heroId": "tracer",
       "role": "1",
       "winRate": 23.89,
-      "pickRate": 39.47,
+      "pickRate": 32.61,
       "banRate": 0,
       "kda": 0.25,
-      "date": "2026-10-07"
+      "date": "2026-10-08"
     },
     {
       "heroId": "lucio",
       "role": "3",
       "winRate": 44.44,
-      "pickRate": 23.68,
+      "pickRate": 19.57,
       "banRate": 0,
       "kda": 0.2,
-      "date": "2026-10-07"
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "wrecking-ball",
+      "role": "2",
+      "winRate": 50,
+      "pickRate": 13.04,
+      "banRate": 0,
+      "kda": 0.56,
+      "date": "2026-10-08"
     },
     {
       "heroId": "cassidy",
       "role": "1",
       "winRate": 73.27,
-      "pickRate": 13.16,
+      "pickRate": 10.87,
       "banRate": 0,
       "kda": 2,
-      "date": "2026-10-07"
+      "date": "2026-10-08"
     },
     {
       "heroId": "jetpackcat",
       "role": "3",
       "winRate": 40,
-      "pickRate": 13.16,
+      "pickRate": 10.87,
       "banRate": 0,
       "kda": 0,
-      "date": "2026-10-07"
+      "date": "2026-10-08"
     },
     {
       "heroId": "anran",
       "role": "1",
-      "winRate": 0,
-      "pickRate": 5.26,
+      "winRate": 50.06,
+      "pickRate": 8.7,
       "banRate": 0,
-      "kda": 0,
-      "date": "2026-10-07"
+      "kda": 1,
+      "date": "2026-10-08"
     },
     {
       "heroId": "shion",
       "role": "1",
       "winRate": 100,
-      "pickRate": 2.63,
+      "pickRate": 2.17,
       "banRate": 0,
       "kda": 0,
-      "date": "2026-10-07"
+      "date": "2026-10-08"
     },
     {
       "heroId": "illari",
       "role": "3",
       "winRate": 0,
-      "pickRate": 2.63,
+      "pickRate": 2.17,
       "banRate": 0,
       "kda": 0,
-      "date": "2026-10-07"
+      "date": "2026-10-08"
     }
   ]
 }

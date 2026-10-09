@@ -1,0 +1,11 @@
+[Unit]
+Description=Hourly shared official Chinese Overwatch patch refresh
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+RandomizedDelaySec=120
+Unit=trashbox-ow-patches.service
+
+[Install]
+WantedBy=timers.target

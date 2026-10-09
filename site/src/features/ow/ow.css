@@ -300,3 +300,7 @@
 @media (prefers-reduced-motion: reduce) {
   .ow-section *, .ow-section *::before, .ow-section *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+.ow-cache-note{font-size:10px;line-height:1.8;color:#929bad;text-align:right;margin:0 0 16px}
+
+.ow-patch-original-title{text-align:center;color:#8b95a8;font-size:11px;line-height:1.8;margin:12px 0}

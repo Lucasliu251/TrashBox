@@ -1,0 +1,236 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-07",
+  "publishedDate": "2026-10-06",
+  "title": "《鬥陣特攻》更新說明 - 2026 年 10 月 7 日",
+  "region": "global",
+  "language": "zh-TW",
+  "sourceUrl": "https://overwatch.blizzard.com/zh-tw/news/patch-notes/live/2026/10/#patch-2026-10-06",
+  "groups": {
+    "enhances": [
+      "domina",
+      "dva",
+      "emre",
+      "lucio",
+      "shion"
+    ],
+    "weakens": [
+      "bastion"
+    ],
+    "adjusts": [
+      "ana",
+      "anran",
+      "ashe",
+      "baptiste",
+      "bastion",
+      "cassidy",
+      "doctrine",
+      "domina",
+      "doomfist",
+      "echo",
+      "emre",
+      "genji",
+      "hanzo",
+      "hazard",
+      "illari",
+      "jetpackcat",
+      "junker-queen",
+      "junkrat",
+      "juno",
+      "kiriko",
+      "lifeweaver",
+      "lucio",
+      "mauga",
+      "mercy",
+      "mizuki",
+      "moira",
+      "reinhardt",
+      "roadhog",
+      "shion",
+      "sierra",
+      "sojourn",
+      "sombra",
+      "symmetra",
+      "torbjorn",
+      "tracer",
+      "venture",
+      "wrecking-ball",
+      "wuyang",
+      "zenyatta"
+    ]
+  },
+  "heroes": [
+    {
+      "id": "ana",
+      "sourceName": "安娜"
+    },
+    {
+      "id": "anran",
+      "sourceName": "安燃"
+    },
+    {
+      "id": "ashe",
+      "sourceName": "艾西"
+    },
+    {
+      "id": "baptiste",
+      "sourceName": "巴帝斯特"
+    },
+    {
+      "id": "bastion",
+      "sourceName": "壁壘機兵"
+    },
+    {
+      "id": "cassidy",
+      "sourceName": "卡西迪"
+    },
+    {
+      "id": "doctrine",
+      "sourceName": "血律"
+    },
+    {
+      "id": "domina",
+      "sourceName": "多米娜"
+    },
+    {
+      "id": "doomfist",
+      "sourceName": "毀滅拳王"
+    },
+    {
+      "id": "dva",
+      "sourceName": "D.Va"
+    },
+    {
+      "id": "echo",
+      "sourceName": "迴音"
+    },
+    {
+      "id": "emre",
+      "sourceName": "伊默"
+    },
+    {
+      "id": "genji",
+      "sourceName": "源氏"
+    },
+    {
+      "id": "hanzo",
+      "sourceName": "半藏"
+    },
+    {
+      "id": "hazard",
+      "sourceName": "災害"
+    },
+    {
+      "id": "illari",
+      "sourceName": "伊拉里"
+    },
+    {
+      "id": "jetpackcat",
+      "sourceName": "火箭貓"
+    },
+    {
+      "id": "junker-queen",
+      "sourceName": "垃圾鎮女王"
+    },
+    {
+      "id": "junkrat",
+      "sourceName": "炸彈鼠"
+    },
+    {
+      "id": "juno",
+      "sourceName": "朱諾"
+    },
+    {
+      "id": "kiriko",
+      "sourceName": "霧子"
+    },
+    {
+      "id": "lifeweaver",
+      "sourceName": "織命"
+    },
+    {
+      "id": "lucio",
+      "sourceName": "路西歐"
+    },
+    {
+      "id": "mauga",
+      "sourceName": "莫加"
+    },
+    {
+      "id": "mercy",
+      "sourceName": "慈悲"
+    },
+    {
+      "id": "mizuki",
+      "sourceName": "瑞稀"
+    },
+    {
+      "id": "moira",
+      "sourceName": "莫伊拉"
+    },
+    {
+      "id": "reinhardt",
+      "sourceName": "萊因哈特"
+    },
+    {
+      "id": "roadhog",
+      "sourceName": "攔路豬"
+    },
+    {
+      "id": "shion",
+      "sourceName": "死怨"
+    },
+    {
+      "id": "sierra",
+      "sourceName": "席艾拉"
+    },
+    {
+      "id": "sojourn",
+      "sourceName": "索潔恩"
+    },
+    {
+      "id": "sombra",
+      "sourceName": "駭影"
+    },
+    {
+      "id": "symmetra",
+      "sourceName": "辛梅塔"
+    },
+    {
+      "id": "torbjorn",
+      "sourceName": "托比昂"
+    },
+    {
+      "id": "tracer",
+      "sourceName": "閃光"
+    },
+    {
+      "id": "venture",
+      "sourceName": "無畏"
+    },
+    {
+      "id": "wrecking-ball",
+      "sourceName": "火爆鋼球"
+    },
+    {
+      "id": "wuyang",
+      "sourceName": "無漾"
+    },
+    {
+      "id": "zenyatta",
+      "sourceName": "禪亞塔"
+    }
+  ],
+  "unmappedNames": [],
+  "fetchedAt": "2026-10-09T11:36:29.339757+08:00",
+  "checkedAt": "2026-10-09T11:36:29.339757+08:00",
+  "refreshStatus": "ok",
+  "sourceErrors": [
+    {
+      "region": "cn",
+      "month": "2026-10",
+      "error": "HTTPError"
+    }
+  ],
+  "classification": "explicit-numeric-v1"
+}

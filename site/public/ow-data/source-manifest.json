@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "observedAt": "2026-10-08T10:30:52.547Z",
+  "observedAt": "2026-10-09T03:36:26.433Z",
   "sourcePage": "https://ow.blizzard.cn/herolist/",
   "indexUrl": "https://webapi.blizzard.cn/ow-armory-server/index",
   "heroConfigUrl": "https://ld5.res.netease.com/pc/zt/20241115153332/static/heroConfigs.json",
@@ -34,7 +34,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260930/1790752017353_29beb11aa6.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1790752017353_29beb11aa6.png",
       "cacheLocation": null
     },
@@ -43,7 +43,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260928/1790582017558_9aad361370.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1790582017558_9aad361370.png",
       "cacheLocation": null
     },
@@ -52,7 +52,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260806/1786022282273_a597b92ce5.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1786022282273_a597b92ce5.png",
       "cacheLocation": null
     },
@@ -61,7 +61,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260806/1786022284609_87781d4c2c.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1786022284609_87781d4c2c.png",
       "cacheLocation": null
     },
@@ -70,7 +70,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260612/1781246423382_b7df5f662a.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1781246423382_b7df5f662a.png",
       "cacheLocation": null
     },
@@ -79,7 +79,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260612/1781246172375_d3f933a70b.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1781246172375_d3f933a70b.png",
       "cacheLocation": null
     },
@@ -88,7 +88,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260414/1776168411922_fcd14bee26.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1776168411922_fcd14bee26.png",
       "cacheLocation": null
     },
@@ -97,7 +97,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260410/1775811792545_6349a5db7f.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1775811792545_6349a5db7f.jpg",
       "cacheLocation": null
     },
@@ -106,7 +106,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260415/1776235043486_7600582524.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1776235043486_7600582524.png",
       "cacheLocation": null
     },
@@ -115,7 +115,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260410/1775812625498_7154056469.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1775812625498_7154056469.jpg",
       "cacheLocation": null
     },
@@ -124,7 +124,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260227/1772161166550_8d155e68a4.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1772161166550_8d155e68a4.png",
       "cacheLocation": null
     },
@@ -133,7 +133,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260209/1770631708607_f784c013a0.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770631708607_f784c013a0.jpg",
       "cacheLocation": null
     },
@@ -142,7 +142,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260227/1772161166572_520bd4f944.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1772161166572_520bd4f944.png",
       "cacheLocation": null
     },
@@ -151,7 +151,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260209/1770631720018_da5572a824.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770631720018_da5572a824.jpg",
       "cacheLocation": null
     },
@@ -160,7 +160,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260227/1772161166513_c40437c565.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1772161166513_c40437c565.png",
       "cacheLocation": null
     },
@@ -169,7 +169,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260209/1770631731443_50aaa03eed.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770631731443_50aaa03eed.jpg",
       "cacheLocation": null
     },
@@ -178,7 +178,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260227/1772161166536_5e611d4fb0.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1772161166536_5e611d4fb0.png",
       "cacheLocation": null
     },
@@ -187,7 +187,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260209/1770631803802_04a6b669e4.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770631803802_04a6b669e4.jpg",
       "cacheLocation": null
     },
@@ -196,7 +196,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770343474061_811025e090.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343474061_811025e090.png",
       "cacheLocation": null
     },
@@ -205,7 +205,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770343474723_cf09c163de.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343474723_cf09c163de.jpg",
       "cacheLocation": null
     },
@@ -214,7 +214,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770343573582_31ebd32f84.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343573582_31ebd32f84.png",
       "cacheLocation": null
     },
@@ -223,7 +223,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770343574752_95129ac545.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343574752_95129ac545.png",
       "cacheLocation": null
     },
@@ -232,7 +232,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770343601631_494945c57e.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343601631_494945c57e.png",
       "cacheLocation": null
     },
@@ -241,7 +241,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770343602034_cc7e1cb576.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343602034_cc7e1cb576.jpg",
       "cacheLocation": null
     },
@@ -250,7 +250,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770343684623_511e9831c9.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343684623_511e9831c9.png",
       "cacheLocation": null
     },
@@ -259,7 +259,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770343685073_f43337d053.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343685073_f43337d053.jpg",
       "cacheLocation": null
     },
@@ -268,7 +268,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770343745482_5dbfa340a7.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343745482_5dbfa340a7.png",
       "cacheLocation": null
     },
@@ -277,7 +277,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770343745877_bfe4ba7f05.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343745877_bfe4ba7f05.jpg",
       "cacheLocation": null
     },
@@ -286,7 +286,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770343784176_7bb7b4361b.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343784176_7bb7b4361b.png",
       "cacheLocation": null
     },
@@ -295,7 +295,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770343784697_d349976e7c.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343784697_d349976e7c.jpg",
       "cacheLocation": null
     },
@@ -304,7 +304,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770343853300_2996f20a85.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343853300_2996f20a85.png",
       "cacheLocation": null
     },
@@ -313,7 +313,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770343853836_51181311e6.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343853836_51181311e6.jpg",
       "cacheLocation": null
     },
@@ -322,7 +322,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770343861928_8e06207e8c.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343861928_8e06207e8c.png",
       "cacheLocation": null
     },
@@ -331,7 +331,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770343862429_3dd4c02fe9.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343862429_3dd4c02fe9.jpg",
       "cacheLocation": null
     },
@@ -340,7 +340,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770343871550_ed901efbf9.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343871550_ed901efbf9.png",
       "cacheLocation": null
     },
@@ -349,7 +349,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770343871957_136cd0367e.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343871957_136cd0367e.jpg",
       "cacheLocation": null
     },
@@ -358,7 +358,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770343880840_118a29132b.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770343880840_118a29132b.png",
       "cacheLocation": null
     },
@@ -367,7 +367,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20241107/1730973913592_0309af43b9.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1730973913592_0309af43b9.jpg",
       "cacheLocation": null
     },
@@ -376,7 +376,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344000592_a122b6548c.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344000592_a122b6548c.png",
       "cacheLocation": null
     },
@@ -385,7 +385,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344001031_901d6d736f.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344001031_901d6d736f.jpg",
       "cacheLocation": null
     },
@@ -394,7 +394,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344038417_8e127ae379.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344038417_8e127ae379.png",
       "cacheLocation": null
     },
@@ -403,7 +403,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344038849_031cb2f9cd.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344038849_031cb2f9cd.jpg",
       "cacheLocation": null
     },
@@ -412,7 +412,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344106986_1e81a16aa9.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344106986_1e81a16aa9.png",
       "cacheLocation": null
     },
@@ -421,7 +421,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344107514_ede2ed3cdd.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344107514_ede2ed3cdd.jpg",
       "cacheLocation": null
     },
@@ -430,7 +430,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344234870_aeffaf7b79.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344234870_aeffaf7b79.png",
       "cacheLocation": null
     },
@@ -439,7 +439,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344235306_948ee4c78d.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344235306_948ee4c78d.jpg",
       "cacheLocation": null
     },
@@ -448,7 +448,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344265598_9d3c296b05.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344265598_9d3c296b05.png",
       "cacheLocation": null
     },
@@ -457,7 +457,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344266480_6af4f1aca5.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344266480_6af4f1aca5.jpg",
       "cacheLocation": null
     },
@@ -466,7 +466,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344279611_1ec099c6b9.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344279611_1ec099c6b9.png",
       "cacheLocation": null
     },
@@ -475,7 +475,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344280095_833cb68fdf.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344280095_833cb68fdf.jpg",
       "cacheLocation": null
     },
@@ -484,7 +484,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344361158_af8f9502b5.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344361158_af8f9502b5.png",
       "cacheLocation": null
     },
@@ -493,7 +493,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344361694_7ea31360eb.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344361694_7ea31360eb.jpg",
       "cacheLocation": null
     },
@@ -502,7 +502,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344410244_9d7a9f01b9.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344410244_9d7a9f01b9.png",
       "cacheLocation": null
     },
@@ -511,7 +511,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344411199_801bc17e94.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344411199_801bc17e94.jpg",
       "cacheLocation": null
     },
@@ -520,7 +520,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344420636_f5b9d814cb.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344420636_f5b9d814cb.png",
       "cacheLocation": null
     },
@@ -529,7 +529,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344421148_f061b9cdb9.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344421148_f061b9cdb9.jpg",
       "cacheLocation": null
     },
@@ -538,7 +538,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344518471_6694640983.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344518471_6694640983.png",
       "cacheLocation": null
     },
@@ -547,7 +547,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344519008_251027bee6.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344519008_251027bee6.jpg",
       "cacheLocation": null
     },
@@ -556,7 +556,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344559514_30c8544a58.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344559514_30c8544a58.png",
       "cacheLocation": null
     },
@@ -565,7 +565,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344560027_154ca0dd5e.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344560027_154ca0dd5e.jpg",
       "cacheLocation": null
     },
@@ -574,7 +574,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344568581_13339bc21d.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344568581_13339bc21d.png",
       "cacheLocation": null
     },
@@ -583,7 +583,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344568937_2f35217d55.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344568937_2f35217d55.jpg",
       "cacheLocation": null
     },
@@ -592,7 +592,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344756601_230a35bbfe.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344756601_230a35bbfe.png",
       "cacheLocation": null
     },
@@ -601,7 +601,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344757179_9d34ae1a34.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344757179_9d34ae1a34.jpg",
       "cacheLocation": null
     },
@@ -610,7 +610,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344795972_a27d8b1835.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344795972_a27d8b1835.png",
       "cacheLocation": null
     },
@@ -619,7 +619,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344796656_e727a92249.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344796656_e727a92249.jpg",
       "cacheLocation": null
     },
@@ -628,7 +628,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344835007_e476db0de0.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344835007_e476db0de0.png",
       "cacheLocation": null
     },
@@ -637,7 +637,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344835545_7f2625df7f.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344835545_7f2625df7f.jpg",
       "cacheLocation": null
     },
@@ -646,7 +646,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344848735_c1b6e8680d.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344848735_c1b6e8680d.png",
       "cacheLocation": null
     },
@@ -655,7 +655,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344849359_9826f0c0bb.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344849359_9826f0c0bb.jpg",
       "cacheLocation": null
     },
@@ -664,7 +664,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344861505_65a04d4ba8.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344861505_65a04d4ba8.png",
       "cacheLocation": null
     },
@@ -673,7 +673,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344861947_7ec83104d6.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344861947_7ec83104d6.jpg",
       "cacheLocation": null
     },
@@ -682,7 +682,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344956007_530e01e386.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344956007_530e01e386.png",
       "cacheLocation": null
     },
@@ -691,7 +691,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344956541_d5f41a003e.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344956541_d5f41a003e.jpg",
       "cacheLocation": null
     },
@@ -700,7 +700,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770344990351_7b059cede4.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344990351_7b059cede4.png",
       "cacheLocation": null
     },
@@ -709,7 +709,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770344990904_3a92271a5d.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770344990904_3a92271a5d.jpg",
       "cacheLocation": null
     },
@@ -718,7 +718,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345057916_a09a61f8c4.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345057916_a09a61f8c4.png",
       "cacheLocation": null
     },
@@ -727,7 +727,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345058422_b44563ca79.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345058422_b44563ca79.jpg",
       "cacheLocation": null
     },
@@ -736,7 +736,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345065664_ef5a73e847.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345065664_ef5a73e847.png",
       "cacheLocation": null
     },
@@ -745,7 +745,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345066155_2c2286e872.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345066155_2c2286e872.jpg",
       "cacheLocation": null
     },
@@ -754,7 +754,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345086338_589415f7c4.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345086338_589415f7c4.png",
       "cacheLocation": null
     },
@@ -763,7 +763,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345086930_55d68ef2b2.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345086930_55d68ef2b2.jpg",
       "cacheLocation": null
     },
@@ -772,7 +772,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345147228_7d7063ea61.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345147228_7d7063ea61.png",
       "cacheLocation": null
     },
@@ -781,7 +781,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345147701_ba98159cd7.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345147701_ba98159cd7.jpg",
       "cacheLocation": null
     },
@@ -790,7 +790,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345212218_19a8ef85cc.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345212218_19a8ef85cc.png",
       "cacheLocation": null
     },
@@ -799,7 +799,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345212732_9a2b56ca61.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345212732_9a2b56ca61.jpg",
       "cacheLocation": null
     },
@@ -808,7 +808,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345321595_01c8267e25.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345321595_01c8267e25.png",
       "cacheLocation": null
     },
@@ -817,7 +817,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345322098_2f137e4119.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345322098_2f137e4119.jpg",
       "cacheLocation": null
     },
@@ -826,7 +826,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345331108_df768a20f2.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345331108_df768a20f2.png",
       "cacheLocation": null
     },
@@ -835,7 +835,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345331671_98c13df435.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345331671_98c13df435.jpg",
       "cacheLocation": null
     },
@@ -844,7 +844,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345516431_b4e4a3db29.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345516431_b4e4a3db29.png",
       "cacheLocation": null
     },
@@ -853,7 +853,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345516948_0772fd04a6.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345516948_0772fd04a6.jpg",
       "cacheLocation": null
     },
@@ -862,7 +862,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345555277_72d8324dc1.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345555277_72d8324dc1.png",
       "cacheLocation": null
     },
@@ -871,7 +871,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345555852_7ee44a8b2a.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345555852_7ee44a8b2a.jpg",
       "cacheLocation": null
     },
@@ -880,7 +880,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345609610_ac79cb89fb.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345609610_ac79cb89fb.png",
       "cacheLocation": null
     },
@@ -889,7 +889,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345610164_9ba63b8102.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345610164_9ba63b8102.jpg",
       "cacheLocation": null
     },
@@ -898,7 +898,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345683902_9072d3014c.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345683902_9072d3014c.png",
       "cacheLocation": null
     },
@@ -907,7 +907,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345684503_025b4a42b0.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345684503_025b4a42b0.jpg",
       "cacheLocation": null
     },
@@ -916,7 +916,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345720108_25aa5687e0.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345720108_25aa5687e0.png",
       "cacheLocation": null
     },
@@ -925,7 +925,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345720537_cfebcb4c63.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345720537_cfebcb4c63.jpg",
       "cacheLocation": null
     },
@@ -934,7 +934,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345730149_8a4eb79474.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345730149_8a4eb79474.png",
       "cacheLocation": null
     },
@@ -943,7 +943,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345730873_65c6f54f66.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345730873_65c6f54f66.jpg",
       "cacheLocation": null
     },
@@ -952,7 +952,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345799934_839573accf.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345799934_839573accf.png",
       "cacheLocation": null
     },
@@ -961,7 +961,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345800321_0f2634a643.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345800321_0f2634a643.jpg",
       "cacheLocation": null
     },
@@ -970,7 +970,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345867640_419b4c28b6.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345867640_419b4c28b6.png",
       "cacheLocation": null
     },
@@ -979,7 +979,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345868208_ea903e3934.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345868208_ea903e3934.jpg",
       "cacheLocation": null
     },
@@ -988,7 +988,7 @@
       "kind": "portrait",
       "url": "https://ld5.res.netease.com/images/20260206/1770345880148_104d05c5ac.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345880148_104d05c5ac.png",
       "cacheLocation": null
     },
@@ -997,7 +997,7 @@
       "kind": "hero-art",
       "url": "https://ld5.res.netease.com/images/20260206/1770345880728_7f84f21d84.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "1770345880728_7f84f21d84.jpg",
       "cacheLocation": null
     },
@@ -1005,7 +1005,7 @@
       "kind": "official-ui",
       "url": "https://ld5.res.netease.com/pc/zt/20250326092201/assets/kv-2560_6027b981.jpg",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "kv-2560_6027b981.jpg",
       "cacheLocation": null
     },
@@ -1013,7 +1013,7 @@
       "kind": "official-ui",
       "url": "https://ld5.res.netease.com/pc/zt/20250326092201/assets/icon-sc_5cba6026.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "icon-sc_5cba6026.png",
       "cacheLocation": null
     },
@@ -1021,7 +1021,7 @@
       "kind": "official-ui",
       "url": "https://ld5.res.netease.com/pc/zt/20250326092201/assets/icon-zz_5a3502eb.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "icon-zz_5a3502eb.png",
       "cacheLocation": null
     },
@@ -1029,7 +1029,7 @@
       "kind": "official-ui",
       "url": "https://ld5.res.netease.com/pc/zt/20250326092201/assets/icon-zy_1f3c3d2a.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "icon-zy_1f3c3d2a.png",
       "cacheLocation": null
     },
@@ -1037,7 +1037,7 @@
       "kind": "official-ui",
       "url": "https://ld5.res.netease.com/pc/zt/20250326092201/assets/icon-jqzq_86bd6ec2.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "icon-jqzq_86bd6ec2.png",
       "cacheLocation": null
     },
@@ -1045,7 +1045,7 @@
       "kind": "official-ui",
       "url": "https://ld5.res.netease.com/pc/zt/20250326092201/assets/icon-jqxr_d6e51b7e.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "icon-jqxr_d6e51b7e.png",
       "cacheLocation": null
     },
@@ -1053,7 +1053,7 @@
       "kind": "official-ui",
       "url": "https://ld5.res.netease.com/pc/zt/20250326092201/assets/icon-jqtz_d411a3e2.png",
       "sourcePage": "https://ow.blizzard.cn/herolist/",
-      "observedAt": "2026-10-08T10:30:52.547Z",
+      "observedAt": "2026-10-09T03:36:26.433Z",
       "version": "icon-jqtz_d411a3e2.png",
       "cacheLocation": null
     }

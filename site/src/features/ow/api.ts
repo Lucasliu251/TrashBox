@@ -1,11 +1,31 @@
-import { parseOwCatalog, parseOwHeroes, parseOwIndex, parseOwLeaderboard, parseOwStatsSnapshot } from './types'
-import type { OwCatalog, OwHomeData, OwSelection, OwStatsResult } from './types'
+import { parseOwCatalog, parseOwHeroes, parseOwIndex, parseOwLeaderboard, parseOwStatsSnapshot, parseOwBalancePatch } from './types'
+import type { OwCatalog, OwHomeData, OwSelection, OwStatsResult, OwBalancePatch } from './types'
 
 const PUBLIC_API = 'https://webapi.blizzard.cn/ow-armory-server/'
 const DATA_BASE = `${import.meta.env.BASE_URL}ow-data/`
 let snapshotCatalogCache: OwCatalog | undefined
 let lastSuccessfulLiveCatalog: OwCatalog | undefined
 const lastSuccessfulLiveStats = new Map<string, OwStatsResult>()
+let lastBalancePatch: OwBalancePatch | undefined
+
+/** Only reads our shared server snapshot. Visitors never scrape a patch page. */
+export async function loadOwBalancePatch(signal?: AbortSignal): Promise<OwBalancePatch> {
+  const key = 'trashbox:ow:official-chinese-patch:v1'
+  if (!lastBalancePatch) {
+    try { lastBalancePatch = parseOwBalancePatch(JSON.parse(localStorage.getItem(key) || 'null')) } catch { /* optional public fallback */ }
+  }
+  try {
+    const latest = parseOwBalancePatch(await readJson(`${DATA_BASE}balance-patch.json`, signal, true))
+    if (lastBalancePatch && latest.date < lastBalancePatch.date) return { ...lastBalancePatch, refreshStatus: 'retained' }
+    lastBalancePatch = latest
+    try { localStorage.setItem(key, JSON.stringify(latest)) } catch { /* optional public cache */ }
+    return latest
+  } catch (error) {
+    if (signal?.aborted) throw error
+    if (lastBalancePatch) return { ...lastBalancePatch, refreshStatus: 'retained' }
+    throw error
+  }
+}
 
 function historicalCatalog(catalog: OwCatalog, liveError?: string): OwCatalog {
   return {
@@ -90,6 +110,7 @@ export async function loadOwCatalog(
       ...captured, source: 'live', fetchedAt, checkedAt: new Date().toISOString(),
       heroSourceUrl: index.heroSourceUrl, heroes, heroesSource, heroesFetchedAt,
       patch: index.patch, seasons: index.seasons, currentSeasonId: index.seasons[0]!.id,
+      available: captured.available.filter(entry => index.seasons.some(season => season.id === entry.seasonId)),
       liveError,
     }
     lastSuccessfulLiveCatalog = catalog
@@ -176,4 +197,51 @@ export async function loadOwHomeData(
     statsError = error instanceof Error ? error.message : '官网当前赛季统计暂不可用，请稍后重试'
   }
   return { catalog, stats, statsError, checkedAt: new Date().toISOString() }
+}
+
+// Public data only. Revisiting / switching sections reuses data; no polling.
+const HOME_CACHE_KEY = 'trashbox:ow:public-home:v2'
+const HOME_CACHE_TTL = 60 * 60_000
+let cachedHome: { expiresAt: number; data: OwHomeData } | undefined
+function cacheDeadline(now: number) {
+  // Official leaderboard advertises a daily 10:00 Beijing update; allow 15 minutes.
+  const shifted = new Date(now + 8 * 60 * 60_000)
+  let daily = Date.UTC(shifted.getUTCFullYear(), shifted.getUTCMonth(), shifted.getUTCDate(), 10, 15) - 8 * 60 * 60_000
+  if (daily <= now) daily += 24 * 60 * 60_000
+  return Math.min(now + HOME_CACHE_TTL, daily)
+}
+function readHomeCache(now: number): OwHomeData | undefined {
+  if (cachedHome && cachedHome.expiresAt > now) return cachedHome.data
+  cachedHome = undefined
+  try {
+    const raw: unknown = JSON.parse(localStorage.getItem(HOME_CACHE_KEY) || 'null')
+    if (!raw || typeof raw !== 'object') return
+    const cache = raw as { expiresAt?: unknown; data?: unknown }
+    if (typeof cache.expiresAt !== 'number' || cache.expiresAt <= now || cache.expiresAt > now + HOME_CACHE_TTL) return
+    if (!cache.data || typeof cache.data !== 'object') return
+    const stored = cache.data as Record<string, unknown>
+    const catalog = parseOwCatalog(stored.catalog, { allowNoSnapshot: true })
+    const snapshot = parseOwStatsSnapshot({ schemaVersion: 1, ...(stored.stats as object) })
+    if (snapshot.selection.mode !== 'jingji' || snapshot.selection.rankId !== '-127' || snapshot.selection.seasonId !== catalog.currentSeasonId) return
+    if (typeof stored.checkedAt !== 'string' || !Number.isFinite(Date.parse(stored.checkedAt))) return
+    const data: OwHomeData = { catalog: { ...catalog, source: 'live' }, stats: { ...snapshot, source: 'live' }, checkedAt: stored.checkedAt }
+    cachedHome = { expiresAt: cache.expiresAt, data }
+    return data
+  } catch { /* Storage unavailable or invalid: simply read the API. */ }
+}
+export async function loadOwHomeDataCached(options: { signal?: AbortSignal; forceRefresh?: boolean } = {}): Promise<OwHomeData> {
+  if (options.signal?.aborted) throw options.signal.reason ?? new DOMException('Aborted', 'AbortError')
+  if (!options.forceRefresh) {
+    const retained = readHomeCache(Date.now())
+    if (retained) return retained
+  } else {
+    cachedHome = undefined
+    try { localStorage.removeItem(HOME_CACHE_KEY) } catch { /* public cache is optional */ }
+  }
+  const data = await loadOwHomeData({ signal: options.signal, preferLive: true })
+  if (data.catalog.source === 'live' && data.catalog.heroesSource === 'live' && data.stats?.source === 'live') {
+    cachedHome = { expiresAt: cacheDeadline(Date.now()), data }
+    try { localStorage.setItem(HOME_CACHE_KEY, JSON.stringify(cachedHome)) } catch { /* quota/privacy mode */ }
+  }
+  return data
 }

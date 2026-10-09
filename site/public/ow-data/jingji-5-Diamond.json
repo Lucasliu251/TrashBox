@@ -1,499 +1,499 @@
 {
   "schemaVersion": 1,
-  "fetchedAt": "2026-10-08T10:30:54.075Z",
+  "fetchedAt": "2026-10-09T03:36:27.758Z",
   "sourceUrl": "https://webapi.blizzard.cn/ow-armory-server/hero_leaderboard?game_mode=jingji&season=5&mmr=Diamond",
   "selection": {
     "mode": "jingji",
     "seasonId": "5",
     "rankId": "Diamond"
   },
-  "date": "2026-10-07",
+  "date": "2026-10-08",
   "rows": [
     {
       "heroId": "cassidy",
       "role": "1",
-      "winRate": 45.01,
-      "pickRate": 7.44,
-      "banRate": 0.25,
-      "kda": 2.34,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "ana",
-      "role": "3",
-      "winRate": 48.33,
-      "pickRate": 6.09,
-      "banRate": 0.4,
-      "kda": 3.87,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "kiriko",
-      "role": "3",
-      "winRate": 47.83,
-      "pickRate": 5.29,
-      "banRate": 1.05,
-      "kda": 4.21,
-      "date": "2026-10-07"
+      "winRate": 45.72,
+      "pickRate": 7.62,
+      "banRate": 0.2,
+      "kda": 2.37,
+      "date": "2026-10-08"
     },
     {
       "heroId": "doctrine",
       "role": "3",
-      "winRate": 49.86,
-      "pickRate": 4.42,
-      "banRate": 3.52,
-      "kda": 5.01,
-      "date": "2026-10-07"
+      "winRate": 51.35,
+      "pickRate": 5.69,
+      "banRate": 4.63,
+      "kda": 5.22,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "ana",
+      "role": "3",
+      "winRate": 47.15,
+      "pickRate": 5.56,
+      "banRate": 0.28,
+      "kda": 3.86,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "kiriko",
+      "role": "3",
+      "winRate": 46.45,
+      "pickRate": 5.06,
+      "banRate": 0.88,
+      "kda": 4.08,
+      "date": "2026-10-08"
     },
     {
       "heroId": "sombra",
       "role": "1",
-      "winRate": 46.92,
-      "pickRate": 3.72,
-      "banRate": 6.37,
-      "kda": 5.34,
-      "date": "2026-10-07"
+      "winRate": 49.9,
+      "pickRate": 4.16,
+      "banRate": 8.62,
+      "kda": 5.55,
+      "date": "2026-10-08"
     },
     {
       "heroId": "symmetra",
       "role": "1",
-      "winRate": 43.69,
-      "pickRate": 3.68,
-      "banRate": 0.27,
-      "kda": 0.82,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "genji",
-      "role": "1",
-      "winRate": 48.83,
-      "pickRate": 3.5,
-      "banRate": 0.17,
-      "kda": 2.3,
-      "date": "2026-10-07"
+      "winRate": 46.33,
+      "pickRate": 4.04,
+      "banRate": 0.29,
+      "kda": 0.99,
+      "date": "2026-10-08"
     },
     {
       "heroId": "shion",
       "role": "1",
-      "winRate": 46.54,
-      "pickRate": 3.39,
-      "banRate": 0.2,
-      "kda": 2.34,
-      "date": "2026-10-07"
+      "winRate": 46.96,
+      "pickRate": 4.02,
+      "banRate": 0.13,
+      "kda": 2.38,
+      "date": "2026-10-08"
     },
     {
       "heroId": "doomfist",
       "role": "2",
-      "winRate": 53.58,
-      "pickRate": 3.31,
-      "banRate": 8.29,
-      "kda": 3.68,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "sojourn",
-      "role": "1",
-      "winRate": 49.32,
-      "pickRate": 3.31,
-      "banRate": 0.1,
-      "kda": 2.31,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "tracer",
-      "role": "1",
-      "winRate": 45,
-      "pickRate": 3.27,
-      "banRate": 0.85,
-      "kda": 2.44,
-      "date": "2026-10-07"
+      "winRate": 50.61,
+      "pickRate": 3.62,
+      "banRate": 8.82,
+      "kda": 3.65,
+      "date": "2026-10-08"
     },
     {
       "heroId": "wuyang",
       "role": "3",
-      "winRate": 48.47,
-      "pickRate": 3.21,
-      "banRate": 0.05,
-      "kda": 5.23,
-      "date": "2026-10-07"
+      "winRate": 46.78,
+      "pickRate": 3.38,
+      "banRate": 0.03,
+      "kda": 5.13,
+      "date": "2026-10-08"
     },
     {
-      "heroId": "winston",
-      "role": "2",
-      "winRate": 43.76,
-      "pickRate": 2.68,
-      "banRate": 1.22,
-      "kda": 4.14,
-      "date": "2026-10-07"
+      "heroId": "tracer",
+      "role": "1",
+      "winRate": 45.21,
+      "pickRate": 3.38,
+      "banRate": 0.66,
+      "kda": 2.34,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "genji",
+      "role": "1",
+      "winRate": 48.53,
+      "pickRate": 3.36,
+      "banRate": 0.15,
+      "kda": 2.26,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "sojourn",
+      "role": "1",
+      "winRate": 48.31,
+      "pickRate": 3.05,
+      "banRate": 0.08,
+      "kda": 2.31,
+      "date": "2026-10-08"
     },
     {
       "heroId": "reaper",
       "role": "1",
-      "winRate": 44.72,
-      "pickRate": 2.52,
-      "banRate": 0.12,
-      "kda": 2.31,
-      "date": "2026-10-07"
+      "winRate": 47,
+      "pickRate": 2.47,
+      "banRate": 0.13,
+      "kda": 2.28,
+      "date": "2026-10-08"
     },
     {
-      "heroId": "soldier-76",
-      "role": "1",
-      "winRate": 52.95,
-      "pickRate": 2.2,
-      "banRate": 0.1,
-      "kda": 2.66,
-      "date": "2026-10-07"
+      "heroId": "winston",
+      "role": "2",
+      "winRate": 46.81,
+      "pickRate": 2.47,
+      "banRate": 1.11,
+      "kda": 4.1,
+      "date": "2026-10-08"
     },
     {
       "heroId": "moira",
       "role": "3",
-      "winRate": 52.5,
-      "pickRate": 2.13,
-      "banRate": 0.2,
-      "kda": 5.79,
-      "date": "2026-10-07"
+      "winRate": 48.48,
+      "pickRate": 2.16,
+      "banRate": 0.17,
+      "kda": 5.37,
+      "date": "2026-10-08"
     },
     {
-      "heroId": "hazard",
-      "role": "2",
-      "winRate": 49.99,
-      "pickRate": 2,
-      "banRate": 1.32,
-      "kda": 4.73,
-      "date": "2026-10-07"
+      "heroId": "soldier-76",
+      "role": "1",
+      "winRate": 53.92,
+      "pickRate": 2.09,
+      "banRate": 0.07,
+      "kda": 2.58,
+      "date": "2026-10-08"
     },
     {
       "heroId": "sigma",
       "role": "2",
-      "winRate": 57.25,
-      "pickRate": 1.93,
-      "banRate": 1.32,
-      "kda": 4.2,
-      "date": "2026-10-07"
+      "winRate": 52.65,
+      "pickRate": 1.97,
+      "banRate": 1.19,
+      "kda": 3.96,
+      "date": "2026-10-08"
     },
     {
-      "heroId": "hanzo",
-      "role": "1",
-      "winRate": 48.73,
-      "pickRate": 1.87,
-      "banRate": 0.12,
-      "kda": 3,
-      "date": "2026-10-07"
+      "heroId": "hazard",
+      "role": "2",
+      "winRate": 51.61,
+      "pickRate": 1.83,
+      "banRate": 1.25,
+      "kda": 4.76,
+      "date": "2026-10-08"
     },
     {
       "heroId": "mizuki",
       "role": "3",
-      "winRate": 46.87,
-      "pickRate": 1.68,
-      "banRate": 2.45,
-      "kda": 3.34,
-      "date": "2026-10-07"
+      "winRate": 46.33,
+      "pickRate": 1.75,
+      "banRate": 2.52,
+      "kda": 3.15,
+      "date": "2026-10-08"
     },
     {
-      "heroId": "bastion",
+      "heroId": "hanzo",
       "role": "1",
-      "winRate": 50.11,
-      "pickRate": 1.64,
-      "banRate": 0.27,
-      "kda": 2.62,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "ashe",
-      "role": "1",
-      "winRate": 47.68,
+      "winRate": 48.06,
       "pickRate": 1.56,
-      "banRate": 0.05,
-      "kda": 2.48,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "widowmaker",
-      "role": "1",
-      "winRate": 49.35,
-      "pickRate": 1.4,
-      "banRate": 0.9,
-      "kda": 2.5,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "juno",
-      "role": "3",
-      "winRate": 55.87,
-      "pickRate": 1.38,
-      "banRate": 0,
-      "kda": 4.64,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "baptiste",
-      "role": "3",
-      "winRate": 50.58,
-      "pickRate": 1.38,
-      "banRate": 0.07,
-      "kda": 3.92,
-      "date": "2026-10-07"
+      "banRate": 0.13,
+      "kda": 3.09,
+      "date": "2026-10-08"
     },
     {
       "heroId": "brigitte",
       "role": "3",
-      "winRate": 49.28,
-      "pickRate": 1.37,
+      "winRate": 44.4,
+      "pickRate": 1.51,
       "banRate": 0.05,
-      "kda": 4.11,
-      "date": "2026-10-07"
+      "kda": 3.58,
+      "date": "2026-10-08"
     },
     {
-      "heroId": "roadhog",
-      "role": "2",
-      "winRate": 33.61,
-      "pickRate": 1.33,
-      "banRate": 0.65,
-      "kda": 3.02,
-      "date": "2026-10-07"
+      "heroId": "bastion",
+      "role": "1",
+      "winRate": 43.35,
+      "pickRate": 1.51,
+      "banRate": 0.25,
+      "kda": 2.42,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "ashe",
+      "role": "1",
+      "winRate": 49.77,
+      "pickRate": 1.5,
+      "banRate": 0.03,
+      "kda": 2.5,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "widowmaker",
+      "role": "1",
+      "winRate": 51.66,
+      "pickRate": 1.45,
+      "banRate": 0.78,
+      "kda": 2.38,
+      "date": "2026-10-08"
     },
     {
       "heroId": "orisa",
       "role": "2",
-      "winRate": 41.41,
-      "pickRate": 1.31,
-      "banRate": 2.77,
-      "kda": 3.66,
-      "date": "2026-10-07"
+      "winRate": 42.75,
+      "pickRate": 1.24,
+      "banRate": 2.81,
+      "kda": 3.51,
+      "date": "2026-10-08"
     },
     {
-      "heroId": "zarya",
+      "heroId": "baptiste",
+      "role": "3",
+      "winRate": 50.26,
+      "pickRate": 1.19,
+      "banRate": 0.04,
+      "kda": 4.11,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "roadhog",
       "role": "2",
-      "winRate": 45.4,
-      "pickRate": 1.29,
-      "banRate": 16.56,
-      "kda": 4.62,
-      "date": "2026-10-07"
+      "winRate": 39.93,
+      "pickRate": 1.18,
+      "banRate": 0.44,
+      "kda": 3.07,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "juno",
+      "role": "3",
+      "winRate": 52.58,
+      "pickRate": 1.17,
+      "banRate": 0,
+      "kda": 4.27,
+      "date": "2026-10-08"
     },
     {
       "heroId": "emre",
       "role": "1",
-      "winRate": 45.89,
-      "pickRate": 1.27,
-      "banRate": 0.02,
-      "kda": 2.28,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "zenyatta",
-      "role": "3",
-      "winRate": 52.07,
-      "pickRate": 1.12,
-      "banRate": 0.2,
-      "kda": 4.92,
-      "date": "2026-10-07"
+      "winRate": 51.29,
+      "pickRate": 1.16,
+      "banRate": 0.01,
+      "kda": 2.35,
+      "date": "2026-10-08"
     },
     {
       "heroId": "freja",
       "role": "1",
-      "winRate": 42.04,
-      "pickRate": 1.08,
-      "banRate": 15.61,
-      "kda": 2.42,
-      "date": "2026-10-07"
+      "winRate": 44.95,
+      "pickRate": 1.16,
+      "banRate": 14.62,
+      "kda": 2.49,
+      "date": "2026-10-08"
     },
     {
-      "heroId": "echo",
-      "role": "1",
-      "winRate": 61.51,
-      "pickRate": 1.01,
-      "banRate": 0.1,
-      "kda": 2.78,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "mercy",
+      "heroId": "zenyatta",
       "role": "3",
-      "winRate": 45.36,
-      "pickRate": 0.97,
-      "banRate": 0.2,
-      "kda": 3.87,
-      "date": "2026-10-07"
+      "winRate": 49.38,
+      "pickRate": 1.08,
+      "banRate": 0.27,
+      "kda": 4.88,
+      "date": "2026-10-08"
     },
     {
-      "heroId": "pharah",
-      "role": "1",
-      "winRate": 55.46,
-      "pickRate": 0.94,
-      "banRate": 4.17,
-      "kda": 2.98,
-      "date": "2026-10-07"
+      "heroId": "zarya",
+      "role": "2",
+      "winRate": 48.15,
+      "pickRate": 1.05,
+      "banRate": 16.46,
+      "kda": 4.73,
+      "date": "2026-10-08"
     },
     {
       "heroId": "dmon",
       "role": "2",
-      "winRate": 53.51,
-      "pickRate": 0.94,
-      "banRate": 7.74,
-      "kda": 4.82,
-      "date": "2026-10-07"
+      "winRate": 51.65,
+      "pickRate": 1.01,
+      "banRate": 7.91,
+      "kda": 4.76,
+      "date": "2026-10-08"
     },
     {
       "heroId": "venture",
       "role": "1",
-      "winRate": 38.13,
-      "pickRate": 0.92,
-      "banRate": 0.05,
-      "kda": 2.16,
-      "date": "2026-10-07"
+      "winRate": 49.84,
+      "pickRate": 0.97,
+      "banRate": 0.12,
+      "kda": 2.19,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "echo",
+      "role": "1",
+      "winRate": 59.98,
+      "pickRate": 0.94,
+      "banRate": 0.09,
+      "kda": 2.94,
+      "date": "2026-10-08"
     },
     {
       "heroId": "anran",
       "role": "1",
-      "winRate": 48.75,
-      "pickRate": 0.86,
-      "banRate": 1.85,
-      "kda": 1.72,
-      "date": "2026-10-07"
+      "winRate": 53.44,
+      "pickRate": 0.94,
+      "banRate": 1.86,
+      "kda": 1.89,
+      "date": "2026-10-08"
     },
     {
-      "heroId": "lucio",
+      "heroId": "pharah",
+      "role": "1",
+      "winRate": 46.59,
+      "pickRate": 0.89,
+      "banRate": 4.05,
+      "kda": 2.61,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "mercy",
       "role": "3",
-      "winRate": 59.06,
-      "pickRate": 0.85,
-      "banRate": 0.02,
-      "kda": 3.18,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "ramattra",
-      "role": "2",
-      "winRate": 35.16,
-      "pickRate": 0.83,
-      "banRate": 0.12,
-      "kda": 2.58,
-      "date": "2026-10-07"
+      "winRate": 49.09,
+      "pickRate": 0.84,
+      "banRate": 0.15,
+      "kda": 4.24,
+      "date": "2026-10-08"
     },
     {
       "heroId": "vendetta",
       "role": "1",
-      "winRate": 46.21,
-      "pickRate": 0.82,
-      "banRate": 0.17,
-      "kda": 1.78,
-      "date": "2026-10-07"
+      "winRate": 48.52,
+      "pickRate": 0.84,
+      "banRate": 0.2,
+      "kda": 1.91,
+      "date": "2026-10-08"
     },
     {
       "heroId": "torbjorn",
       "role": "1",
-      "winRate": 53.81,
-      "pickRate": 0.79,
-      "banRate": 0.02,
-      "kda": 2.41,
-      "date": "2026-10-07"
+      "winRate": 51.89,
+      "pickRate": 0.77,
+      "banRate": 0.01,
+      "kda": 2.23,
+      "date": "2026-10-08"
     },
     {
-      "heroId": "lifeweaver",
+      "heroId": "lucio",
       "role": "3",
-      "winRate": 46.03,
+      "winRate": 54.69,
       "pickRate": 0.74,
-      "banRate": 0.05,
-      "kda": 4.21,
-      "date": "2026-10-07"
+      "banRate": 0.01,
+      "kda": 2.6,
+      "date": "2026-10-08"
     },
     {
       "heroId": "mauga",
       "role": "2",
-      "winRate": 39.7,
-      "pickRate": 0.72,
-      "banRate": 0.92,
-      "kda": 3.01,
-      "date": "2026-10-07"
+      "winRate": 42.71,
+      "pickRate": 0.68,
+      "banRate": 0.62,
+      "kda": 3.08,
+      "date": "2026-10-08"
     },
     {
-      "heroId": "illari",
+      "heroId": "lifeweaver",
       "role": "3",
-      "winRate": 59.57,
-      "pickRate": 0.71,
-      "banRate": 0.02,
-      "kda": 4.16,
-      "date": "2026-10-07"
+      "winRate": 42.57,
+      "pickRate": 0.67,
+      "banRate": 0.04,
+      "kda": 4.03,
+      "date": "2026-10-08"
     },
     {
       "heroId": "jetpackcat",
       "role": "3",
-      "winRate": 30.27,
-      "pickRate": 0.68,
-      "banRate": 11.66,
-      "kda": 5.03,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "reinhardt",
-      "role": "2",
-      "winRate": 73.41,
+      "winRate": 37.66,
       "pickRate": 0.67,
-      "banRate": 0.15,
-      "kda": 3.62,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "domina",
-      "role": "2",
-      "winRate": 61.81,
-      "pickRate": 0.63,
-      "banRate": 0.1,
-      "kda": 4.74,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "dva",
-      "role": "2",
-      "winRate": 38.08,
-      "pickRate": 0.62,
-      "banRate": 3.6,
-      "kda": 4.47,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "sierra",
-      "role": "1",
-      "winRate": 43.99,
-      "pickRate": 0.6,
-      "banRate": 1.02,
-      "kda": 2.19,
-      "date": "2026-10-07"
-    },
-    {
-      "heroId": "junkrat",
-      "role": "1",
-      "winRate": 48.17,
-      "pickRate": 0.56,
-      "banRate": 0.07,
-      "kda": 1.78,
-      "date": "2026-10-07"
+      "banRate": 9.86,
+      "kda": 5.46,
+      "date": "2026-10-08"
     },
     {
       "heroId": "wrecking-ball",
       "role": "2",
-      "winRate": 35.97,
-      "pickRate": 0.53,
-      "banRate": 0.55,
-      "kda": 4.14,
-      "date": "2026-10-07"
+      "winRate": 42.64,
+      "pickRate": 0.66,
+      "banRate": 0.69,
+      "kda": 5.15,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "ramattra",
+      "role": "2",
+      "winRate": 38.01,
+      "pickRate": 0.66,
+      "banRate": 0.08,
+      "kda": 2.69,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "dva",
+      "role": "2",
+      "winRate": 46.05,
+      "pickRate": 0.62,
+      "banRate": 4.06,
+      "kda": 5.38,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "sierra",
+      "role": "1",
+      "winRate": 45.14,
+      "pickRate": 0.61,
+      "banRate": 1.1,
+      "kda": 2.41,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "domina",
+      "role": "2",
+      "winRate": 58.69,
+      "pickRate": 0.59,
+      "banRate": 0.13,
+      "kda": 4.63,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "junkrat",
+      "role": "1",
+      "winRate": 50.54,
+      "pickRate": 0.57,
+      "banRate": 0.05,
+      "kda": 1.98,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "reinhardt",
+      "role": "2",
+      "winRate": 61.5,
+      "pickRate": 0.52,
+      "banRate": 0.11,
+      "kda": 3.06,
+      "date": "2026-10-08"
     },
     {
       "heroId": "mei",
       "role": "1",
-      "winRate": 39.77,
-      "pickRate": 0.41,
-      "banRate": 0.1,
-      "kda": 2.85,
-      "date": "2026-10-07"
+      "winRate": 39.78,
+      "pickRate": 0.51,
+      "banRate": 0.12,
+      "kda": 2.79,
+      "date": "2026-10-08"
+    },
+    {
+      "heroId": "illari",
+      "role": "3",
+      "winRate": 55.87,
+      "pickRate": 0.5,
+      "banRate": 0.03,
+      "kda": 3.87,
+      "date": "2026-10-08"
     },
     {
       "heroId": "junker-queen",
       "role": "2",
-      "winRate": 57,
-      "pickRate": 0.4,
-      "banRate": 0.02,
-      "kda": 5.25,
-      "date": "2026-10-07"
+      "winRate": 56.05,
+      "pickRate": 0.37,
+      "banRate": 0.03,
+      "kda": 4.8,
+      "date": "2026-10-08"
     }
   ]
 }

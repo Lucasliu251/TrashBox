@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { loadOwHomeData, loadOwStats } from './api'
-import type { OwCatalog, OwHero, OwHeroStat, OwPatchTag, OwRole } from './types'
+import { loadOwHomeDataCached, loadOwStats, loadOwBalancePatch } from './api'
+import type { OwCatalog, OwHero, OwHeroStat, OwPatchTag, OwRole, OwBalancePatch } from './types'
 import OwIcon from './OwIcon.vue'
 import OwPortrait from './OwPortrait.vue'
+import OwTactics from './OwTactics.vue'
 import './ow.css'
 
 type Metric = 'winRate' | 'pickRate' | 'banRate'
@@ -15,12 +16,12 @@ const stats = ref<Awaited<ReturnType<typeof loadOwStats>> | null>(null)
 const loading = ref(true)
 const error = ref('')
 const checkedAt = ref('')
+const balancePatch = ref<OwBalancePatch | null>(null)
+const patchError = ref('')
 const activeBanner = ref(0)
 const lifecycleController = new AbortController()
 let disposed = false
 let inFlight: Promise<void> | null = null
-let refreshTimer: number | undefined
-let lastAttemptAt = 0
 
 const bannerContent = [
   { id: 'kiriko', title: '版本更新', subtitle: '与改动记录', description: '这里将展示版本更新与补丁摘要。', note: '当前为轮播占位，具体内容待补充。' },
@@ -33,16 +34,19 @@ const bannerHero = computed(() => heroMap.value.get(currentBanner.value.id))
 const currentSeason = computed(() => catalog.value?.seasons.find(item => item.id === catalog.value?.currentSeasonId))
 const selectionText = computed(() => (currentSeason.value?.name || '当前赛季') + ' · 竞技比赛 · 全部段位')
 const allRows = computed<HeroRow[]>(() => stats.value?.rows.map(stat => ({ hero: getHero(stat.heroId), stat })) || [])
-const patchDate = computed(() => catalog.value?.patch.date || '')
+const patchDate = computed(() => balancePatch.value?.date || catalog.value?.patch.date || '')
+const patchPublisher = computed(() => balancePatch.value?.region === 'global' ? '暴雪国际服 · 官方繁体中文' : balancePatch.value ? '网易国服 · 官方简体中文' : '旧 API 调整标签')
+const patchUrl = computed(() => balancePatch.value?.sourceUrl || 'https://ow.blizzard.cn/news/patch-notes/')
 const freshBoth = computed(() => !error.value && catalog.value?.source === 'live' && stats.value?.source === 'live')
-const updateStatus = computed(() => loading.value ? '正在检查官网更新…'
-  : freshBoth.value ? '官网已检查 · ' + displayTime(checkedAt.value)
-  : stats.value ? '本次官网读取不完整，已标出历史数据' : '官网数据暂不可用')
+const updateStatus = computed(() => loading.value ? '正在读取公开 API 数据…'
+  : freshBoth.value ? 'API 数据 · 读取于 ' + displayTime(checkedAt.value)
+  : stats.value ? 'API 读取暂不可用，已标出历史数据' : '官网数据暂不可用')
 const patchGroups: { key: OwPatchTag; title: string; icon: string; caption: string }[] = [
-  { key: 'enhances', title: '近期增强', icon: 'up', caption: '官网标记为增强的英雄' },
-  { key: 'weakens', title: '近期削弱', icon: 'down', caption: '官网标记为削弱的英雄' },
-  { key: 'adjusts', title: '近期调整', icon: 'adjust', caption: '官网标记为调整的英雄' },
+  { key: 'enhances', title: '近期增强', icon: 'up', caption: '包含明确增强方向的改动' },
+  { key: 'weakens', title: '近期削弱', icon: 'down', caption: '包含明确削弱方向的改动' },
+  { key: 'adjusts', title: '近期调整', icon: 'adjust', caption: '混合改动 / 重做 / 其他调整' },
 ]
+const tacticalStats = computed(() => stats.value?.rows || [])
 const roles: Record<OwRole, string> = { '1': '输出', '2': '重装', '3': '支援' }
 const leader = (key: Metric) => computed(() => [...allRows.value]
   .filter(row => row.stat[key] != null)
@@ -59,7 +63,7 @@ const spotlights = computed(() => [
 function getHero(id: string): OwHero {
   return heroMap.value.get(id) || { id, name: id, avatarUrl: '', artUrl: '', description: '', catalogRole: null, isNew: false }
 }
-function groupHeroes(key: OwPatchTag) { return catalog.value?.patch[key].map(getHero) || [] }
+function groupHeroes(key: OwPatchTag) { return (balancePatch.value?.groups[key] || catalog.value?.patch[key] || []).map(getHero) }
 function formatMetric(value: number | null | undefined) { return value == null || !Number.isFinite(value) ? '—' : value.toFixed(2) + '%' }
 function displayDate(value: string) { return value ? value.replace(/\//g, '-').split('T')[0]!.split('-').map(part => part.padStart(2, '0')).join('.') : '—' }
 function displayTime(value: string | undefined) {
@@ -78,12 +82,14 @@ function cleanOldQuery() {
   for (const key of ['mode', 'season', 'tier', 'role', 'q', 'sort', 'order', 'hero']) url.searchParams.delete(key)
   history.replaceState(history.state, '', url)
 }
-async function refreshData() {
+async function refreshData(forceRefresh = false) {
   loading.value = true
   error.value = ''
-  lastAttemptAt = Date.now()
+  const patchTask = loadOwBalancePatch(lifecycleController.signal).then(result => {
+    if (!disposed) { balancePatch.value = result; patchError.value = '' }
+  }).catch(() => { if (!disposed) patchError.value = '补丁数据读取暂不可用，显示已有记录。' })
   try {
-    const result = await loadOwHomeData({ signal: lifecycleController.signal, preferLive: true })
+    const result = await loadOwHomeDataCached({ signal: lifecycleController.signal, forceRefresh })
     if (disposed) return
     catalog.value = result.catalog
     stats.value = result.stats
@@ -97,30 +103,20 @@ async function refreshData() {
       if (stats.value) stats.value = { ...stats.value, source: 'snapshot', liveError: error.value }
     }
   } finally {
+    await patchTask
     if (!disposed) loading.value = false
   }
 }
-function boot(): Promise<void> {
+function boot(forceRefresh = false): Promise<void> {
   if (disposed) return Promise.resolve()
   if (inFlight) return inFlight
-  inFlight = refreshData().finally(() => { inFlight = null })
+  inFlight = refreshData(forceRefresh).finally(() => { inFlight = null })
   return inFlight
 }
-function onReturn() {
-  if (document.visibilityState === 'visible' && Date.now() - lastAttemptAt >= 30_000) void boot()
-}
-onMounted(() => {
-  void boot()
-  refreshTimer = window.setInterval(() => { if (document.visibilityState === 'visible') void boot() }, 5 * 60_000)
-  document.addEventListener('visibilitychange', onReturn)
-  window.addEventListener('focus', onReturn)
-})
+onMounted(() => { void boot() })
 onBeforeUnmount(() => {
   disposed = true
   lifecycleController.abort()
-  window.clearInterval(refreshTimer)
-  document.removeEventListener('visibilitychange', onReturn)
-  window.removeEventListener('focus', onReturn)
 })
 </script>
 
@@ -131,9 +127,9 @@ onBeforeUnmount(() => {
       <div class="ow-subnav-links">
         <button class="is-active" @click="scrollToSection('ow-top')">首页</button>
         <button @click="scrollToSection('ow-changes')">近期调整</button>
-        <button @click="scrollToSection('ow-source')">数据来源</button>
+        <button @click="scrollToSection('ow-tactics')">克制 / 阵容</button><button @click="scrollToSection('ow-source')">数据来源</button>
       </div>
-      <span class="ow-public-pill"><i />公开数据 · 免登录</span>
+      <span class="ow-public-pill"><i />公开英雄数据</span>
     </nav>
 
     <main class="ow-container ow-main">
@@ -158,9 +154,10 @@ onBeforeUnmount(() => {
       <div class="ow-data-strip">
         <span><i class="ow-status-dot" /> 国服公开英雄统计</span>
         <span v-if="stats">{{ selectionText }}</span>
-        <span v-if="stats" class="ow-strip-date">官方数据 {{ displayDate(stats.date) }} <span class="ow-source-badge">{{ stats.source === 'live' ? '官网读取' : '历史快照' }}</span></span>
+        <span v-if="stats" class="ow-strip-date">官方数据 {{ displayDate(stats.date) }} <span class="ow-source-badge">{{ stats.source === 'live' ? '官方 API' : '历史快照' }}</span></span>
       </div>
-      <div class="ow-update-status" role="status"><span>{{ updateStatus }}</span><button :disabled="loading" @click="boot"><OwIcon name="refresh" :size="13" />{{ loading ? '检查中' : '刷新' }}</button></div>
+      <div class="ow-update-status" role="status"><span>{{ updateStatus }}</span><button :disabled="loading" @click="boot(true)"><OwIcon name="refresh" :size="13" />{{ loading ? '读取中' : '刷新' }}</button></div>
+      <p class="ow-cache-note">优先复用 1 小时内的公开数据缓存；不定时轮询、不在切回页面时检查。官方统计日期以上方 API 日期为准。</p>
 
       <section class="ow-spotlights" aria-label="国服英雄数据焦点">
         <a v-for="(spotlight, index) in spotlights" :key="spotlight.metric" class="ow-spotlight" :class="'ow-spotlight-' + index" :href="officialBoard" target="_blank" rel="noopener noreferrer" title="查看国服官网统计" style="text-decoration: none">
@@ -173,12 +170,12 @@ onBeforeUnmount(() => {
           <span class="ow-spotlight-foot">当前模式、赛季与段位下的最高值<OwIcon name="chevron" :size="15" /></span>
         </a>
       </section>
-      <div v-if="error" class="ow-error" role="alert"><OwIcon name="info" :size="24" /><div><strong>公开数据暂不可用</strong><p>{{ error }}</p></div><button @click="boot">重试 <OwIcon name="refresh" :size="15" /></button></div>
+      <div v-if="error" class="ow-error" role="alert"><OwIcon name="info" :size="24" /><div><strong>公开数据暂不可用</strong><p>{{ error }}</p></div><button @click="boot(true)">重试 <OwIcon name="refresh" :size="15" /></button></div>
 
       <section id="ow-changes" class="ow-changes" aria-labelledby="ow-changes-title">
         <div class="ow-section-heading">
           <div><span class="ow-kicker">BALANCE WATCH</span><h2 id="ow-changes-title">近期平衡调整<span>。</span></h2></div>
-          <div class="ow-heading-aside"><span>官网近期调整标签</span><small>官方标签记录于 {{ displayDate(patchDate) }}</small><small v-if="catalog?.source === 'snapshot'">本次读取失败，当前为历史标签</small></div>
+          <div class="ow-heading-aside"><span>{{ patchPublisher }}</span><small>补丁日期 {{ displayDate(patchDate) }}</small><small v-if="balancePatch">后台核对于 {{ displayTime(balancePatch.checkedAt) }} · 每小时更新</small><small v-if="patchError || balancePatch?.refreshStatus === 'retained'">来源暂不可用，保留最近成功记录</small><small v-if="!balancePatch">补丁缓存暂不可用，当前为旧 API 标签</small></div>
         </div>
         <div class="ow-change-grid">
           <article v-for="group in patchGroups" :key="group.key" class="ow-change-card" :class="'ow-change-' + group.key">
@@ -190,14 +187,19 @@ onBeforeUnmount(() => {
             </div>
           </article>
         </div>
-        <p class="ow-patch-note"><OwIcon name="info" :size="14" />标签日期与统计日期不同，可能早于当前赛季；同一英雄可同时出现多个标签。<a href="https://ow.blizzard.cn/news/patch-notes/" target="_blank" rel="noopener noreferrer">查看官方补丁说明 <OwIcon name="external" :size="12" /></a></p>
+        <p v-if="balancePatch" class="ow-patch-original-title">{{ balancePatch.title }}</p>
+        <p class="ow-patch-note"><OwIcon name="info" :size="14" />按官方正文的明确数值方向整理；混合改动、重做及命中区域等列入调整，可重复出现。<a :href="patchUrl" target="_blank" rel="noopener noreferrer">查看官方中文原文 <OwIcon name="external" :size="12" /></a></p>
+        <p v-if="balancePatch?.region === 'global'" class="ow-patch-original-title">当前采用日期较新的国际服官方中文记录；国服同步情况以国服公告为准。</p>
+        <p v-if="balancePatch?.unmappedNames.length" class="ow-patch-original-title">新英雄名称待匹配：{{ balancePatch.unmappedNames.join('、') }}</p>
       </section>
+
+      <OwTactics v-if="catalog" :heroes="catalog.heroes" :stats="tacticalStats" />
 
       <section class="ow-future-slot" aria-label="更多信息预留区域"><span class="ow-kicker">更多信息</span><h2>内容待补充</h2><p>后续将在这里展示更多信息。</p></section>
 
       <section id="ow-source" class="ow-source-panel" aria-labelledby="ow-source-title">
         <div class="ow-source-brand"><OwIcon name="mark" :size="40" /></div>
-        <div class="ow-source-copy"><span class="ow-kicker">DATA SOURCE</span><h2 id="ow-source-title">数据来源</h2><p>英雄统计与调整标签来自守望先锋国服官网；头像、立绘和图标引用官方资源。TrashBox 是非官方社区站点。</p><small>快照采集 {{ displayTime(stats?.fetchedAt) }}（北京时间） · 官方标签 {{ displayDate(patchDate) }}</small></div>
+        <div class="ow-source-copy"><span class="ow-kicker">DATA SOURCE</span><h2 id="ow-source-title">数据来源</h2><p>英雄统计来自国服官方 API；调整信息优先采用日期更新的国服或国际服官方中文补丁。头像、立绘和图标引用官方资源。TrashBox 是非官方社区站点。</p><small>快照采集 {{ displayTime(stats?.fetchedAt) }}（北京时间） · 补丁日期 {{ displayDate(patchDate) }}</small></div>
         <a class="ow-source-link" :href="officialBoard" target="_blank" rel="noopener noreferrer">国服官网英雄榜 <OwIcon name="external" :size="15" /></a>
       </section>
       <footer class="ow-footer"><span>TRASHBOX <i>×</i> OVERWATCH</span><span>守望先锋 · 网页 Demo</span></footer>

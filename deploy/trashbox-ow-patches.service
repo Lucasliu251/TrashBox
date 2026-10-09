@@ -1,0 +1,18 @@
+[Unit]
+Description=Refresh shared official Chinese Overwatch balance notes
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/TrashBox
+ExecStart=/usr/bin/flock -n /home/ubuntu/TrashBox/.run-local/ow-patches.lock /usr/bin/python3 /home/ubuntu/TrashBox/site/scripts/refresh-ow-patches.py --catalog /home/ubuntu/TrashBox/site/public/ow-data/catalog.json --output /home/ubuntu/TrashBox/site/public/ow-data/balance-patch.json --publish /home/ubuntu/TrashBox/.serve-public/ow-data/balance-patch.json --cache-dir /home/ubuntu/TrashBox/.run-local/ow-patch-cache
+TimeoutStartSec=120
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/ubuntu/TrashBox/.run-local /home/ubuntu/TrashBox/site/public/ow-data /home/ubuntu/TrashBox/.serve-public/ow-data
+UMask=0022

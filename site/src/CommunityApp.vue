@@ -293,7 +293,8 @@ onBeforeUnmount(() => {
   <div class="community-app" :class="{ 'game-ow': game === 'ow' }">
     <header class="topbar account-aware-topbar">
       <button class="site-name" @click="navigate('home')">TrashBox</button>
-      <div class="game-switch" role="group" aria-label="切换游戏板块">
+      <div class="game-switch" :class="{ 'is-ow': game === 'ow' }" role="group" aria-label="切换游戏板块">
+        <span class="game-switch-highlight" aria-hidden="true" />
         <button :class="{ active: game === 'cs2' }" :aria-pressed="game === 'cs2'" @click="switchGame('cs2')"><span class="game-symbol cs2-symbol" aria-hidden="true">Ⅱ</span> CS2</button>
         <button :class="{ active: game === 'ow' }" :aria-pressed="game === 'ow'" @click="switchGame('ow')"><span class="game-symbol ow-symbol" aria-hidden="true">◈</span> 守望先锋</button>
       </div>
