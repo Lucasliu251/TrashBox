@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref, nextTick } from 'vue'
 import { loadOwHomeDataCached, loadOwStats, loadOwBalancePatch, loadOwCatalog } from './api'
 import type { OwCatalog, OwHero, OwHeroStat, OwPatchTag, OwRole, OwBalancePatch } from './types'
 import OwIcon from './OwIcon.vue'
+import BrandIcon from '../../../../shared/components/BrandIcon.vue'
 import OwPortrait from './OwPortrait.vue'
 import OwTactics from './OwTactics.vue'
 import OwMyMatches from './OwMyMatches.vue'
@@ -136,7 +137,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="ow-section">
     <nav class="ow-subnav ow-container" aria-label="守望先锋板块导航">
-      <span class="ow-subnav-identity"><OwIcon name="mark" :size="25" /><strong>守望先锋</strong><span>国服观察站</span></span>
+      <span class="ow-subnav-identity"><BrandIcon name="ow" :size="28"/><strong>守望先锋</strong><span>国服观察站</span></span>
       <div class="ow-subnav-links">
         <button :class="{ 'is-active': !privateMode }" @click="showPublic('ow-top')">首页</button>
         <button @click="showPublic('ow-changes')">近期调整</button>
@@ -212,7 +213,7 @@ onBeforeUnmount(() => {
       <section class="ow-future-slot" aria-label="更多信息预留区域"><span class="ow-kicker">更多信息</span><h2>内容待补充</h2><p>后续将在这里展示更多信息。</p></section>
 
       <section id="ow-source" class="ow-source-panel" aria-labelledby="ow-source-title">
-        <div class="ow-source-brand"><OwIcon name="mark" :size="40" /></div>
+        <div class="ow-source-brand"><BrandIcon name="ow" :size="46"/></div>
         <div class="ow-source-copy"><span class="ow-kicker">DATA SOURCE</span><h2 id="ow-source-title">数据来源</h2><p>英雄统计来自国服官方 API；调整信息优先采用日期更新的国服或国际服官方中文补丁。头像、立绘和图标引用官方资源。TrashBox 是非官方社区站点。</p><small>快照采集 {{ displayTime(stats?.fetchedAt) }}（北京时间） · 补丁日期 {{ displayDate(patchDate) }}</small></div>
         <a class="ow-source-link" :href="officialBoard" target="_blank" rel="noopener noreferrer">国服官网英雄榜 <OwIcon name="external" :size="15" /></a>
       </section>

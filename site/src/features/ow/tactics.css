@@ -23,3 +23,5 @@
 
 .tactic-relation-list{max-height:430px;overflow-y:auto;padding:3px 6px 3px 3px;scrollbar-gutter:stable}
 .tactic-relation-entry{position:relative;margin-bottom:8px}.tactic-relation-entry .tactic-relation-card{margin-bottom:0;padding-bottom:32px}.tactic-relation-entry>a{position:absolute;bottom:12px;left:65px;color:#8499b6;font-size:10px;text-decoration:none}.tactic-relation-entry>a:hover{text-decoration:underline}.tactic-fineprint a{color:#8299b9}
+
+.tactic-button{display:inline-flex;align-items:center;justify-content:center;gap:7px}

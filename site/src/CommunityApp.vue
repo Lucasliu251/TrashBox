@@ -3,6 +3,10 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import RichContent from './RichContent'
 import { accountUrl, API_BASE, AuthRequestError, redirectToLogin } from '../../shared/auth'
 import OwHome from './features/ow/OwHome.vue'
+import OwIcon from './features/ow/OwIcon.vue'
+import BrandIcon from '../../shared/components/BrandIcon.vue'
+import UiIcon from '../../shared/components/UiIcon.vue'
+import cs2Brand from '../../shared/assets/branding/cs2.png'
 
 const props = defineProps<{ accountDisplayName: string; steamId: string | null }>()
 
@@ -83,7 +87,7 @@ function safeImage(value?: string | null) {
 }
 
 function avatar(value?: string | null) {
-  return safeImage(value) || '/icons/cs-logo-grey.avif'
+  return safeImage(value) || cs2Brand
 }
 
 function hideBrokenImage(event: Event) {
@@ -292,11 +296,11 @@ onBeforeUnmount(() => {
 <template>
   <div class="community-app" :class="{ 'game-ow': game === 'ow' }">
     <header class="topbar account-aware-topbar">
-      <button class="site-name" @click="navigate('home')">TrashBox</button>
+      <button class="site-name" @click="navigate('home')"><BrandIcon name="trashbox" :size="32"/><span>TrashBox</span></button>
       <div class="game-switch" :class="{ 'is-ow': game === 'ow' }" role="group" aria-label="切换游戏板块">
         <span class="game-switch-highlight" aria-hidden="true" />
-        <button :class="{ active: game === 'cs2' }" :aria-pressed="game === 'cs2'" @click="switchGame('cs2')"><span class="game-symbol cs2-symbol" aria-hidden="true">Ⅱ</span> CS2</button>
-        <button :class="{ active: game === 'ow' }" :aria-pressed="game === 'ow'" @click="switchGame('ow')"><span class="game-symbol ow-symbol" aria-hidden="true">◈</span> 守望先锋</button>
+        <button :class="{ active: game === 'cs2' }" :aria-pressed="game === 'cs2'" @click="switchGame('cs2')"><BrandIcon name="cs2" :size="22" class="game-brand-icon"/> CS2</button>
+        <button :class="{ active: game === 'ow' }" :aria-pressed="game === 'ow'" @click="switchGame('ow')"><BrandIcon name="ow" :size="22" class="game-brand-icon"/> 守望先锋</button>
       </div>
       <nav v-if="game === 'cs2'" class="desktop-tabs" aria-label="CS2 与社区导航">
         <button :class="{ selected: ['home', 'posts', 'post'].includes(view) }" @click="navigate('home')">社区</button>
@@ -312,7 +316,7 @@ onBeforeUnmount(() => {
     <main v-else class="page-shell" :class="{ 'reaction-page': view === 'reaction' }">
       <template v-if="view === 'home'">
         <form class="search-section" @submit.prevent="searchPlayer">
-          <div class="search-capsule"><span class="search-symbol">⌕</span><input v-model="searchText" aria-label="搜索玩家" placeholder="搜索玩家 / 比赛 ID" /><button type="submit">搜索</button></div>
+          <div class="search-capsule"><UiIcon name="search" :size="18" class="search-symbol"/><input v-model="searchText" aria-label="搜索玩家" placeholder="搜索玩家 / 比赛 ID" /><button type="submit">搜索</button></div>
           <p v-if="searchError" class="form-error">{{ searchError }}</p>
           <div v-if="results.length > 1" class="search-results"><button v-for="user in results" :key="user.steam_id" type="button" @click="navigate('stats', user.steam_id)"><img :src="avatar(user.avatar)" alt="" />{{ user.nickname || user.steam_id }}</button></div>
         </form>
@@ -360,14 +364,14 @@ onBeforeUnmount(() => {
 
       <template v-else-if="view === 'stats'">
         <div class="subpage-header"><button v-if="selectedId" @click="navigate('home')">‹ 返回</button><h1>数据</h1></div>
-        <div v-if="!selectedId" class="empty-stats"><img src="/icons/cs-logo-grey.avif" alt="" /><h2>绑定 Steam 账号开启数据分析</h2><p>查看您的 Rating、ADR 及比赛走势</p><a class="stats-bind-account" :href="accountUrl()">绑定 Steam</a><form @submit.prevent="searchPlayer"><input v-model="searchText" aria-label="Steam ID 或玩家昵称" placeholder="输入 Steam ID 或玩家昵称" /><button type="submit">查找玩家</button></form><p v-if="searchError" class="form-error">{{ searchError }}</p><div v-if="results.length > 1" class="search-results"><button v-for="user in results" :key="user.steam_id" @click="navigate('stats', user.steam_id)">{{ user.nickname || user.steam_id }}</button></div></div>
+        <div v-if="!selectedId" class="empty-stats"><img :src="cs2Brand" alt="" /><h2>绑定 Steam 账号开启数据分析</h2><p>查看您的 Rating、ADR 及比赛走势</p><a class="stats-bind-account" :href="accountUrl()">绑定 Steam</a><form @submit.prevent="searchPlayer"><input v-model="searchText" aria-label="Steam ID 或玩家昵称" placeholder="输入 Steam ID 或玩家昵称" /><button type="submit">查找玩家</button></form><p v-if="searchError" class="form-error">{{ searchError }}</p><div v-if="results.length > 1" class="search-results"><button v-for="user in results" :key="user.steam_id" @click="navigate('stats', user.steam_id)">{{ user.nickname || user.steam_id }}</button></div></div>
         <p v-if="pageError" class="section-message">{{ pageError }}</p>
         <div v-if="player" class="stats-dashboard"><div class="profile-card"><div class="playtime-tag"><small>游戏时长</small>{{ number((player.summary.time_played || 0) / 3600) }}h</div><div class="style-badge"><small>STYLE</small>{{ player.style_tag || '凡' }}</div><div class="profile-info"><img :src="avatar(player.avatar)" alt="" /><div><strong>{{ player.nickname || player.steam_id }}</strong><small>ID: {{ player.steam_id }}</small></div></div></div><div class="stats-grid"><div><small>Avg K/D (30d)</small><strong :class="{ gold: player.summary.avg_kd >= 1.2 }">{{ number(player.summary.avg_kd, 2) }}</strong></div><div><small>★StarTrack™️</small><strong>{{ player.summary.period_kills || 0 }}</strong></div><div><small>ADR</small><strong>{{ number(player.summary.avg_ADR, 2) }}</strong></div><div><small>Win Rate</small><strong>{{ number(player.summary.avg_WR) }}%</strong></div></div><h2 class="data-heading">能力模型 (Capability)</h2><div class="chart-container radar-chart"><svg viewBox="0 0 300 300" aria-label="六项能力雷达图"><polygon v-for="points in chartGrid" :key="points" :points="points" class="grid-polygon" /><line v-for="(_, index) in axes" :key="index" x1="150" y1="150" :x2="polar(index, 1).split(',')[0]" :y2="polar(index, 1).split(',')[1]" class="grid-line" /><polygon :points="chartPoints" class="data-polygon" /><text v-for="(axis, index) in axes" :key="axis.key" :x="Number(polar(index, 1).split(',')[0])" :y="Number(polar(index, 1).split(',')[1])" text-anchor="middle" class="chart-label">{{ axis.label }}</text></svg></div><h2 class="data-heading">近期状态 (KD Trend)</h2><div class="chart-container trend-chart"><svg v-if="trendDays.length" viewBox="0 0 350 180" aria-label="近期 KD 趋势"><line x1="25" y1="90" x2="325" y2="90" class="grid-line" stroke-dasharray="4 4" /><polyline :points="trendPoints" fill="none" stroke="#de9b35" stroke-width="3" stroke-linejoin="round" /><circle v-for="(day, index) in trendDays" :key="day.date" :cx="25 + index * (300 / Math.max(1, trendDays.length - 1))" :cy="Number(trendPoints.split(' ')[index]?.split(',')[1] || 0)" r="4" fill="#de9b35" /></svg><p v-else>暂无趋势数据</p></div><h2 class="data-heading">每日战报 (Daily Log)</h2><p v-if="!player.history.length" class="section-message">暂无比赛记录</p><div v-for="day in [...player.history].reverse()" :key="day.date" class="match-item"><div class="match-left"><strong>{{ day.date.slice(5) }}</strong><small>{{ day.rounds_played }} Rnds</small></div><div class="match-score"><strong>{{ day.kills }} / {{ day.deaths }}</strong><small :class="day.Rating >= 1 ? 'positive' : 'negative'">{{ number(day.Rating, 2) }} Rating</small></div><div class="match-data"><span>ADR: <b>{{ number(day.adr) }}</b></span><span>MVP: <b>{{ day.mvp }}</b></span><span>HS%: <b>{{ number(day.hsr) }}</b></span><span>DMG: <b>{{ day.dmg }}</b></span></div></div></div>
       </template>
 
-      <template v-else-if="view === 'reaction'"><button class="reaction-screen" :class="reactionState" @click="handleReaction"><img v-if="reactionState === 'idle' || reactionState === 'done'" src="/icons/cs-logo-grey.avif" alt="" /><strong>{{ reactionMessage }}</strong><span>{{ reactionSub }}</span><div v-if="reactionScores.length && reactionState !== 'done'" class="reaction-history">测试进度 ({{ reactionScores.length }}/5)<p>{{ reactionScores.join(' ms　') }} ms</p></div></button><div v-if="reactionState === 'done'" class="reaction-result"><div><small>平均反应时间</small><strong>{{ reactionAverage }} <span>ms</span></strong></div><p>{{ reactionEvaluation }}</p><button @click="resetReaction">再测一次</button><small>成绩保存功能待账号体系接入</small></div></template>
+      <template v-else-if="view === 'reaction'"><button class="reaction-screen" :class="reactionState" @click="handleReaction"><img v-if="reactionState === 'idle' || reactionState === 'done'" :src="cs2Brand" alt="" /><strong>{{ reactionMessage }}</strong><span>{{ reactionSub }}</span><div v-if="reactionScores.length && reactionState !== 'done'" class="reaction-history">测试进度 ({{ reactionScores.length }}/5)<p>{{ reactionScores.join(' ms　') }} ms</p></div></button><div v-if="reactionState === 'done'" class="reaction-result"><div><small>平均反应时间</small><strong>{{ reactionAverage }} <span>ms</span></strong></div><p>{{ reactionEvaluation }}</p><button @click="resetReaction">再测一次</button><small>成绩保存功能待账号体系接入</small></div></template>
     </main>
 
-    <nav v-if="game === 'cs2'" class="tabbar" aria-label="页面导航"><button :class="{ selected: ['home', 'posts', 'post'].includes(view) }" @click="navigate('home')"><img :src="['home', 'posts', 'post'].includes(view) ? '/icons/home-active.png' : '/icons/home.png'" alt="" />社区</button><button :class="{ selected: view === 'reaction' }" @click="navigate('reaction')"><img :src="view === 'reaction' ? '/icons/Flash-active.png' : '/icons/Flash.png'" alt="" />反应测试</button><button :class="{ selected: view === 'rank' }" @click="navigate('rank')"><span class="rank-tab-icon">▥</span>排行</button><button :class="{ selected: view === 'stats' }" @click="navigate('stats')"><img :src="view === 'stats' ? '/icons/chart-active.png' : '/icons/chart.png'" alt="" />数据</button></nav>
+    <nav v-if="game === 'cs2'" class="tabbar" aria-label="页面导航"><button :class="{ selected: ['home', 'posts', 'post'].includes(view) }" @click="navigate('home')"><img :src="['home', 'posts', 'post'].includes(view) ? '/icons/home-active.png' : '/icons/home.png'" alt="" />社区</button><button :class="{ selected: view === 'reaction' }" @click="navigate('reaction')"><img :src="view === 'reaction' ? '/icons/Flash-active.png' : '/icons/Flash.png'" alt="" />反应测试</button><button :class="{ selected: view === 'rank' }" @click="navigate('rank')"><OwIcon name="trophy" :size="25" />排行</button><button :class="{ selected: view === 'stats' }" @click="navigate('stats')"><img :src="view === 'stats' ? '/icons/chart-active.png' : '/icons/chart.png'" alt="" />数据</button></nav>
   </div>
 </template>

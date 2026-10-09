@@ -6,6 +6,7 @@ import type { Matchup, TeamSuggestion } from './tactics'
 import { ROLE_LIMITS, ROLE_NAMES, TACTICS_VERSION, TACTIC_SOURCES } from './tactics-data'
 import { counterSourceUrl } from './tactics-counter-table'
 import OwPortrait from './OwPortrait.vue'
+import UiIcon from '../../../../shared/components/UiIcon.vue'
 import OwHeroPicker from './OwHeroPicker.vue'
 import './tactics.css'
 
@@ -88,7 +89,7 @@ watch(choosing, () => { bulkText.value = ''; bulkIssues.value = [] })
     <div class="tactic-model-note"><strong>社区克制表</strong><span>来源 CounterPickGG，收录 {{ assessedCount }}/{{ roster.length }} 位英雄、{{ edges.length }} 个有向优势关系。评分不是胜率；这是核对时的快照，源站未公布克制表更新日期。</span></div>
 
     <div class="tactic-tabs"><button :class="{ selected: graphMode === 'focused' }" :aria-pressed="graphMode === 'focused'" @click="graphMode = 'focused'">所选英雄关系</button><button :class="{ selected: graphMode === 'all' }" :aria-pressed="graphMode === 'all'" @click="graphMode = 'all'">全部已收录关系</button></div>
-    <div class="tactic-focus-bar"><div><OwPortrait :src="focused?.avatarUrl" :name="focused?.name || '英雄'" /><span><strong>{{ focused?.name || '加载英雄目录…' }}</strong><small>{{ focused?.assessed ? '点击图中头像切换，也可搜索英雄。' : '该英雄克制数据待收录；不据此判断其强弱。' }}</small></span></div><button class="tactic-button" :aria-expanded="searching" @click="searching = !searching">⌕ 搜索英雄</button></div>
+    <div class="tactic-focus-bar"><div><OwPortrait :src="focused?.avatarUrl" :name="focused?.name || '英雄'" /><span><strong>{{ focused?.name || '加载英雄目录…' }}</strong><small>{{ focused?.assessed ? '点击图中头像切换，也可搜索英雄。' : '该英雄克制数据待收录；不据此判断其强弱。' }}</small></span></div><button class="tactic-button" :aria-expanded="searching" @click="searching = !searching"><UiIcon name="search" :size="16"/> 搜索英雄</button></div>
     <OwHeroPicker v-if="searching" :heroes="roster" label="搜索克制关系英雄" @select="selectFocus" />
 
     <div class="tactic-graph-shell">

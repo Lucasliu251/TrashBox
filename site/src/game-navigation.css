@@ -20,3 +20,7 @@
 html[data-game=ow]{background:#f7f7fb}
 @media(max-width:700px){.account-aware-topbar.topbar{grid-template-columns:1fr auto 1fr;grid-template-areas:"brand brand account" "switch switch switch";gap:10px 8px;min-height:110px;padding:10px 18px 12px}.account-aware-topbar .site-name,.game-ow .account-aware-topbar .site-name{font-size:20px}.account-aware-topbar .desktop-tabs,.account-aware-topbar .ow-header-caption{display:none}.account-aware-topbar .account-entry{font-size:11px}.game-switch{width:232px}.game-switch button{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.game-switch-highlight,.game-switch button{transition:none}.game-switch button:active{transform:none}}
+
+.account-aware-topbar .site-name{display:inline-flex;align-items:center;gap:10px}.account-aware-topbar .site-name>.brand-icon{box-shadow:0 1px 5px #0001}.game-switch .game-brand-icon{transition:transform .25s ease}.game-switch button:hover .game-brand-icon{transform:scale(1.06)}.tabbar .ow-icon{display:block;color:inherit}.empty-stats>img,.reaction-screen>img{object-fit:contain;border-radius:12px}
+@media(max-width:700px){.account-aware-topbar .site-name{gap:8px}.account-aware-topbar .site-name>.brand-icon{--brand-icon-size:28px!important}}
+@media(prefers-reduced-motion:reduce){.game-switch .game-brand-icon{transition:none}.game-switch button:hover .game-brand-icon{transform:none}}

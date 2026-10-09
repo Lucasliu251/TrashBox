@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import QRCode from 'qrcode'
+import BrandIcon from '../../shared/components/BrandIcon.vue'
+import UiIcon from '../../shared/components/UiIcon.vue'
 import {
   accountUrl, authRequest, AuthRequestError, getAuthSession, loginUrl,
   providerUrl, safeReturnTo, startSessionActivity,
@@ -268,7 +270,7 @@ onBeforeUnmount(() => { stopActivity?.(); stopQr() })
 <template>
   <div class="auth-shell" :class="{ 'account-shell': isAccount }">
     <header class="auth-header">
-      <span class="brand"><span class="brand-mark">TB</span>TRASHBOX</span>
+      <span class="brand"><BrandIcon name="trashbox" :size="40" />TRASHBOX</span>
       <span class="header-caption">{{ isAccount ? '账号管理' : '统一账号' }}</span>
     </header>
 
@@ -279,7 +281,7 @@ onBeforeUnmount(() => { stopActivity?.(); stopQr() })
         <span class="eyebrow">YOUR TRASHBOX ACCOUNT</span>
         <h1>一起开局。<br><em>从这里开始。</em></h1>
         <p>选择熟悉的账号，登录 TrashBox。</p>
-        <div class="intro-note"><span class="note-mark">↗</span><div><strong>一个账号，多种登录方式</strong><p>登录后可在账号页绑定 Steam、KOOK 或微信，下次任选已绑定方式登录。</p></div></div>
+        <div class="intro-note"><UiIcon name="external" :size="25" class="note-mark"/><div><strong>一个账号，多种登录方式</strong><p>登录后可在账号页绑定 Steam、KOOK 或微信，下次任选已绑定方式登录。</p></div></div>
       </section>
       <section class="login-card" aria-labelledby="login-title">
         <span class="card-kicker"><span class="status-dot"></span>TRASHBOX ACCESS</span>
@@ -289,15 +291,15 @@ onBeforeUnmount(() => { stopActivity?.(); stopQr() })
         <template v-if="providers.length">
           <template v-for="provider in visibleProviders" :key="provider.id">
             <a v-if="provider.enabled" class="provider-button" :class="{ recommended: provider.id === 'kook' }" :href="providerUrl(provider.id, 'login', returnTo)">
-              <span class="provider-icon" :class="provider.id">{{ provider.id === 'kook' ? 'K' : provider.id === 'steam' ? 'S' : provider.id === 'battlenet' ? 'B' : '微' }}</span>
-              <span>通过 {{ provider.label }} 继续</span><small v-if="provider.id === 'kook'">推荐</small><span class="arrow">→</span>
+              <BrandIcon :name="provider.id" :size="32" class="provider-icon" />
+              <span>通过 {{ provider.label }} 继续</span><small v-if="provider.id === 'kook'">推荐</small><UiIcon name="arrow" :size="18" class="arrow"/>
             </a>
-            <button v-else class="provider-button disabled" disabled><span class="provider-icon" :class="provider.id">{{ provider.id === 'kook' ? 'K' : provider.id === 'steam' ? 'S' : provider.id === 'battlenet' ? 'B' : '微' }}</span><span>{{ provider.label }}</span><small>{{ provider.disabled_reason || '尚未配置' }}</small></button>
+            <button v-else class="provider-button disabled" disabled><BrandIcon :name="provider.id" :size="32" class="provider-icon" /><span>{{ provider.label }}</span><small>{{ provider.disabled_reason || '尚未配置' }}</small></button>
           </template>
         </template>
         <button v-else class="button primary" @click="initialize">重新连接登录服务</button>
         <template v-if="miniProvider?.enabled">
-          <button class="mini-login-toggle text-button" @click="qrOpen ? closeQr() : beginQr()">{{ qrOpen ? '收起小程序扫码' : '已有小程序账号？扫码登录' }}</button>
+          <button class="mini-login-toggle provider-button" :aria-expanded="qrOpen" @click="qrOpen ? closeQr() : beginQr()"><BrandIcon name="wechat_mini" :size="32" class="provider-icon"/><span>{{ qrOpen ? '收起小程序扫码' : 'TrashBox 小程序扫码' }}</span><UiIcon :name="qrOpen ? 'close' : 'arrow'" :size="18" class="arrow"/></button>
           <section v-if="qrOpen" class="qr-login" aria-label="小程序扫码登录">
             <p>{{ qrNative ? '使用微信扫一扫，在 TrashBox 小程序中确认。' : '打开 TrashBox 小程序，在 Radar 页面点击“扫码登录”后扫描此码。' }}</p>
             <div class="qr-frame"><img v-if="qrImage" :src="qrImage" alt="TrashBox 小程序登录二维码" /><span v-else>{{ qrBusy ? '正在生成…' : '二维码不可用' }}</span></div>
@@ -335,14 +337,14 @@ onBeforeUnmount(() => { stopActivity?.(); stopQr() })
       <section class="section-card" aria-labelledby="identities-title">
         <div class="section-heading"><div><h2 id="identities-title">登录方式</h2><p>绑定为可选项。已绑定方式都可登录这个账号。</p></div></div>
         <div v-for="provider in visibleProviders" :key="provider.id" class="identity-row">
-          <span class="provider-icon" :class="provider.id">{{ provider.id === 'kook' ? 'K' : provider.id === 'steam' ? 'S' : provider.id === 'battlenet' ? 'B' : '微' }}</span>
+          <BrandIcon :name="provider.id" :size="32" class="provider-icon" />
           <div class="identity-copy"><strong>{{ provider.label }}</strong><span>{{ identityFor(provider.id)?.label || (identityFor(provider.id) ? '已绑定' : provider.enabled ? '未绑定' : '尚未配置') }}</span><code v-if="identityFor(provider.id)">{{ identityFor(provider.id)?.subject }}</code></div>
           <span v-if="identityFor(provider.id)" class="bound-badge">已绑定</span>
           <a v-else-if="provider.enabled" class="button secondary compact" :href="providerUrl(provider.id, 'link', accountReturn)">绑定</a>
           <span v-else class="muted disabled-label">暂不可用</span>
         </div>
         <div v-if="miniProvider?.enabled || identityFor('wechat_mini')" class="identity-row">
-          <span class="provider-icon wechat">微</span><div class="identity-copy"><strong>微信小程序</strong><span>{{ identityFor('wechat_mini')?.label || '可绑定已有 TrashBox 小程序账号' }}</span><code v-if="identityFor('wechat_mini')">{{ identityFor('wechat_mini')?.subject }}</code></div>
+          <BrandIcon name="wechat_mini" :size="34" class="provider-icon" /><div class="identity-copy"><strong>微信小程序</strong><span>{{ identityFor('wechat_mini')?.label || '可绑定已有 TrashBox 小程序账号' }}</span><code v-if="identityFor('wechat_mini')">{{ identityFor('wechat_mini')?.subject }}</code></div>
           <span v-if="identityFor('wechat_mini')" class="bound-badge">已绑定</span><button v-else class="button secondary compact" :disabled="qrBusy" @click="qrOpen ? closeQr() : beginQr()">{{ qrOpen ? '收起' : '扫码绑定' }}</button>
         </div>
         <section v-if="qrOpen" class="qr-login qr-account" aria-label="小程序身份绑定">
