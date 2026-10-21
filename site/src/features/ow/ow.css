@@ -25,9 +25,12 @@
 .ow-subnav-identity { display: flex; align-items: center; gap: 11px; white-space: nowrap; }
 .ow-subnav-identity strong { font-size: 18px; letter-spacing: -.04em; }
 .ow-subnav-identity > span { border-left: 1px solid #cccfd3; padding-left: 12px; color: var(--ow-muted); font-size: 11px; }
-.ow-subnav-links { display: flex; gap: 22px; margin-left: auto; }
-.ow-subnav-links button { padding: 6px 0; background: none; border: 0; font-size: 12px; color: #727b89; white-space: nowrap; }
-.ow-subnav-links button.is-active { color: var(--ow-ink); font-weight: 750; }
+.ow-subnav-links { display: flex; gap: 8px; margin-left: auto; }
+.ow-subnav-links button, .ow-subnav-links a { position: relative; padding: 10px 13px; background: none; border: 0; border-radius: 7px; font-size: 12px; color: #727b89; white-space: nowrap; text-decoration: none; transition: color .18s, background .18s; }
+.ow-subnav-links button:hover, .ow-subnav-links a:hover { background: #eae8e3; color: var(--ow-ink); }
+.ow-subnav-links .is-active { color: var(--ow-ink); font-weight: 750; background: #fff; box-shadow: 0 2px 8px #252c3f08; }
+.ow-subnav-links .is-active::after { content: ''; position: absolute; left: 13px; right: 13px; bottom: 3px; height: 2px; border-radius: 2px; background: var(--ow-orange); animation: ow-nav-reveal .2s ease-out; }
+@keyframes ow-nav-reveal { from { transform: scaleX(.3); opacity: 0; } to { transform: scaleX(1); opacity: 1; } }
 .ow-public-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 9px; border: 1px solid #e0e4df; background: #ecf1eb; color: #567060; border-radius: 4px; font-size: 10px; white-space: nowrap; }
 .ow-public-pill i { width: 5px; height: 5px; background: #61896d; border-radius: 50%; }
 .ow-masthead { position: relative; isolation: isolate; min-height: 395px; background: #202737; border-radius: 8px; overflow: hidden; color: white; box-shadow: 0 15px 32px -22px #1d24385c; }
@@ -301,6 +304,28 @@
   .ow-section *, .ow-section *::before, .ow-section *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 
-.ow-cache-note{font-size:10px;line-height:1.8;color:#929bad;text-align:right;margin:0 0 16px}
-
-.ow-patch-original-title{text-align:center;color:#8b95a8;font-size:11px;line-height:1.8;margin:12px 0}
+.ow-banner-action { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; padding: 10px 16px; border: 1px solid #ffc26c55; border-radius: 6px; background: #ffc26c15; color: #ffd294 !important; font-size: 12px !important; font-weight: 700; text-decoration: none; transition: background .18s, transform .18s; }
+.ow-banner-action:hover { background: #ffc26c2b; transform: translateY(-2px); }
+.ow-change-hero { text-decoration: none; border-radius: 7px; transition: transform .18s, background .18s; }
+.ow-change-hero:hover { transform: translateY(-3px); background: var(--ow-change-pale); }
+.ow-change-hero:hover .ow-portrait { box-shadow: 0 0 0 2px var(--ow-change-color); }
+.ow-data-credit { padding-top: 24px; margin-top: 28px; border-top: 1px solid var(--ow-border); font-size: 11px; color: var(--ow-muted); line-height: 1.9; }
+.ow-data-credit summary { cursor: pointer; width: fit-content; }
+.ow-data-credit summary:focus-visible { outline: 2px solid var(--ow-orange); outline-offset: 4px; }
+.ow-data-credit p { max-width: 680px; }
+.ow-data-credit a { display: inline-flex; align-items: center; gap: 6px; }
+.ow-main > .ow-tactics { margin-top: 0; animation: ow-art-reveal .25s ease-out; }
+.ow-overview { animation: ow-art-reveal .25s ease-out; }
+.ow-lab-loading { padding: 80px 20px; text-align: center; color: var(--ow-muted); }
+.ow-lab-loading button { border: 1px solid var(--ow-border); padding: 10px 18px; border-radius: 6px; background: #fff; }
+@media (max-width: 760px) {
+  .ow-subnav { flex-wrap: wrap; gap: 12px; padding-block: 17px 12px; }
+  .ow-subnav-links { order: 3; width: 100%; margin-left: 0; gap: 5px; }
+  .ow-subnav-links button, .ow-subnav-links a { padding: 10px 12px; font-size: 12px; }
+  .ow-public-pill { margin-left: auto; }
+}
+@media (max-width: 480px) {
+  .ow-subnav-links button:last-child { display: inline-block; }
+  .ow-subnav-identity > span { display: none; }
+  .ow-banner-action { font-size: 11px !important; }
+}

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, ref, useId, watch } from 'vue'
+import { computed, nextTick, ref, useId, watch } from 'vue'
 import type { OwHero, OwHeroStat, OwRole } from './types'
 import { tacticalRoster, matchups, recommendTeams, validateTeams, parseHeroList } from './tactics'
 import type { Matchup, TeamSuggestion } from './tactics'
-import { ROLE_LIMITS, ROLE_NAMES, TACTICS_VERSION, TACTIC_SOURCES } from './tactics-data'
+import { ROLE_LIMITS, ROLE_NAMES, TACTIC_SOURCES } from './tactics-data'
 import { counterSourceUrl } from './tactics-counter-table'
 import OwPortrait from './OwPortrait.vue'
 import UiIcon from '../../../../shared/components/UiIcon.vue'
@@ -15,6 +15,14 @@ const markerId = useId().replace(/[^a-zA-Z0-9_-]/g, '')
 const activeHero = ref('dva')
 const graphMode = ref<'focused' | 'all'>('focused')
 const searching = ref(false)
+const expandedGraph = ref(false)
+const graphShell = ref<HTMLElement | null>(null)
+const referenceSources = TACTIC_SOURCES.filter(source => source.id !== 'counterwatch')
+async function toggleGraphSize() {
+  expandedGraph.value = !expandedGraph.value
+  await nextTick()
+  if (graphShell.value) graphShell.value.scrollLeft = (graphShell.value.scrollWidth - graphShell.value.clientWidth) / 2
+}
 const roster = computed(() => tacticalRoster(props.heroes, props.stats))
 const byId = computed(() => new Map(roster.value.map(hero => [hero.id, hero])))
 const focused = computed(() => byId.value.get(activeHero.value))
@@ -85,14 +93,15 @@ watch(choosing, () => { bulkText.value = ''; bulkIssues.value = [] })
 
 <template>
   <section id="ow-tactics" class="ow-tactics" aria-labelledby="ow-tactics-title">
-    <header class="tactic-heading"><div><span class="ow-kicker">MATCHUP LAB</span><h2 id="ow-tactics-title">英雄克制 · 阵容实验室</h2><p>看懂交战关系，再决定下一手。</p></div><span class="tactic-version">{{ TACTICS_VERSION }}</span></header>
-    <div class="tactic-model-note"><strong>社区克制表</strong><span>来源 CounterPickGG，收录 {{ assessedCount }}/{{ roster.length }} 位英雄、{{ edges.length }} 个有向优势关系。评分不是胜率；这是核对时的快照，源站未公布克制表更新日期。</span></div>
+    <header class="tactic-heading"><div><span class="ow-kicker">MATCHUP LAB</span><h1 id="ow-tactics-title">英雄克制 · 阵容实验室</h1><p>看懂交战关系，再决定下一手。</p></div></header>
+    <div class="tactic-model-note"><strong>社区克制表</strong><span>覆盖 {{ assessedCount }} 位英雄 · {{ edges.length }} 条克制关系。推荐分用于比较阵容，不代表胜率。</span></div>
 
     <div class="tactic-tabs"><button :class="{ selected: graphMode === 'focused' }" :aria-pressed="graphMode === 'focused'" @click="graphMode = 'focused'">所选英雄关系</button><button :class="{ selected: graphMode === 'all' }" :aria-pressed="graphMode === 'all'" @click="graphMode = 'all'">全部已收录关系</button></div>
     <div class="tactic-focus-bar"><div><OwPortrait :src="focused?.avatarUrl" :name="focused?.name || '英雄'" /><span><strong>{{ focused?.name || '加载英雄目录…' }}</strong><small>{{ focused?.assessed ? '点击图中头像切换，也可搜索英雄。' : '该英雄克制数据待收录；不据此判断其强弱。' }}</small></span></div><button class="tactic-button" :aria-expanded="searching" @click="searching = !searching"><UiIcon name="search" :size="16"/> 搜索英雄</button></div>
     <OwHeroPicker v-if="searching" :heroes="roster" label="搜索克制关系英雄" @select="selectFocus" />
 
-    <div class="tactic-graph-shell">
+    <div class="tactic-mobile-graph-tools"><span>{{ expandedGraph ? '左右滑动查看，也可搜索英雄' : '克制关系总览' }}</span><button class="tactic-text-button" :aria-pressed="expandedGraph" @click="toggleGraphSize">{{ expandedGraph ? '完整视图' : '放大查看' }}</button></div>
+    <div ref="graphShell" class="tactic-graph-shell" :class="{ 'is-expanded': expandedGraph }">
       <svg viewBox="0 0 900 900" class="tactic-graph" role="group" aria-label="英雄有向克制关系图：箭头从应对者指向目标">
         <defs><marker :id="markerId + '-arrow'" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke" /></marker></defs>
         <circle cx="450" cy="450" r="330" class="tactic-orbit" /><circle cx="450" cy="450" r="220" class="tactic-orbit inner" />
@@ -121,11 +130,11 @@ watch(choosing, () => { bulkText.value = ''; bulkIssues.value = [] })
       <section v-if="choosing" class="tactic-team-picker"><div><strong>添加{{ choosing === 'enemy' ? '敌方' : '己方' }}英雄</strong><button class="tactic-text-button" @click="choosing = null">收起</button></div><form class="tactic-bulk" @submit.prevent="applyBulk"><label><span>批量输入，将替换这一侧已选英雄</span><input v-model="bulkText" :aria-label="'批量输入' + (choosing === 'enemy' ? '敌方' : '己方') + '英雄'" placeholder="例：猩猩，源氏，法鸡，安娜，天使" /></label><button class="tactic-button" type="submit" :disabled="!bulkText.trim()">应用名单</button></form><p v-for="issue in bulkIssues" :key="issue" class="tactic-error" role="alert">{{ issue }}</p><OwHeroPicker :heroes="roster" :excluded="choosing === 'enemy' ? enemies : locked" :label="'搜索' + (choosing === 'enemy' ? '敌方' : '己方') + '阵容英雄'" @select="pickTeam" /></section>
       <div class="tactic-builder-actions"><span><template v-for="slot in missingRoles" :key="slot.role">{{ ROLE_NAMES[slot.role] }}还需 {{ Math.max(0, slot.count) }} 位　</template></span><div><button class="tactic-text-button" @click="enemies = []; locked = []; choosing = null">清空阵容</button><button class="tactic-button primary" :disabled="computing || selectionIssues.length > 0 || (!enemies.length && !locked.length)" @click="calculate">{{ computing ? '计算阵容…' : locked.length === 5 ? '评估当前阵容' : '推荐完整阵容' }}</button></div></div>
       <p v-for="issue in selectionIssues" :key="issue" class="tactic-error" role="alert">{{ issue }}</p>
-      <p v-if="unknownInputs.length" class="tactic-notice">{{ unknownInputs.map(name).join('、') }} 的克制数据尚未收录：可以保持己方选择并按职责补齐，但不会伪造其克制贡献。</p>
-      <p class="tactic-fineprint">评分只比较本次输入下的社区对抗评分，考虑已收录的对抗方向与基础配合。未建模的地图、熟练度、技能冷却、禁用和特定威能仍需自行判断。</p>
-      <div v-if="suggestions.length" class="tactic-suggestions" aria-live="polite"><article v-for="(team, index) in suggestions" :key="team.ids.join()" class="tactic-suggestion"><div class="tactic-suggestion-heading"><strong>方案 {{ String(index + 1).padStart(2, '0') }}</strong><span>推荐匹配分 <b>{{ team.score.toFixed(1) }}</b></span></div><div class="tactic-result-roster"><div v-for="id in team.ids" :key="id"><OwPortrait :src="byId.get(id)?.avatarUrl" :name="name(id)" /><strong>{{ name(id) }}</strong><small>{{ locked.includes(id) ? '已锁定' : '推荐补齐' }}</small></div></div><p>{{ team.coverage.length ? '已有社区优势关系覆盖：' + team.coverage.map(name).join('、') : '暂无已收录的直接应对关系，本方案只提供职责与配合建议。' }}</p><ul><li v-for="explanation in team.explanations" :key="explanation">{{ explanation }}</li></ul><small v-if="team.unknownEnemies.length">敌方克制数据待收录：{{ team.unknownEnemies.map(name).join('、') }}</small></article></div>
-      <p v-else-if="submitted" class="tactic-empty">当前选择无法形成可评估的 1/2/2 阵容，请调整已选英雄或补充克制数据。</p>
+      <p v-if="unknownInputs.length" class="tactic-notice">{{ unknownInputs.map(name).join('、') }} 的克制数据尚未收录：可以保持己方选择并按职责补齐，但该英雄暂不参与克制评分。</p>
+      <p class="tactic-fineprint">推荐综合克制关系与基础配合；请结合地图、熟练度和队友沟通选择。</p>
+      <div v-if="suggestions.length" class="tactic-suggestions" aria-live="polite"><article v-for="(team, index) in suggestions" :key="team.ids.join()" class="tactic-suggestion"><div class="tactic-suggestion-heading"><strong>方案 {{ String(index + 1).padStart(2, '0') }}</strong><span>推荐匹配分 <b>{{ team.score.toFixed(1) }}</b></span></div><div class="tactic-result-roster"><div v-for="id in team.ids" :key="id"><OwPortrait :src="byId.get(id)?.avatarUrl" :name="name(id)" /><strong>{{ name(id) }}</strong><small>{{ locked.includes(id) ? '已锁定' : '推荐补齐' }}</small></div></div><p>{{ team.coverage.length ? '可应对：' + team.coverage.map(name).join('、') : '暂无已收录的直接应对关系，本方案只提供职责与配合建议。' }}</p><ul><li v-for="explanation in team.explanations" :key="explanation">{{ explanation }}</li></ul><small v-if="team.unknownEnemies.length">敌方克制数据待收录：{{ team.unknownEnemies.map(name).join('、') }}</small></article></div>
+      <p v-else-if="submitted" class="tactic-empty">当前选择无法组成 1 重装、2 输出、2 支援的阵容，请调整已选英雄。</p>
     </section>
-    <details class="tactic-sources"><summary>查看来源与数据边界</summary><p>克制方向来自 CounterPickGG 公开英雄表的非中立评分，仅保存数字与来源，不复制攻略正文。原表“被克制”列大于 5 表示对方占优，小于 5 表示本英雄占优；反向重复条目只算一次。未显示或未收录的关系为未知，不能据此视为中立。</p><p>推荐按 5v5 基础职责队列补齐。此表为海外社区参考，不是国服官方对局统计，也未按段位、地图或特殊威能分层。本站使用优势覆盖、被克制风险和少量人工风格配合规则排序，不输出阵容胜率。血律尚未出现在来源表中，黑影与路霸重做前的关系已暂停，等待来源针对新技能复核；源站的统计更新日期不等于克制表更新日期。</p><ul><li v-for="source in TACTIC_SOURCES" :key="source.id"><a :href="source.url" target="_blank" rel="noopener noreferrer">{{ source.title }} ↗</a></li></ul></details>
+    <details class="tactic-sources"><summary>参考来源</summary><p>克制关系参考 CounterPickGG，阵容按 1 重装、2 输出、2 支援推荐。尚未收录的关系不代表不存在克制。血律资料待补充，黑影与路霸重做后的关系暂未收录。</p><ul><li v-for="source in referenceSources" :key="source.id"><a :href="source.url" target="_blank" rel="noopener noreferrer">{{ source.title }} ↗</a></li></ul></details>
   </section>
 </template>

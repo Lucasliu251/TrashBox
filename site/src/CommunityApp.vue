@@ -21,6 +21,7 @@ type ReactionState = 'idle' | 'waiting' | 'ready' | 'early' | 'done'
 
 const allowed: View[] = ['home', 'posts', 'post', 'rank', 'stats', 'reaction']
 const query = new URLSearchParams(location.search)
+const currentPath = ref(`${location.pathname}${location.search}`)
 const game = ref<'cs2' | 'ow'>(query.get('game') === 'ow' ? 'ow' : 'cs2')
 let lastCs2Url = game.value === 'cs2' ? `${location.pathname}${location.search}` : '/?game=cs2'
 let lastOwUrl = game.value === 'ow' ? `${location.pathname}${location.search}` : '/?game=ow&view=heroes'
@@ -194,6 +195,7 @@ function navigate(target: View, id = '') {
   results.value = []
   const url = target === 'home' ? '/' : `/?view=${target}${id ? `&id=${encodeURIComponent(id)}` : ''}`
   history.pushState({}, '', url)
+  currentPath.value = url
   window.scrollTo({ top: 0, behavior: 'smooth' })
   loadView()
 }
@@ -208,6 +210,7 @@ function switchGame(target: 'cs2' | 'ow') {
 }
 
 function onPopState() {
+  currentPath.value = `${location.pathname}${location.search}`
   const query = new URLSearchParams(location.search)
   game.value = query.get('game') === 'ow' ? 'ow' : 'cs2'
   const next = query.get('view') as View | null
@@ -309,10 +312,10 @@ onBeforeUnmount(() => {
         <button :class="{ selected: view === 'stats' }" @click="navigate('stats')">数据</button>
       </nav>
       <span v-else class="ow-header-caption">英雄集结 · 国服数据观察</span>
-      <a class="account-entry" :href="accountUrl()" :title="props.accountDisplayName">我的账号</a>
+      <a class="account-entry" :href="accountUrl(currentPath)" :title="props.accountDisplayName">我的账号</a>
     </header>
 
-    <OwHome v-if="game === 'ow'" @switch-cs2="switchGame('cs2')" />
+    <OwHome v-if="game === 'ow'" @switch-cs2="switchGame('cs2')" @navigate="onPopState" />
     <main v-else class="page-shell" :class="{ 'reaction-page': view === 'reaction' }">
       <template v-if="view === 'home'">
         <form class="search-section" @submit.prevent="searchPlayer">

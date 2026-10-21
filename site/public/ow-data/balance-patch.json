@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "date": "2026-10-07",
-  "publishedDate": "2026-10-06",
-  "title": "《鬥陣特攻》更新說明 - 2026 年 10 月 7 日",
-  "region": "global",
-  "language": "zh-TW",
-  "sourceUrl": "https://overwatch.blizzard.com/zh-tw/news/patch-notes/live/2026/10/#patch-2026-10-06",
+  "publishedDate": "2026-10-07",
+  "title": "《守望先锋》补丁说明——2026年10月7日",
+  "region": "cn",
+  "language": "zh-CN",
+  "sourceUrl": "https://ow.blizzard.cn/news/patch-notes/live/2026/10/",
   "groups": {
     "enhances": [
       "domina",
@@ -25,7 +25,6 @@
       "bastion",
       "cassidy",
       "doctrine",
-      "domina",
       "doomfist",
       "echo",
       "emre",
@@ -70,15 +69,15 @@
     },
     {
       "id": "ashe",
-      "sourceName": "艾西"
+      "sourceName": "艾什"
     },
     {
       "id": "baptiste",
-      "sourceName": "巴帝斯特"
+      "sourceName": "巴蒂斯特"
     },
     {
       "id": "bastion",
-      "sourceName": "壁壘機兵"
+      "sourceName": "堡垒"
     },
     {
       "id": "cassidy",
@@ -90,11 +89,11 @@
     },
     {
       "id": "domina",
-      "sourceName": "多米娜"
+      "sourceName": "金驭"
     },
     {
       "id": "doomfist",
-      "sourceName": "毀滅拳王"
+      "sourceName": "末日铁拳"
     },
     {
       "id": "dva",
@@ -102,11 +101,11 @@
     },
     {
       "id": "echo",
-      "sourceName": "迴音"
+      "sourceName": "回声"
     },
     {
       "id": "emre",
-      "sourceName": "伊默"
+      "sourceName": "埃姆雷"
     },
     {
       "id": "genji",
@@ -118,47 +117,47 @@
     },
     {
       "id": "hazard",
-      "sourceName": "災害"
+      "sourceName": "骇灾"
     },
     {
       "id": "illari",
-      "sourceName": "伊拉里"
+      "sourceName": "伊拉锐"
     },
     {
       "id": "jetpackcat",
-      "sourceName": "火箭貓"
+      "sourceName": "飞天猫"
     },
     {
       "id": "junker-queen",
-      "sourceName": "垃圾鎮女王"
+      "sourceName": "渣客女王"
     },
     {
       "id": "junkrat",
-      "sourceName": "炸彈鼠"
+      "sourceName": "狂鼠"
     },
     {
       "id": "juno",
-      "sourceName": "朱諾"
+      "sourceName": "朱诺"
     },
     {
       "id": "kiriko",
-      "sourceName": "霧子"
+      "sourceName": "雾子"
     },
     {
       "id": "lifeweaver",
-      "sourceName": "織命"
+      "sourceName": "生命之梭"
     },
     {
       "id": "lucio",
-      "sourceName": "路西歐"
+      "sourceName": "卢西奥"
     },
     {
       "id": "mauga",
-      "sourceName": "莫加"
+      "sourceName": "毛加"
     },
     {
       "id": "mercy",
-      "sourceName": "慈悲"
+      "sourceName": "天使"
     },
     {
       "id": "mizuki",
@@ -170,11 +169,11 @@
     },
     {
       "id": "reinhardt",
-      "sourceName": "萊因哈特"
+      "sourceName": "莱因哈特"
     },
     {
       "id": "roadhog",
-      "sourceName": "攔路豬"
+      "sourceName": "路霸"
     },
     {
       "id": "shion",
@@ -182,19 +181,19 @@
     },
     {
       "id": "sierra",
-      "sourceName": "席艾拉"
+      "sourceName": "西拉"
     },
     {
       "id": "sojourn",
-      "sourceName": "索潔恩"
+      "sourceName": "索杰恩"
     },
     {
       "id": "sombra",
-      "sourceName": "駭影"
+      "sourceName": "黑影"
     },
     {
       "id": "symmetra",
-      "sourceName": "辛梅塔"
+      "sourceName": "秩序之光"
     },
     {
       "id": "torbjorn",
@@ -202,35 +201,29 @@
     },
     {
       "id": "tracer",
-      "sourceName": "閃光"
+      "sourceName": "猎空"
     },
     {
       "id": "venture",
-      "sourceName": "無畏"
+      "sourceName": "探奇"
     },
     {
       "id": "wrecking-ball",
-      "sourceName": "火爆鋼球"
+      "sourceName": "破坏球"
     },
     {
       "id": "wuyang",
-      "sourceName": "無漾"
+      "sourceName": "无漾"
     },
     {
       "id": "zenyatta",
-      "sourceName": "禪亞塔"
+      "sourceName": "禅雅塔"
     }
   ],
   "unmappedNames": [],
-  "fetchedAt": "2026-10-09T11:36:29.339757+08:00",
-  "checkedAt": "2026-10-09T11:36:29.339757+08:00",
+  "fetchedAt": "2026-10-09T18:06:11.575540+08:00",
+  "checkedAt": "2026-10-09T18:06:11.575540+08:00",
   "refreshStatus": "ok",
-  "sourceErrors": [
-    {
-      "region": "cn",
-      "month": "2026-10",
-      "error": "HTTPError"
-    }
-  ],
+  "sourceErrors": [],
   "classification": "explicit-numeric-v1"
 }
